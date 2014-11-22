@@ -9,6 +9,7 @@ class Object
     end
   end
   alias_method :chain, :nil_chain
+  alias_method :method_chain, :nil_chain
 
   def bool_chain(&block)
     result = nil_chain{ yield }

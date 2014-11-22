@@ -1,5 +1,4 @@
 # Finishing Moves
-=================
 
 ##### By the guys at [Forge Software](http://www.forgecrafted.com/)
 
@@ -10,40 +9,41 @@ Ruby has a huge amount of default awesomeness that tackles most common developme
 In gamer terms, if standard Ruby methods are your default moves, Finishing Moves would be your limited-use actions or spells. In the right situation, they kick a serious amount of ass!
 
 ## Development approach
------------------------
 
-- No hacks. **Never** override default Ruby behavior, only add functionality.
+- **Never** override default Ruby behavior, only add functionality. No hacks.
 - Write each method following the "Do one job very well" Unix philosophy.
 - Minimize assumptions within the method (e.g. output format, mutating values, long conditional logic flows).
 
 ## Installation
----------------
+
+###### Command line
 
 ```
 gem install finishing_moves
 ```
+
+###### Gemfile
 
 ```
 gem 'finishing_moves'
 ```
 
 ## Current Moves
-----------------
 
 ### Extensions to `Object`
 
 #### `Object#nil_chain`
-Arguably the sharpest knife in the block, `Object#nil_chain` allows you to write elaborate method chains without fear of tripping over `NoMethodError` and `NameError` exceptions when something in the chain throws out a nil value.
+Arguably the sharpest knife in the block, `#nil_chain` allows you to write elaborate method chains without fear of tripping over `NoMethodError` and `NameError` exceptions when something in the chain throws out a nil value.
 
 ```ruby
 # my_hash may have key :foo set...or it may not! Doooooom!
 
-# without nil_chain we have to check to make sure the key exists
+# without nil_chain = check to make sure the key exists
 if my_hash.has_key? :foo
   my_hash[:foo].do_stuff
 end
 
-# with nil_chain we just do it, kick those nil ghosts in the teeth
+# with nil_chain = just do it, kick those nil ghosts in the teeth
 nil_chain{ my_hash[:foo].do_stuff }
 # => result of do_stuff, or nil
 ```
@@ -77,12 +77,15 @@ a = A.new b
 
 a.b.c.hello
 # => "Hello, world!"
+```
 
+If the presence of the attribute c is conditional, we must check for a proper association between objects `b` and `c` before calling `hello`
+
+```ruby
 b.c = nil
 a.b.c.hello
 # => NoMethodError: undefined method `hello' for nil:NilClass
 
-# We can conditionally check for a connection between objects `b` and `c` before calling `hello`
 a.b.c.hello unless b.c.nil? || b.c.empty?
 # => nil
 
@@ -92,8 +95,10 @@ a.b = nil
 if !a.b.nil? && !a.b.empty?
   a.b.c.hello unless b.c.nil? || b.c.empty?
 end
+```
 
-# Skip all that conditional nonsense
+Or we can just skip all that conditional nonsense
+```
 nil_chain{ a.b.c.hello }
 # => output "Hello, world!" or nil
 ```
@@ -101,7 +106,7 @@ nil_chain{ a.b.c.hello }
 We use this all the time in our Rails projects. The class example above was derived from a frequent use case in our models...
 
 ```ruby
-# Model User has one or more (optional) addresses, one of which is the primary (if one exists at all).
+# Model User has one or more addresses, one of which is the primary (if it exists at all).
 # Model Address has a zip_code attribute.
 user = User.find(9876)
 nil_chain{ user.addresses.primary.zip_code }
@@ -127,11 +132,12 @@ end
 Setting default values on form inputs in views...
 
 ```ruby
-select_tag :date_field, options_for_select(@dropdown_date_field, nil_chain{params[:date_field]} ), include_blank: true
+select_tag :date_field,
+  options_for_select(@dropdown_date_field, nil_chain{params[:date_field]} )
 # => Sets the selected option in the dropdown if the :date_field parameter exists
 ```
 
-`nil_chain` is aliased to `chain` for a little more brevity.
+`nil_chain` is aliased to `chain` for a little more brevity, and `method_chain` for alternative clarity.
 
 #### `Object#bool_chain`
 
@@ -146,7 +152,7 @@ bool_chain{ a.b.c.hello }
 
 #### `Object#same_as`
 
-Comparison operator that normalizes both sides into strings.
+Comparison operator that normalizes both sides into strings, then runs them over `==`
 
 We love working with symbols in our code, but symbol values become strings when they hit the database. This meant typecasting wherever new and existing data might collide. No more!
 
@@ -168,7 +174,7 @@ Normal case-sensitivity rules apply.
 # => false
 ```
 
-Since this method is defined in Object, your own custom classes inherit it automatically, allowing you to compare literally anything at any time, without worrying about typecasting! Just make sure you have a sane output for to_s and you're all set.
+Since this method is defined in Object, your own custom classes inherit it automatically, allowing you to compare literally anything at any time, without worrying about typecasting! Just make sure you have sane output for `to_s` and you're all set.
 
 ```ruby
 class User
@@ -197,6 +203,7 @@ user.same_as 'FACELESS_ONE'
 #### `Object#class_exists?`
 
 > *I just want to know if [insert class name] has been defined!*
+>
 > -- Every dev at some point
 
 ```ruby
@@ -208,7 +215,7 @@ class_exists? :Rails
 # => true in a Rails app
 ```
 
-Because the class **might** exist, we cannot pass in the constant version of the name. Use a symbol or string value.
+Because the class **might** exist, we cannot pass in the constant version of the name. You must use a symbol or string value.
 
 ```ruby
 class_exists? DefinitelyFakeClass
@@ -219,7 +226,9 @@ class_exists? :DefinitelyFakeClass
 
 #### `Object#not_nil?`
 
-Because that dangling `!` on the front of a call to `nil?` is just so not Ruby-chic. Now pass me another PBR.
+Because that dangling `!` on the front of a call to `nil?` is just so not Ruby-chic.
+
+Now pass me another PBR.
 
 ```ruby
 nil.not_nil?
@@ -241,7 +250,6 @@ nil.not_nil?
 
 
 ## Share your finishing moves!
-------------------------------
 
 ### Got an idea for another finisher?
 
