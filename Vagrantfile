@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-NAME = "finishing_moves"
+NAME = "finishing-moves"
 FQDN = "#{NAME}.example.com"
 
 Vagrant.configure("2") do |config|
