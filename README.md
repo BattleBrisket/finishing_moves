@@ -11,18 +11,18 @@ In gamer terms, if standard Ruby methods are your default moves, Finishing Moves
 ## Development approach
 
 - **Never** override default Ruby behavior, only add functionality. No hacks.
-- Write each method following the "Do one job very well" Unix philosophy.
+- Follow the Unix philosophy of *"Do one job really well."*
 - Minimize assumptions within the method (e.g. output format, mutating values, long conditional logic flows).
 
 ## Installation
 
-###### Command line
+Command line
 
 ```
 gem install finishing_moves
 ```
 
-###### Gemfile
+Gemfile
 
 ```
 gem 'finishing_moves'
@@ -39,11 +39,13 @@ Arguably the sharpest knife in the block, `#nil_chain` allows you to write elabo
 # my_hash may have key :foo set...or it may not! Doooooom!
 
 # without nil_chain = check to make sure the key exists
+
 if my_hash.has_key? :foo
   my_hash[:foo].do_stuff
 end
 
 # with nil_chain = just do it, kick those nil ghosts in the teeth
+
 nil_chain{ my_hash[:foo].do_stuff }
 # => result of do_stuff, or nil
 ```
@@ -79,7 +81,7 @@ a.b.c.hello
 # => "Hello, world!"
 ```
 
-If the presence of the attribute c is conditional, we must check for a proper association between objects `b` and `c` before calling `hello`
+If the presence of attribute `c` is conditional, we must check for a proper association between objects `b` and `c` before calling `hello`...
 
 ```ruby
 b.c = nil
@@ -97,17 +99,18 @@ if !a.b.nil? && !a.b.empty?
 end
 ```
 
-Or we can just skip all that conditional nonsense
+Or we can just skip all that conditional nonsense!
 ```
 nil_chain{ a.b.c.hello }
 # => output "Hello, world!" or nil
 ```
 
-We use this all the time in our Rails projects. The class example above was derived from a frequent use case in our models...
+We use this all the time in our Rails projects. The A-B-C class example above was derived from a frequent use case in our models...
 
 ```ruby
-# Model User has one or more addresses, one of which is the primary (if it exists at all).
+# Model User has ZERO or more addresses, one of which is the primary.
 # Model Address has a zip_code attribute.
+
 user = User.find(9876)
 nil_chain{ user.addresses.primary.zip_code }
 # => returns nil if no addresses, or primary not set, otherwise returns zip_code
@@ -117,6 +120,7 @@ It also helps when dealing with optional parameters coming in from forms...
 
 ```ruby
 # Somewhere in a random rails controller...
+
 def search
   case nil_chain { params[:case_state].downcase }
     when 'open'      then filter_only_open
@@ -160,6 +164,7 @@ This comparison will work on any class that has a `to_s` method defined on it.
 
 ```ruby
 # All these comparisons will return true
+
 :foobar.same_as 'foobar'
 'foobar'.same_as :foobar
 '1'.same_as 1
@@ -174,7 +179,7 @@ Normal case-sensitivity rules apply.
 # => false
 ```
 
-Since this method is defined in Object, your own custom classes inherit it automatically, allowing you to compare literally anything at any time, without worrying about typecasting! Just make sure you have sane output for `to_s` and you're all set.
+Since this method is defined in Object, your own custom classes inherit it automatically, allowing you to compare literally anything at any time, without worrying about typecasting! Just make sure you define sane output for `to_s` and you're all set.
 
 ```ruby
 class User
@@ -240,14 +245,72 @@ nil.not_nil?
 ### Extensions to `Hash`
 
 #### `Hash#delete!`
+
+The normal [`Hash#delete`](http://www.ruby-doc.org/core-2.1.5/Hash.html#method-i-delete) method returns the value that's been removed from the hash, but it can be equally useful if we return the newly modified hash.
+
+This approach effectively throws away the value being deleted, so don't use this when the deleted hash entry is valuable.
+
+```ruby
+my_hash = { :foo => :bar, :baz => :bin, :flo => :bie }
+
+my_hash.delete! :baz
+# => { :foo => :bar, :flo => :bie }
+```
+
+If the key is not found, the hash is returned unaltered.
+
+```ruby
+my_hash.delete! :bogus
+# => { :foo => :bar, :baz => :bin, :flo => :bie }
+```
+
 #### `Hash#delete_each`
+Deletes all records in a hash matching the keys passed in as an array. Returns a hash of deleted entries. Silently ignores any keys which are not found.
+
+```ruby
+my_hash = { :foo => :bar, :baz => :bin, :flo => :bie }
+
+my_hash.delete_each :bogus, :bar
+# => nil
+my_hash
+# => { :foo => :bar, :baz => :bin, :flo => :bie }
+
+my_hash.delete_each :flo
+# => { :flo => :bie }
+my_hash
+# => { :foo => :bar, :baz => :bin }
+
+my_hash.delete_each :foo, :baz, :bogus
+# => { :foo => :bar, :baz => :bin }
+my_hash
+# => { }
+```
+
 #### `Hash#delete_each!`
+
+Same logic as `delete_each`, but return the modified hash, and discard the deleted values. Maintains parity with the contrast of `delete` vs `delete!`
+
+```ruby
+my_hash.delete_each! :bogus, :bar
+# => { :foo => :bar, :baz => :bin, :flo => :bie }
+
+my_hash.delete_each! :flo
+# => { :foo => :bar, :baz => :bin }
+
+my_hash.delete_each! :bogus, :flo, :foo
+# => { :baz => :bin }
+
+my_hash.delete_each! :baz
+# => { }
+```
 
 ### Numerical length
 
+Coming soon!
+
 ### Expanded boolean typecasting
 
-
+Coming soon!
 
 ## Share your finishing moves!
 

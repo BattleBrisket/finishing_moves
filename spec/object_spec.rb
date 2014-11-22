@@ -34,7 +34,6 @@ describe Object do
     expect(class_exists? 'Symbology').to eq false
     expect(class_exists? :Array).to eq true
     expect(class_exists? :aRRay).to eq false
-    binding.pry
     expect(class_exists? :ARRAY).to eq false
   end
 

@@ -12,7 +12,7 @@ describe Hash do
   end
 
   it "#delete_each" do
-    expect(test_hash.delete_each(:bogus)).to eq nil
+    expect(test_hash.delete_each(:bogus, :bar)).to eq nil
     expect(test_hash).to eq({ :foo => :bar, :baz => :bin, :flo => :bie })
     expect(test_hash.delete_each(:flo)).to eq({ :flo => :bie })
     expect(test_hash).to eq({ :foo => :bar, :baz => :bin })
@@ -21,7 +21,7 @@ describe Hash do
   end
 
   it "#delete_each!" do
-    expect(test_hash.delete_each!(:bogus)).to eq({ :foo => :bar, :baz => :bin, :flo => :bie })
+    expect(test_hash.delete_each!(:bogus, :bar)).to eq({ :foo => :bar, :baz => :bin, :flo => :bie })
     expect(test_hash.delete_each!(:flo)).to eq({ :foo => :bar, :baz => :bin })
     expect(test_hash.delete_each!(:bogus, :flo, :foo)).to eq({ :baz => :bin })
     expect(test_hash.delete_each!(:baz)).to eq({ })
