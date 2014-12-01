@@ -16,19 +16,9 @@ In gamer terms, if standard Ruby methods are your default moves, Finishing Moves
 
 ## Installation
 
-Command line
+(Gemification coming soon!)
 
-```
-gem install finishing_moves
-```
-
-Gemfile
-
-```
-gem 'finishing_moves'
-```
-
-## Current Moves
+## Current Finishers
 
 ### Extensions to `Object`
 
@@ -145,7 +135,7 @@ select_tag :date_field,
 
 #### `Object#bool_chain`
 
-This is the same logic under the hood as `nil_chain`, however we return a boolean `false` instead of nil if the chain breaks.
+This is the same logic under the hood as `nil_chain`, however we return a boolean `false` instead of `nil` if the chain breaks.
 
 Following our A-B-C example above...
 
