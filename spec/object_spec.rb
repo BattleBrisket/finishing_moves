@@ -10,21 +10,29 @@ describe Object do
     expect(nil_chain{ params[:foo] }).to eq 'bar'
     var = 'a simple string'
     expect(nil_chain{ var.transmogrify }).to eq nil
-    expect(chain{ var.transmogrify }).to eq nil
 
     c = C.new
     b = B.new c
     a = A.new b
     expect(a.b.c.hello).to eq "Hello, world!"
     b.c = nil
-    expect(nil_chain{a.b.c.hello}).to eq nil
+    expect(method_chain{a.b.c.hello}).to eq nil
+
+    expect( chain(true) { bogus_variable } ).to eq true
+    expect( chain(false) { bogus_variable } ).to eq false
+    expect( chain('gotcha!') { bogus_variable } ).to eq 'gotcha!'
+    expect( chain('gotcha!') { params[:bogus_key] } ).to eq 'gotcha!'
+    expect( chain('gotcha!') { params[:foo] } ).to eq 'bar'
   end
 
   it "#bool_chain" do
     expect(bool_chain{bogus_variable}).to eq false
     var = true
     expect(bool_chain{var}).to eq true
-    expect(bool_chain{ var.transmogrify }).to eq false
+    var = 'foo'
+    expect(bool_chain{var}).to eq 'foo'
+    result = bool_chain{ var.transmogrify }
+    expect(result).to eq false
   end
 
   it "#class_exists?" do

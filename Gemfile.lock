@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    buff-ruby (0.0.1)
+    finishing_moves (0.0.1)
 
 GEM
   remote: https://rubygems.org/
@@ -50,7 +50,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  buff-ruby!
+  finishing_moves!
   fuubar
   priscilla
   pry-byebug

@@ -6,7 +6,7 @@ A collection of ultra-small, ultra-focused methods added to standard Ruby classe
 
 Ruby has a huge amount of default awesomeness that tackles most common development challenges. But every now and then, you find yourself in a situation where an uncommon/awkward/elaborate coding maneuver wins the day. Finishing Moves is a collection of methods designed to assist those atypical scenarios.
 
-In gamer terms, if standard Ruby methods are your default moves, Finishing Moves would be your limited-use actions or spells. In the right situation, they kick a serious amount of ass!
+In gamer terms, if standard Ruby methods are your default moves, `finishing_moves` would be your mana-powered moves, cooldown spells, or grenades (there's never enough grenades). In the right situation, they kick a serious amount of ass!
 
 ## Development approach
 

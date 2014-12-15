@@ -1,6 +1,6 @@
 module FinishingMoves
 
-  Dir[File.dirname(__FILE__) + '/buff-ruby/*.rb'].each do |file|
+  Dir[File.dirname(__FILE__) + '/finishing_moves/*.rb'].each do |file|
     require file
   end
 

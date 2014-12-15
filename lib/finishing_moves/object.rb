@@ -1,19 +1,22 @@
 class Object
 
-  def nil_chain(&block)
+  def nil_chain(ret_val = nil, &block)
     begin
-      yield
+      result = yield
+      return ret_val if result.nil?
+      result
     rescue NoMethodError
     rescue NameError
-      return nil
+      return ret_val
     end
   end
   alias_method :chain, :nil_chain
   alias_method :method_chain, :nil_chain
 
   def bool_chain(&block)
-    result = nil_chain{ yield }
-    return false if result.nil?
+    result = nil_chain(false) { yield }
+    # result = nil_chain{ yield }
+    # return false if result.nil?
     result
   end
 
