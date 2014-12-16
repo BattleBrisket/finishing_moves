@@ -14,9 +14,8 @@ class Object
   alias_method :method_chain, :nil_chain
 
   def bool_chain(&block)
-    result = nil_chain(false) { yield }
-    # result = nil_chain{ yield }
-    # return false if result.nil?
+    result = nil_chain{ yield }
+    return false if result.nil?
     result
   end
 

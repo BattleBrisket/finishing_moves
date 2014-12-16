@@ -12,7 +12,7 @@ In gamer terms, if standard Ruby methods are your default moves, `finishing_move
 
 - **Never** override default Ruby behavior, only add functionality. No hacks.
 - Follow the Unix philosophy of *"Do one job really well."*
-- Minimize assumptions within the method (e.g. output format, mutating values, long conditional logic flows).
+- Minimize assumptions within the method, e.g. avoid formatting output, mutating values, and long conditional logic flows.
 
 ## Installation
 
@@ -25,22 +25,37 @@ In gamer terms, if standard Ruby methods are your default moves, `finishing_move
 #### `Object#nil_chain`
 Arguably the sharpest knife in the block, `#nil_chain` allows you to write elaborate method chains without fear of tripping over `NoMethodError` and `NameError` exceptions when something in the chain throws out a nil value.
 
-```ruby
-# my_hash may have key :foo set...or it may not! Doooooom!
+##### Examples
 
-# without nil_chain = check to make sure the key exists
+```ruby
+# foobar may have a transmogrify method...or it may not! Doooooom!
+
+# without nil_chain = check to make sure the method exists
+
+foobar.transmogrify if foobar.respond_to? :transmogrify
+
+# with nil_chain = just do it, kick those nil ghosts in the teeth
+
+nil_chain{ foobar.transmogrify }
+# => result of transmogrify, or nil
+```
+
+Not really saving much typing there, but how about an object assigned to a hash?
+
+```ruby
+# without nil_chain, we must check to make sure the key exists
 
 if my_hash.has_key? :foo
   my_hash[:foo].do_stuff
 end
 
-# with nil_chain = just do it, kick those nil ghosts in the teeth
+# with nil_chain, things look a lot cleaner
 
 nil_chain{ my_hash[:foo].do_stuff }
 # => result of do_stuff, or nil
 ```
 
-That situation was useful, but still pretty simple. Let's try it on a series of connected objects.
+More useful, but still pretty simple. Let's try it on a series of connected objects.
 
 ```ruby
 class A
@@ -84,18 +99,22 @@ a.b.c.hello unless b.c.nil? || b.c.empty?
 a.b = nil
 
 # Now it's really getting ugly. Imagine if we had a fourth association!
+# Or a fifth! The patterns, man!
 if !a.b.nil? && !a.b.empty?
   a.b.c.hello unless b.c.nil? || b.c.empty?
 end
 ```
 
 Or we can just skip all that conditional nonsense!
-```
+
+```ruby
 nil_chain{ a.b.c.hello }
 # => output "Hello, world!" or nil
 ```
 
-We use this all the time in our Rails projects. The A-B-C class example above was derived from a frequent use case in our models...
+##### Examples in Rails
+
+We use `nil_chain` all the time in Rails projects. The A-B-C class example above was derived from a frequent use case in our models...
 
 ```ruby
 # Model User has ZERO or more addresses, one of which is the primary.
@@ -119,7 +138,7 @@ def search
     when 'withdrawn' then filter_only_withdrawn
     when 'canceled'  then filter_only_canceled
   end
-  # => apply proper case state filter, or nothing
+  # => apply proper case state filter, or do nothing
 end
 ```
 
@@ -131,16 +150,68 @@ select_tag :date_field,
 # => Sets the selected option in the dropdown if the :date_field parameter exists
 ```
 
+##### Default return
+
+You can change the value that nil_chain returns when it hits a `NoMethodError` or `NameError` exception. `nil_chain` accepts a single optional argument before the block to represent the return value. The default is `nil`, but you can set it to whatever you want.
+
+We recently used this functionality in generating a CSV. Anywhere the outputted value would have been blank, we adjusted the return value to spit out 'N/A', a requirement for the client's use case.
+
+```ruby
+CSV.generate do |csv|
+  @records.each do |record|  # each record represents a single line in the CSV
+    values = []
+    csv_fields_in_order.each do |field|
+      # nil_chain ensures we respond with a nice default value when the field is empty or invalid
+      values << nil_chain('N/A') { record.send(field) }
+    end
+    csv << values
+  end
+end
+```
+
+We find this handy when doing conditional stuff based on presence/absence of a key in a hash.
+
+```ruby
+# without nil_chain
+if my_hash[:foo].nil?    # (by default, ruby returns nil when you request an unset key)
+  var = :default_value
+else
+  var = my_hash[:foo]
+end
+
+# with nil_chain, we get a nice one liner
+
+var = nil_chain(:default_value) { my_hash[:foo] }
+
+# What if the default value is coming from somewhere else?
+# What if we want to call a method directly on the hash?
+# What if the ley lines are out of alignment?
+# No problem.
+
+var = nil_chain(Geomancer.reset_ley_lines) { summon_fel_beast[:step_3].scrying }
+# => value of summon_fel_beast[:step_3].scrying if it's set, or
+#    Geomancer.reset_ley_lines if it's not
+```
+
+##### Aliases
+
 `nil_chain` is aliased to `chain` for a little more brevity, and `method_chain` for alternative clarity.
 
 #### `Object#bool_chain`
 
-This is the same logic under the hood as `nil_chain`, however we return a boolean `false` instead of `nil` if the chain breaks.
+This is the same logic under the hood as `nil_chain`, however we forcibly return a boolean `false` instead of `nil` if the chain breaks.
 
 Following our A-B-C example above...
 
 ```ruby
 bool_chain{ a.b.c.hello }
+# => false
+```
+
+If you read about the default return, you know that you can do this explicitly with `nil_chain` too. It's just a little less to type.
+
+```ruby
+nil_chain(false) { a.b.c.hello }
 # => false
 ```
 
@@ -167,9 +238,14 @@ Normal case-sensitivity rules apply.
 ```ruby
 :symbol.same_as :SYMBOL
 # => false
+
+:symbol.same_as 'SYMBOL'
+# => false
 ```
 
-Since this method is defined in Object, your own custom classes inherit it automatically, allowing you to compare literally anything at any time, without worrying about typecasting! Just make sure you define sane output for `to_s` and you're all set.
+Since this method is defined in Object, your own custom classes inherit it automatically, allowing you to compare literally anything at any time, without worrying about typecasting!
+
+**Make sure you define sane output for `to_s`** and you're all set.
 
 ```ruby
 class User
@@ -201,6 +277,21 @@ user.same_as 'FACELESS_ONE'
 >
 > -- Every dev at some point
 
+Sure, Ruby has the `defined?` method, but the output is less than helpful when you're doing conditional flows.
+
+```ruby
+defined?(SuperSaiyan) # => nil
+require 'super_saiyan'
+defined?(SuperSaiyan) # => constant
+
+if defined?(SuperSaiyan) == 'constant'
+  # Power up to level 4
+  # But after that ridiculous if statement, I'm just too tired
+end
+```
+
+`class_exists?` does exactly what you want, and provides an obvious, natural boolean response.
+
 ```ruby
 class_exists? :Symbol
 # => true
@@ -215,15 +306,14 @@ Because the class **might** exist, we cannot pass in the constant version of the
 ```ruby
 class_exists? DefinitelyFakeClass
 # => NameError: uninitialized constant DefinitelyFakeClass
+
 class_exists? :DefinitelyFakeClass
-# => false
+# => false (at least it better be; if you actually use this name, I will find you...)
 ```
 
 #### `Object#not_nil?`
 
-Because that dangling `!` on the front of a call to `nil?` is just so not Ruby-chic.
-
-Now pass me another PBR.
+Because that dangling `!` on the front of a call to `nil?` is just oh so not-ruby-chic.
 
 ```ruby
 nil.not_nil?
@@ -231,6 +321,9 @@ nil.not_nil?
 'foobar'.not_nil?
 # => true
 ```
+
+Now pass me my fedora and another PBR.
+
 
 ### Extensions to `Hash`
 
@@ -241,56 +334,59 @@ The normal [`Hash#delete`](http://www.ruby-doc.org/core-2.1.5/Hash.html#method-i
 This approach effectively throws away the value being deleted, so don't use this when the deleted hash entry is valuable.
 
 ```ruby
-my_hash = { :foo => :bar, :baz => :bin, :flo => :bie }
+power_rangers = { :red => 'Jason Scott', :blue => 'Billy Cranston', :green => 'Tommy Oliver' }
 
-my_hash.delete! :baz
-# => { :foo => :bar, :flo => :bie }
+power_rangers.delete! :green
+# => { :red => 'Jason Lee Scott', :blue => 'Billy Cranston' }
 ```
 
 If the key is not found, the hash is returned unaltered.
 
 ```ruby
-my_hash.delete! :bogus
-# => { :foo => :bar, :baz => :bin, :flo => :bie }
+power_rangers.delete! :radiant_orchid
+# => { :red => 'Jason Lee Scott', :blue => 'Billy Cranston' }
+#    although it probably woulda triggered if I included Kimberly
 ```
 
 #### `Hash#delete_each`
 Deletes all records in a hash matching the keys passed in as an array. Returns a hash of deleted entries. Silently ignores any keys which are not found.
 
 ```ruby
-my_hash = { :foo => :bar, :baz => :bin, :flo => :bie }
+mega_man_bosses = { :metal_man => 1, :bubble_man => 2, :heat_man => 3, :wood_man => 4 }
 
-my_hash.delete_each :bogus, :bar
-# => nil
-my_hash
-# => { :foo => :bar, :baz => :bin, :flo => :bie }
+mega_man_bosses.delete_each :chill_penguin, :spark_mandrill
+# => nil, and get your mega man series straight
+mega_man_bosses
+# => { :metal_man => 1, :bubble_man => 2, :heat_man => 3, :wood_man => 4 }
 
-my_hash.delete_each :flo
-# => { :flo => :bie }
-my_hash
-# => { :foo => :bar, :baz => :bin }
+mega_man_bosses.delete_each :metal_man
+# => { :metal_man => 1 }
+mega_man_bosses
+# => { :bubble_man => 2, :heat_man => 3, :wood_man => 4 }
 
-my_hash.delete_each :foo, :baz, :bogus
-# => { :foo => :bar, :baz => :bin }
-my_hash
-# => { }
+mega_man_bosses.delete_each :bubble_man, :heat_man, :wheel_gator
+# => { :bubble_man => 2, :heat_man => 3 }
+mega_man_bosses
+# => { :wood_man => 4 }
 ```
 
 #### `Hash#delete_each!`
 
-Same logic as `delete_each`, but return the modified hash, and discard the deleted values. Maintains parity with the contrast of `delete` vs `delete!`
+Same logic as `delete_each`, but return the modified hash, and discard the deleted values.
+
+Maintains parity with the contrast of `delete` vs `delete!` described above.
 
 ```ruby
-my_hash.delete_each! :bogus, :bar
-# => { :foo => :bar, :baz => :bin, :flo => :bie }
+mega_man_bosses = { :air_man => 5, :crash_man => 6, :flash_man => 7, :quick_man => 8 }
 
-my_hash.delete_each! :flo
-# => { :foo => :bar, :baz => :bin }
+mega_man_bosses.delete_each! :yellow_devil, :air_man
+# => { :crash_man => 6, :flash_man => 7, :quick_man => 8 }
 
-my_hash.delete_each! :bogus, :flo, :foo
-# => { :baz => :bin }
+mega_man_bosses.delete_each! :flash_man
+# => { :crash_man => 6, :quick_man => 8 }
+#    Take out flash anytime after metal, I like to wait until I need a breather.
 
-my_hash.delete_each! :baz
+mega_man_bosses.delete_each! :crash_man, :quick_man
 # => { }
 ```
 
@@ -304,7 +400,7 @@ Coming soon!
 
 ## Share your finishing moves!
 
-### Got an idea for another finisher?
+### Got an idea for another finisher? Got a good nerd reference for our code samples?
 
 1. Fork this repo
 2. Write your tests
