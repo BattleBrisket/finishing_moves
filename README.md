@@ -30,20 +30,20 @@ Arguably the sharpest knife in the block, `#nil_chain` allows you to write elabo
 ```ruby
 # foobar may have a transmogrify method...or it may not! Doooooom!
 
-# without nil_chain = check to make sure the method exists
+# without nil_chain, we check to make sure the method exists
 
 foobar.transmogrify if foobar.respond_to? :transmogrify
 
 # with nil_chain = just do it, kick those nil ghosts in the teeth
 
 nil_chain{ foobar.transmogrify }
-# => result of transmogrify, or nil
+# => result of foobar.transmogrify, or nil
 ```
 
 Not really saving much typing there, but how about an object assigned to a hash?
 
 ```ruby
-# without nil_chain, we must check to make sure the key exists
+# without nil_chain, we check to make sure the key exists
 
 if my_hash.has_key? :foo
   my_hash[:foo].do_stuff
@@ -52,7 +52,7 @@ end
 # with nil_chain, things look a lot cleaner
 
 nil_chain{ my_hash[:foo].do_stuff }
-# => result of do_stuff, or nil
+# => result of my_hash[:foo].do_stuff, or nil
 ```
 
 More useful, but still pretty simple. Let's try it on a series of connected objects.
@@ -188,8 +188,8 @@ var = nil_chain(:default_value) { my_hash[:foo] }
 # What if the ley lines are out of alignment?
 # No problem.
 
-var = nil_chain(Geomancer.reset_ley_lines) { summon_fel_beast[:step_3].scrying }
-# => value of summon_fel_beast[:step_3].scrying if it's set, or
+var = nil_chain(Geomancer.reset_ley_lines) { summon_fel_beast[:step_3].scry }
+# => value of summon_fel_beast[:step_3].scry if it's set, or
 #    Geomancer.reset_ley_lines if it's not
 ```
 
@@ -271,6 +271,22 @@ user.same_as 'FACELESS_ONE'
 # => false
 ```
 
+If you're a Rails user, you'll find this incredibly helpful when comparing nice neat symbol values to all the string garbage coming out of the database, or the `params` hash.
+
+It's not doing much for code logic, but we find it helpful when doing in-code searches, since we can look for a specific symbol, and don't have tio worry about missing a reference because it was a string instead.
+
+```ruby
+user.role = :admin
+user.save!
+
+# some time and code passes...
+
+if user.role.same_as :admin
+  # Do awesome godly admin stuff
+  # Yes, I know an enum would've worked better. It's SAMPLE code, you dork.
+end
+```
+
 #### `Object#class_exists?`
 
 > *I just want to know if [insert class name] has been defined!*
@@ -286,7 +302,7 @@ defined?(SuperSaiyan) # => constant
 
 if defined?(SuperSaiyan) == 'constant'
   # Power up to level 4
-  # But after that ridiculous if statement, I'm just too tired
+  # But after that obtuse if-statement, I'm just too tired
 end
 ```
 
@@ -301,7 +317,7 @@ class_exists? :Rails
 # => true in a Rails app
 ```
 
-Because the class **might** exist, we cannot pass in the constant version of the name. You must use a symbol or string value.
+Because the class **might** exist, we cannot pass in the constant version of the name. You **must** use a symbol or string value.
 
 ```ruby
 class_exists? DefinitelyFakeClass
@@ -322,14 +338,14 @@ nil.not_nil?
 # => true
 ```
 
-Now pass me my fedora and another PBR.
+There, much more legible. Now pass me my fedora and another PBR.
 
 
 ### Extensions to `Hash`
 
 #### `Hash#delete!`
 
-The normal [`Hash#delete`](http://www.ruby-doc.org/core-2.1.5/Hash.html#method-i-delete) method returns the value that's been removed from the hash, but it can be equally useful if we return the newly modified hash.
+The normal [`Hash#delete`](http://www.ruby-doc.org/core-2.1.5/Hash.html#method-i-delete) method returns the value that's been removed from the hash, but it can be equally useful if we return the newly modified hash instead.
 
 This approach effectively throws away the value being deleted, so don't use this when the deleted hash entry is valuable.
 
