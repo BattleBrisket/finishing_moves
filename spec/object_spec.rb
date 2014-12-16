@@ -17,6 +17,8 @@ describe Object do
     expect(a.b.c.hello).to eq "Hello, world!"
     b.c = nil
     expect(method_chain{a.b.c.hello}).to eq nil
+    a = nil
+    expect(method_chain{a.b.c.hello}).to eq nil
 
     expect( chain(true) { bogus_variable } ).to eq true
     expect( chain(false) { bogus_variable } ).to eq false
