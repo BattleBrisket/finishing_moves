@@ -412,7 +412,7 @@ mega_man_bosses.delete_each! :crash_man, :quick_man
 
 ### `Fixnum#length` and `Bignum#length`
 
-Ruby doesn't provide a native way to see how many digits are in an integer, but that's exactly what we worry about anytime out database `INT` lengths collide with Ruby `Fixnum` or `Bignum` values.
+Ruby doesn't provide a native way to see how many digits are in an integer, but that's exactly what we worry about anytime database `INT` lengths collide with Ruby `Fixnum` or `Bignum` values.
 
 ```ruby
 1.length
@@ -452,11 +452,13 @@ For consistency, we added matching methods to `Float` and `BigDecimal` that simp
 
 Boolean values are frequently represented as strings and integers in databases and file storage. So we always thought it was a little odd that Ruby lacked a boolean typecasting method, given the proliferation of `to_*` methods for `String`, `Symbol`, `Integer`, `Float`, `Hash`, etc.
 
-So we made one for strings and integers.
+So we made one for strings, integers, and nil.
 
 #### `String#to_bool`
 
-Strings get analyzed and return true/false for a small set of potential values. These comparisons are case-insensitive.
+Strings get analyzed and return `true` or `false` for a small set of potential values.
+
+These comparisons are not case-sensitive.
 
 ```ruby
 ['1', 't', 'true', 'on', 'y', 'yes'].each do |true_string|
@@ -485,7 +487,7 @@ end
 A string with anything other than these matching values will throw an error.
 
 ```ruby
-["foo", "tru", "trueish", "druish", "000"].each do |bad_string|
+["foo", "tru", "trueish", "druish", "00", 000"].each do |bad_string|
   bad_string.to_bool
   # => ArgumentError: invalid value for Boolean
 end
@@ -493,7 +495,7 @@ end
 
 #### `Fixnum#to_bool`
 
-A zero is false, a one is true. That's it. Everything else throws `ArgumentError`
+A zero is false, a one is true. That's it. Everything else throws `ArgumentError`.
 
 ```ruby
 0.to_bool
@@ -541,7 +543,7 @@ false.to_bool
 
 ### Typecasting *from* `Boolean` and `Nil`
 
-Complementing the methods to typecast boolean values coming out of data storage, we have methods to convert booleans and `nil` into string and symbol representations.
+Complementing the methods to typecast boolean values coming out of data storage, we have methods to convert booleans and `nil` into integer and symbol representations.
 
 ```ruby
 true.to_i
@@ -555,7 +557,7 @@ false.to_sym
 # => :false
 
 nil.to_i
-# => 0 (follows same logic as `NilClass#to_bool`)
+# => 0 (following same logic as `NilClass#to_bool`)
 nil.to_sym
 # => :nil
 ```
@@ -565,9 +567,8 @@ nil.to_sym
 1. Fork this repo
 2. Write your tests
 3. Add your finisher
-4. Repeat steps 2 and 3 until badass
+4. Repeat steps 2 and 3 until you see a brilliant luster
 5. Submit a pull request
-6. Everyone kicks even more ass!
 
 ###### Got a good nerdy reference for our code samples?
 We'll take pull requests on those too. Bonus karma points if you apply the reference to the specs too.
