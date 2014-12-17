@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    finishing_moves (0.1.0)
+    finishing_moves (0.1.1)
 
 GEM
   remote: https://rubygems.org/

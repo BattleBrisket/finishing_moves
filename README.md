@@ -448,8 +448,6 @@ For consistency, we added matching methods to `Float` and `BigDecimal` that simp
 # => ArgumentError: Cannot get length: "1.2654377184388666e+21" is not an integer
 ```
 
----
-
 ### Typecasting *to* `Boolean`
 
 Boolean values are frequently represented as strings and integers in databases and file storage. So we always thought it was a little odd that Ruby lacked a boolean typecasting method, given the proliferation of `to_*` methods for `String`, `Symbol`, `Integer`, `Float`, `Hash`, etc.
@@ -531,7 +529,7 @@ nil.to_bool == false
 
 #### `TrueClass#to_bool` and `FalseClass#to_bool`
 
-They return what you expect, we added them simply for sake of consistency, in case your code calls `to_bool` on a variable of indeterminate type.
+They return what you expect, we added them for the sake of consistency, in case your code calls `to_bool` on a variable of indeterminate type.
 
 ```ruby
 true.to_bool
@@ -540,8 +538,6 @@ true.to_bool
 false.to_bool
 # => false
 ```
-
----
 
 ### Typecasting *from* `Boolean` and `Nil`
 
@@ -564,9 +560,7 @@ nil.to_sym
 # => :nil
 ```
 
-## Share your finishing moves!
-
-### Got an idea for another finisher?
+## Add your own finisher!
 
 1. Fork this repo
 2. Write your tests

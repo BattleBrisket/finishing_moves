@@ -12,8 +12,6 @@ Gem::Specification.new do |s|
   s.summary     = %q{Small, focused, incredibly useful methods added to core Ruby classes.}
   s.description = <<-EOF
     Ruby includes a huge amount of default awesomeness that tackles most common development challenges. But every now and then, you find yourself in a situation where an elaborate-yet-precise coding maneuver wins the day. Finishing Moves is a collection of methods designed to assist in those just-typical-enough-to-be-annoying scenarios.
-
-    In gamer terms, if standard Ruby methods are your default actions, finishing_moves would be mana-consuming techniques. Your cooldown spells. Your grenades (there's never enough grenades). In the right situation, they kick serious cyclomatic butt.
   EOF
   s.homepage    = "https://github.com/forgecrafted/finishing_moves"
   s.license     = "MIT"
