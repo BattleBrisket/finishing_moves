@@ -2,21 +2,27 @@
 
 ##### By the guys at [Forge Software](http://www.forgecrafted.com/)
 
-Ruby has a huge amount of default awesomeness that tackles most common development challenges. But every now and then, you find yourself in a situation where an *elaborate-yet-precise* coding maneuver wins the day. Finishing Moves is a collection of methods designed to assist in those just-typical-enough-to-be-annoying scenarios.
+Ruby includes a huge amount of default awesomeness that tackles most common development challenges. But every now and then, you find yourself in a situation where an *elaborate-yet-precise* coding maneuver wins the day. Finishing Moves is a collection of methods designed to assist in those just-typical-enough-to-be-annoying scenarios.
 
-In gamer terms, if standard Ruby methods are your default moves, `finishing_moves` would be your moves that consume mana. Your cooldown spells. Your grenades (there's never enough grenades). In the right situation, they kick serious cyclomatic butt.
+In gamer terms, if standard Ruby methods are your default moves, `finishing_moves` would be mana-consuming techniques. Your cooldown spells. Your grenades (there's never enough grenades). In the right situation, they kick serious cyclomatic butt.
 
 ## Development approach
 
-- **Never** override default Ruby behavior, only add functionality. No hacks.
+- **Never** override default Ruby behavior, only add functionality.
 - Follow the Unix philosophy of *"Do one job really well."*
 - Minimize assumptions within the method, e.g. avoid formatting output, mutating values, and long conditional logic flows.
 - Test all the things.
 
 ## Installation
 
+Gemfile
 ```
-(Gemification coming soon!)
+gem 'finishing_moves'
+```
+
+Command line
+```
+gem install 'finishing_moves'
 ```
 
 ## Current Finishers
@@ -167,8 +173,8 @@ CSV.generate do |csv|
   @records.each do |record|  # each record represents a single line in the CSV
     values = []
     csv_fields_in_order.each do |field|
-      # nil_chain ensures we respond with a pretty default value when the field is empty or invalid
       values << nil_chain('N/A') { record.send(field) }
+                # respond with a pretty value when the field is empty or invalid
     end
     csv << values
   end
@@ -204,9 +210,6 @@ var = nil_chain(Geomancer.reset_ley_lines) { summon_fel_beast[:step_3].scry }
 
 `nil_chain` is aliased to `chain` for more brevity, and `method_chain` for alternative clarity.
 
-
----
-
 #### `Object#bool_chain`
 
 This is the same logic under the hood as `nil_chain`, however we forcibly return a boolean `false` instead of `nil` if the chain breaks.
@@ -224,8 +227,6 @@ If you read about `nil_chain`'s custom return value, you know that you can do th
 nil_chain(false) { a.b.c.hello }
 # => false
 ```
-
----
 
 #### `Object#same_as`
 
@@ -283,8 +284,6 @@ user.same_as 'FACELESS_ONE'
 # => false
 ```
 
----
-
 #### `Object#class_exists?`
 
 > *I just want to know if [insert class name] has been defined!*
@@ -329,8 +328,6 @@ class_exists? :DefinitelyFakeClass
 # => false (at least it better be; if you actually use this name, I will find you...)
 ```
 
----
-
 #### `Object#not_nil?`
 
 Because that dangling `!` on the front of a call to `nil?` is just oh so not-ruby-chic.
@@ -343,8 +340,6 @@ nil.not_nil?
 ```
 
 There, much more legible. Now pass me my fedora and another PBR.
-
----
 
 ### Extensions to `Hash`
 
@@ -373,8 +368,6 @@ power_rangers.delete! :radiant_orchid
 #    It probably would've triggered if I included Kimberly
 ```
 
----
-
 #### `Hash#delete_each`
 Deletes all records in a hash matching the keys passed in as an array. Returns a hash of deleted entries. Silently ignores any keys which are not found.
 
@@ -397,8 +390,6 @@ mega_man_bosses
 # => { :wood_man => 4 }
 ```
 
----
-
 #### `Hash#delete_each!`
 
 Same logic as `delete_each`, but return the modified hash, and discard the deleted values.
@@ -418,8 +409,6 @@ mega_man_bosses.delete_each! :flash_man
 mega_man_bosses.delete_each! :crash_man, :quick_man
 # => { }
 ```
-
----
 
 ### `Fixnum#length` and `Bignum#length`
 
@@ -570,12 +559,10 @@ false.to_sym
 # => :false
 
 nil.to_i
-# => 0 (follows same rule as `NilClass#to_bool`)
+# => 0 (follows same logic as `NilClass#to_bool`)
 nil.to_sym
 # => :nil
 ```
-
----
 
 ## Share your finishing moves!
 
@@ -590,3 +577,16 @@ nil.to_sym
 
 ###### Got a good nerdy reference for our code samples?
 We'll take pull requests on those too. Bonus karma points if you apply the reference to the specs too.
+
+## Credits
+
+![forge software](http://www.forgecrafted.com/logo.png)
+
+Finishing Moves is maintained and funded by [Forge Software (forgecrafted.com)](http://www.forgecrafted.com)
+
+If you like our code, please give us a hollar if your company needs outside pro's who write damn-good code AND run servers at the same time!
+
+## License
+
+Finishing Moves is Copyright 20XX (that means "forever") Forge Software, LLC. It is free software, and may be
+redistributed under the terms specified in the LICENSE file.
