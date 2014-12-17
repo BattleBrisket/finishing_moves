@@ -20,21 +20,21 @@ describe Object do
     a = nil
     expect(method_chain{a.b.c.hello}).to eq nil
 
-    expect( chain(true) { bogus_variable } ).to eq true
-    expect( chain(false) { bogus_variable } ).to eq false
+    expect( chain(true) { bogus_variable } ).to equal true
+    expect( chain(false) { bogus_variable } ).to equal false
     expect( chain('gotcha!') { bogus_variable } ).to eq 'gotcha!'
     expect( chain('gotcha!') { params[:bogus_key] } ).to eq 'gotcha!'
     expect( chain('gotcha!') { params[:foo] } ).to eq 'bar'
   end
 
   it "#bool_chain" do
-    expect(bool_chain{bogus_variable}).to eq false
+    expect(bool_chain{bogus_variable}).to equal false
     var = true
-    expect(bool_chain{var}).to eq true
+    expect(bool_chain{var}).to equal true
     var = 'foo'
     expect(bool_chain{var}).to eq 'foo'
     result = bool_chain{ var.transmogrify }
-    expect(result).to eq false
+    expect(result).to equal false
   end
 
   it "#class_exists?" do

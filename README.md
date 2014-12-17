@@ -2,11 +2,9 @@
 
 ##### By the guys at [Forge Software](http://www.forgecrafted.com/)
 
-A collection of ultra-small, ultra-focused methods added to standard Ruby classes.
-
 Ruby has a huge amount of default awesomeness that tackles most common development challenges. But every now and then, you find yourself in a situation where an *elaborate-yet-precise* coding maneuver wins the day. Finishing Moves is a collection of methods designed to assist in those just-typical-enough-to-be-annoying scenarios.
 
-In gamer terms, if standard Ruby methods are your default moves, `finishing_moves` would be your moves that consume mana. Your cooldown spells. Your grenades (there's never enough grenades). In the right situation, they kick a serious amount of ass!
+In gamer terms, if standard Ruby methods are your default moves, `finishing_moves` would be your moves that consume mana. Your cooldown spells. Your grenades (there's never enough grenades). In the right situation, they kick serious cyclomatic butt.
 
 ## Development approach
 
@@ -58,7 +56,7 @@ nil_chain{ my_hash[:foo].do_stuff }
 # => result of my_hash[:foo].do_stuff, or nil
 ```
 
-More useful, but still pretty simple. Let's try it on a series of connected objects.
+Still pretty simple. Let's try it on a series of connected objects.
 
 ```ruby
 class A
@@ -89,7 +87,7 @@ a.b.c.hello
 # => "Hello, world!"
 ```
 
-If the presence of attribute `c` is conditional, we must check for a proper association between objects `b` and `c` before calling `hello`...
+Let's suppose the presence of attribute `c` is conditional. We must then check for a proper association between objects `b` and `c` before calling `hello`.
 
 ```ruby
 b.c = nil
@@ -101,14 +99,15 @@ a.b.c.hello unless b.c.nil? || b.c.empty?
 
 a.b = nil
 
-# Now it's really getting ugly. Imagine if we had a fourth association, or a fifth!
-# The patterns, man!
+# Now it's really getting ugly.
 if !a.b.nil? && !a.b.empty?
   a.b.c.hello unless b.c.nil? || b.c.empty?
 end
+
+# Imagine if we had a fourth association, or a fifth! The patterns, man!
 ```
 
-Or we can just skip all that conditional nonsense!
+Or we can just skip all that conditional nonsense.
 
 ```ruby
 nil_chain{ a.b.c.hello }
@@ -157,18 +156,18 @@ select_tag :date_field,
 # => Sets the selected option in the dropdown if the :date_field parameter exists
 ```
 
-##### Default return
+##### Custom return value
 
-You can change the value that `nil_chain` returns when it hits a `NoMethodError` or `NameError` exception. `nil_chain` accepts a single optional argument before the block to represent the return value. The default is `nil`, but you can set it to whatever you want.
+You can change the value that `nil_chain` returns when it catches a `NoMethodError` or `NameError` exception. `nil_chain` accepts a single optional argument before the block to represent the return value. The default is `nil`, but you can set it to whatever you want.
 
-We recently used this functionality in generating a CSV. Anywhere the outputted value would have been blank, we adjusted the return value to spit out 'N/A', a requirement for the client's use case.
+We recently used this functionality in generating a CSV report. The client's use case required us to spit out an `'N/A'` string anytime a proper field value was missing. `nil_chain` made the adjustment easy.
 
 ```ruby
 CSV.generate do |csv|
   @records.each do |record|  # each record represents a single line in the CSV
     values = []
     csv_fields_in_order.each do |field|
-      # nil_chain ensures we respond with a nice default value when the field is empty or invalid
+      # nil_chain ensures we respond with a pretty default value when the field is empty or invalid
       values << nil_chain('N/A') { record.send(field) }
     end
     csv << values
@@ -176,14 +175,15 @@ CSV.generate do |csv|
 end
 ```
 
-We find this handy when doing conditional stuff based on presence/absence of a key in a hash.
+We also find this handy when doing conditional stuff based on presence/absence of a key in a hash.
 
 ```ruby
 # without nil_chain
-if my_hash[:foo].nil?      # (by default, ruby returns nil when you request an unset key)
-  var = :default_value
-else
+if my_hash[:foo]
+  # (by default, ruby returns nil when you request an unset key)
   var = my_hash[:foo]
+else
+  var = :default_value
 end
 
 # with nil_chain, we get a nice one liner
@@ -202,7 +202,10 @@ var = nil_chain(Geomancer.reset_ley_lines) { summon_fel_beast[:step_3].scry }
 
 ##### Aliases
 
-`nil_chain` is aliased to `chain` for a little more brevity, and `method_chain` for alternative clarity.
+`nil_chain` is aliased to `chain` for more brevity, and `method_chain` for alternative clarity.
+
+
+---
 
 #### `Object#bool_chain`
 
@@ -215,20 +218,20 @@ bool_chain{ a.b.c.hello }
 # => false
 ```
 
-If you read about the default return, you know that you can do this explicitly with `nil_chain` too. It's just a little less to type.
+If you read about `nil_chain`'s custom return value, you know that you can do this explicitly too. This shortcut just saves some typing.
 
 ```ruby
 nil_chain(false) { a.b.c.hello }
 # => false
 ```
 
+---
+
 #### `Object#same_as`
 
-Comparison operator that normalizes both sides into strings, then runs them over `==`
+Comparison operator that normalizes both sides into strings, then runs them over `==`.
 
-We love working with symbols in our code, but symbol values become strings when they hit the database. This meant typecasting wherever new and existing data might collide. No more!
-
-This comparison will work on any class that has a `to_s` method defined on it.
+The comparison will work on any class that has a `to_s` method defined on it.
 
 ```ruby
 # All these comparisons will return true
@@ -247,12 +250,14 @@ Normal case-sensitivity rules apply.
 # => false
 
 :symbol.same_as 'SYMBOL'
-# => false
+# => still false
 ```
 
 Since this method is defined in Object, your own custom classes inherit it automatically, allowing you to compare literally anything at any time, without worrying about typecasting!
 
 **Make sure you define sane output for `to_s`** and you're all set.
+
+We love working with symbols in our code, but symbol values become strings when they hit the database. This meant typecasting wherever new and existing data might collide. No more!
 
 ```ruby
 class User
@@ -278,21 +283,7 @@ user.same_as 'FACELESS_ONE'
 # => false
 ```
 
-If you're a Rails user, you'll find this incredibly helpful when comparing nice neat symbol values to all the string garbage coming out of the database, or the `params` hash.
-
-```ruby
-user.role = :admin
-user.save!
-
-# some time and code passes...
-
-if user.role.same_as :admin
-  # Do awesome godly admin stuff
-  # Yes, I know an enum would've worked better. It's SAMPLE code, you dork.
-end
-```
-
-It's not doing much for code logic, but we find it helpful when doing in-code searches, since we can look for a specific symbol, and don't have to worry about missing a reference because it was a string instead.
+---
 
 #### `Object#class_exists?`
 
@@ -303,9 +294,13 @@ It's not doing much for code logic, but we find it helpful when doing in-code se
 Sure, Ruby has the `defined?` method, but the output is less than helpful when you're doing conditional flows.
 
 ```ruby
-defined?(SuperSaiyan) # => nil
+defined?(SuperSaiyan)
+# => nil
+
 require 'super_saiyan'
-defined?(SuperSaiyan) # => 'constant'
+
+defined?(SuperSaiyan)
+# => 'constant'
 
 if defined?(SuperSaiyan) == 'constant'
   # Power up to level 4
@@ -319,7 +314,7 @@ end
 class_exists? :Symbol
 # => true
 class_exists? :Symbology
-# => false, unless your Dan Brown
+# => false, unless you're Dan Brown
 class_exists? :Rails
 # => true in a Rails app
 ```
@@ -334,6 +329,8 @@ class_exists? :DefinitelyFakeClass
 # => false (at least it better be; if you actually use this name, I will find you...)
 ```
 
+---
+
 #### `Object#not_nil?`
 
 Because that dangling `!` on the front of a call to `nil?` is just oh so not-ruby-chic.
@@ -347,6 +344,7 @@ nil.not_nil?
 
 There, much more legible. Now pass me my fedora and another PBR.
 
+---
 
 ### Extensions to `Hash`
 
@@ -372,8 +370,10 @@ If the key is not found, the hash is returned unaltered.
 ```ruby
 power_rangers.delete! :radiant_orchid
 # => { :red => 'Jason Lee Scott', :blue => 'Billy Cranston' }
-#    although it probably woulda triggered if I included Kimberly
+#    It probably would've triggered if I included Kimberly
 ```
+
+---
 
 #### `Hash#delete_each`
 Deletes all records in a hash matching the keys passed in as an array. Returns a hash of deleted entries. Silently ignores any keys which are not found.
@@ -397,6 +397,8 @@ mega_man_bosses
 # => { :wood_man => 4 }
 ```
 
+---
+
 #### `Hash#delete_each!`
 
 Same logic as `delete_each`, but return the modified hash, and discard the deleted values.
@@ -417,13 +419,163 @@ mega_man_bosses.delete_each! :crash_man, :quick_man
 # => { }
 ```
 
-### Numerical length
+---
 
-Coming soon!
+### `Fixnum#length` and `Bignum#length`
 
-### Expanded boolean typecasting
+Ruby doesn't provide a native way to see how many digits are in an integer, but that's exactly what we worry about anytime out database `INT` lengths collide with Ruby `Fixnum` or `Bignum` values.
 
-Coming soon!
+```ruby
+1.length
+# => 1
+9.length
+# => 1
+90.length
+# => 2
+900.length
+# => 3
+9000.length
+# => 4
+9001.length
+# => OVER NINE THOUSAAAAAAND (also 4)
+
+12356469787881584554556.class.name
+# => "Bignum"
+12356469787881584554556.length
+# => 23
+```
+
+For consistency, we added matching methods to `Float` and `BigDecimal` that simply raise an `ArgumentError`.
+
+```ruby
+12356469.987.class.name
+# => "Float"
+12356469.987.length
+# => ArgumentError: Cannot get length: "12356469.987" is not an integer
+
+1265437718438866624512.123.class.name
+# => "Float" (it's really BigDecimal, trust us)
+1265437718438866624512.123.length
+# => ArgumentError: Cannot get length: "1.2654377184388666e+21" is not an integer
+```
+
+---
+
+### Typecasting *to* `Boolean`
+
+Boolean values are frequently represented as strings and integers in databases and file storage. So we always thought it was a little odd that Ruby lacked a boolean typecasting method, given the proliferation of `to_*` methods for `String`, `Symbol`, `Integer`, `Float`, `Hash`, etc.
+
+So we made one for strings and integers.
+
+#### `String#to_bool`
+
+Strings get analyzed and return true/false for a small set of potential values. These comparisons are case-insensitive.
+
+```ruby
+['1', 't', 'true', 'on', 'y', 'yes'].each do |true_string|
+  true_string.to_bool
+  # => true
+
+  true_string.upcase.to_bool
+  # => true
+end
+
+['0', 'f', 'false', 'off', 'n', 'no'].each do |false_string|
+  false_string.to_bool
+  # => false
+
+  false_string.upcase.to_bool
+  # => false
+end
+
+# empty strings and strings with only spaces evaluate to false
+["", " ", "  ", "                "].each do |empty_string|
+  empty_string.to_bool
+  # => false
+end
+```
+
+A string with anything other than these matching values will throw an error.
+
+```ruby
+["foo", "tru", "trueish", "druish", "000"].each do |bad_string|
+  bad_string.to_bool
+  # => ArgumentError: invalid value for Boolean
+end
+```
+
+#### `Fixnum#to_bool`
+
+A zero is false, a one is true. That's it. Everything else throws `ArgumentError`
+
+```ruby
+0.to_bool
+# => false
+
+1.to_bool
+# => true
+
+2.to_bool
+# => ArgumentError: invalid value for Boolean: "2"
+
+-1.to_bool
+# => ArgumentError: invalid value for Boolean: "-1"
+
+8675309.to_bool
+# => ArgumentError: invalid value for Boolean: "8675309"
+```
+
+#### `NilClass#to_bool`
+
+A nil value typecasted to a boolean is false.
+
+```ruby
+nil == false
+# => false
+
+nil.to_bool
+# => false
+
+nil.to_bool == false
+# => true
+```
+
+#### `TrueClass#to_bool` and `FalseClass#to_bool`
+
+They return what you expect, we added them simply for sake of consistency, in case your code calls `to_bool` on a variable of indeterminate type.
+
+```ruby
+true.to_bool
+# => true
+
+false.to_bool
+# => false
+```
+
+---
+
+### Typecasting *from* `Boolean` and `Nil`
+
+Complementing the methods to typecast boolean values coming out of data storage, we have methods to convert booleans and `nil` into string and symbol representations.
+
+```ruby
+true.to_i
+# => 1
+true.to_sym
+# => :true
+
+false.to_i
+# => 0
+false.to_sym
+# => :false
+
+nil.to_i
+# => 0 (follows same rule as `NilClass#to_bool`)
+nil.to_sym
+# => :nil
+```
+
+---
 
 ## Share your finishing moves!
 
@@ -436,4 +588,5 @@ Coming soon!
 5. Submit a pull request
 6. Everyone kicks even more ass!
 
-Got a good nerd reference for our code samples? We'll take pull requests on those too.
+###### Got a good nerdy reference for our code samples?
+We'll take pull requests on those too. Bonus karma points if you apply the reference to the specs too.

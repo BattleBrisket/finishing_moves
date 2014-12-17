@@ -17,14 +17,17 @@ end
 class TrueClass
   def to_bool; self; end
   def to_i; 1; end
+  def to_sym; :true; end
 end
 
 class FalseClass
   def to_bool; self; end
   def to_i; 0; end
+  def to_sym; :false; end
 end
 
 class NilClass
   def to_bool; false; end
   def to_i; 0; end
+  def to_sym; :nil; end
 end

@@ -13,6 +13,11 @@ describe "Boolean typecasting" do
     expect("".to_bool).to eq false
     expect(" ".to_bool).to eq false
     expect("  ".to_bool).to eq false
+
+    expect{ "foo".to_bool }.to raise_error(ArgumentError)
+    expect{ "tru".to_bool }.to raise_error(ArgumentError)
+    expect{ "trueish".to_bool }.to raise_error(ArgumentError)
+    expect{ "000".to_bool }.to raise_error(ArgumentError)
   end
 
   it "Fixnum#to_bool" do
@@ -32,6 +37,9 @@ describe "Boolean typecasting" do
     it "#to_i" do
       expect(true.to_i).to eq 1
     end
+    it "#to_sym" do
+      expect(true.to_sym).to eq :true
+    end
   end
 
   context "FalseClass" do
@@ -41,6 +49,9 @@ describe "Boolean typecasting" do
     it "#to_i" do
       expect(false.to_i).to eq 0
     end
+    it "#to_sym" do
+      expect(false.to_sym).to eq :false
+    end
   end
 
   context "NilClass" do
@@ -49,6 +60,9 @@ describe "Boolean typecasting" do
     end
     it "#to_i" do
       expect(nil.to_i).to eq 0
+    end
+    it "#to_sym" do
+      expect(nil.to_sym).to eq :nil
     end
   end
 
