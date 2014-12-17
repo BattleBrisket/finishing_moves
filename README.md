@@ -25,6 +25,8 @@ Command line
 gem install 'finishing_moves'
 ```
 
+[Here's the gem link.](https://rubygems.org/gems/finishing_moves)
+
 ## Current Finishers
 
 ### Extensions to `Object`
@@ -487,7 +489,7 @@ end
 A string with anything other than these matching values will throw an error.
 
 ```ruby
-["foo", "tru", "trueish", "druish", "00", 000"].each do |bad_string|
+["foo", "tru", "trueish", "druish", "00", "000"].each do |bad_string|
   bad_string.to_bool
   # => ArgumentError: invalid value for Boolean
 end
