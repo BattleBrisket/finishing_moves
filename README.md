@@ -25,7 +25,7 @@ Command line
 gem install 'finishing_moves'
 ```
 
-[Here's the gem link.](https://rubygems.org/gems/finishing_moves)
+[Here's the gem link](https://rubygems.org/gems/finishing_moves), if you like looking at that stuff.
 
 ## Current Finishers
 
@@ -341,7 +341,7 @@ nil.not_nil?
 # => true
 ```
 
-There, much more legible. Now pass me my fedora and another PBR.
+Much better. Now pass me another PBR and my fedora.
 
 ### Extensions to `Hash`
 
@@ -533,7 +533,7 @@ nil.to_bool == false
 
 #### `TrueClass#to_bool` and `FalseClass#to_bool`
 
-They return what you expect, we added them for the sake of consistency, in case your code calls `to_bool` on a variable of indeterminate type.
+In case your code calls `to_bool` on a variable of indeterminate type, they return what you expect.
 
 ```ruby
 true.to_bool

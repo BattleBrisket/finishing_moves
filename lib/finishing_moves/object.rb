@@ -10,7 +10,6 @@ class Object
       return ret_val
     end
   end
-  alias_method :chain, :nil_chain
   alias_method :method_chain, :nil_chain
 
   def bool_chain(&block)
@@ -38,5 +37,11 @@ class Object
     end
   end
 
+  def cascade(&block)
+    loop do
+      yield
+      break
+    end
+  end
 
 end
