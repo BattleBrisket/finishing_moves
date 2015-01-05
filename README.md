@@ -348,13 +348,13 @@ This method is designed to facilitate a set of consecutive, mutating actions whi
 2. Set `[values]` to a default starting state.
 3. If `[first requirement]` is not met, bail out.
 4. Perform steps that require `[first requirement]`, possibly mutating `[values]`.
-5. If [next requirement] is not met, bail out.
-6. Perform steps that require `[first requirement]`, possibly mutating `[values]` again.
+5. If `[next requirement]` is not met, bail out.
+6. Perform steps that require `[next requirement]`, possibly mutating `[values]` again.
 7. (Repeat for as many steps as necessary.)
 8. End stepwise process.
 9. Perform follow-up action(s) based on resulting `[values]`.
 
-A common real-world scenario would be a login approval process. Here's a contrived Rails-y sample:
+Here's a contrived Rails-y sample of a login approval process:
 
 ```ruby
 cascade do
@@ -389,20 +389,22 @@ You should absolutely use methods if it makes sense. The example above is probab
 
 `cascade` is ideal for small sets of logic, where you're *already* inside a method and further breakout is just silly.
 
-To illustrate, here's an actual sample from a real project:
+To illustrate, here's an real-world sample from one of our projects:
 
 ```ruby
 class ReportsController
 
   before_action :define_search_params, only: :run_report
 
+  # ...
+
   def define_search_params
     # Set the report type
     # defaults to medical, skip if building a dismissals report
     cascade do
-      @part = :medical
-      break if @report == :dismissals
-      @part = params[:part].to_sym if params[:part].to_sym.in? APP.enum.part.to_hash
+      @report_type = :medical
+      break if @report_type == :dismissals
+      @report_type = params[:report_type] if params[:report_type].in? report_types_hash
     end
 
     # ...
@@ -411,7 +413,7 @@ class ReportsController
 end
 ```
 
-It's overkill to break that bit of logic out into another method. We could have alternatively used nested `if` statements, but the vertically aligned codes reads better, in my opinion.
+It's overkill to break that bit of logic out into another method. Alternatively, we could have used nested `if` statements, but we find the vertically aligned codes reads better, and has the added benefit of making  top-to-bottom "readable" sense.
 
 
 ### Extensions to `Hash`
