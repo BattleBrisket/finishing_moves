@@ -387,9 +387,9 @@ We're using the [`loop`](http://www.ruby-doc.org/core-2.1.5/Kernel.html#method-i
 
 You should absolutely use methods if it makes sense. The example above is probably best handled by its own method, given it's complexity and the likelihood that you'll want to run tests on it.
 
-`cascade` is ideal for small sets of logic, where you're *already* inside a method and further breakout is just silly.
+`cascade` is ideal for small sets of logic, when you've *already* broken out your logic into a method and further breakout is just silly.
 
-To illustrate, here's an real-world sample from one of our projects:
+To illustrate, here's a small real-world sample from one of our projects:
 
 ```ruby
 class ReportsController < ApplicationController
@@ -401,24 +401,28 @@ class ReportsController < ApplicationController
   def define_search_params
     @report = params[:report].to_sym
 
-    # Set the report category (medical or drug)
-    # Defaults to medical
-    # Dismissal reports are always medical (so we use the default)
+    # Set the report category, :medical or :drug
+    #   1. An :ongoing report is always in the :drug category
+    #   2. Otherwise default to :medical
+    #   3. :dismissal reports are always :medical (so we use the default)
+    #   4. Finally just use the params value, if it matches an allowable value
     cascade do
+      if @report == :ongoing
+        @category = :drug
+        break
+      end
       @category = :medical
       break if @report == :dismissals
-      @category = params[:category] if params[:category].in? categories_hash
+      @category = params[:category] if params[:category].in? allowable_categories
     end
-
-    # ...
   end
 
 end
 ```
 
-It's overkill to break that bit of logic for `@category` out into another method.
+It's overkill to break that bit of logic for the value of `@category` out into another method.
 
-Alternatively, we could have used nested `if` statements, but we find the vertically aligned codes reads better, and has the added benefit of making  top-to-bottom "readable" sense.
+We could have alternatively used nested `if` statements, but we find the vertically aligned codes reads better, especially as the list of conditionals goes beyond two. This pattern also has the added benefit of making top-to-bottom "readable" sense.
 
 
 ### Extensions to `Hash`
