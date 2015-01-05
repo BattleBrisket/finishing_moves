@@ -383,7 +383,7 @@ end
 
 We're using the [`loop`](http://www.ruby-doc.org/core-2.1.5/Kernel.html#method-i-loop) construct under the hood, which is what allows us to use the `break` statement as outlined in the example.
 
-###### *"Why would I use this when I can just shove all that logic in a method and issue `return`'s instead of `break`'s?"*
+###### *"Why not just shove the logic into a method and use `return` instead of `break`?"*
 
 You should absolutely use methods if it makes sense. The example above is probably best handled by its own method, given it's complexity and the likelihood that you'll want to run tests on it.
 
@@ -405,24 +405,13 @@ class ReportsController
       @part = params[:part].to_sym if params[:part].to_sym.in? APP.enum.part.to_hash
     end
 
-    # set date range, defaults to year-to-date
-    if params[:start_date].blank?
-      @start_date = Date.new(Date.today.year, 1, 1)
-    else
-      @start_date = Date.parse(params[:start_date])
-    end
-
-    if params[:end_date].blank?
-      @end_date = Date.today
-    else
-      @end_date = Date.parse(params[:end_date])
-    end
+    # ...
   end
 
 end
 ```
 
-It's overkill to break that first bit of logic out into another method. We could have alternatively used nested `if` statements, but the vertically aligned codes reads better, in my opinion.
+It's overkill to break that bit of logic out into another method. We could have alternatively used nested `if` statements, but the vertically aligned codes reads better, in my opinion.
 
 
 ### Extensions to `Hash`
