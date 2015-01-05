@@ -392,19 +392,22 @@ You should absolutely use methods if it makes sense. The example above is probab
 To illustrate, here's an real-world sample from one of our projects:
 
 ```ruby
-class ReportsController
+class ReportsController < ApplicationController
 
   before_action :define_search_params, only: :run_report
 
   # ...
 
   def define_search_params
-    # Set the report type
-    # defaults to medical, skip if building a dismissals report
+    @report = params[:report].to_sym
+
+    # Set the report category (medical or drug)
+    # Defaults to medical
+    # Dismissal reports are always medical (so we use the default)
     cascade do
-      @report_type = :medical
-      break if @report_type == :dismissals
-      @report_type = params[:report_type] if params[:report_type].in? report_types_hash
+      @category = :medical
+      break if @report == :dismissals
+      @category = params[:category] if params[:category].in? categories_hash
     end
 
     # ...
@@ -413,7 +416,9 @@ class ReportsController
 end
 ```
 
-It's overkill to break that bit of logic out into another method. Alternatively, we could have used nested `if` statements, but we find the vertically aligned codes reads better, and has the added benefit of making  top-to-bottom "readable" sense.
+It's overkill to break that bit of logic for `@category` out into another method.
+
+Alternatively, we could have used nested `if` statements, but we find the vertically aligned codes reads better, and has the added benefit of making  top-to-bottom "readable" sense.
 
 
 ### Extensions to `Hash`
