@@ -195,7 +195,6 @@ else
 end
 
 # with nil_chain, we get a nice one liner
-
 var = nil_chain(:default_value) { my_hash[:foo] }
 
 # What if the default value is coming from somewhere else?
@@ -208,9 +207,7 @@ var = nil_chain(Geomancer.reset_ley_lines) { summon_fel_beast[:step_3].scry }
 #    Geomancer.reset_ley_lines if it's not
 ```
 
-##### Aliases
-
-`nil_chain` is aliased to `chain` for more brevity, and `method_chain` for alternative clarity.
+`nil_chain` is aliased to `method_chain` for alternative clarity.
 
 #### `Object#bool_chain`
 
@@ -327,7 +324,7 @@ class_exists? DefinitelyFakeClass
 # => NameError: uninitialized constant DefinitelyFakeClass
 
 class_exists? :DefinitelyFakeClass
-# => false (at least it better be; if you actually use this name, I will find you...)
+# => false (at least it better be; if you *actually* use this name, I will find you...)
 ```
 
 #### `Object#not_nil?`
@@ -342,6 +339,91 @@ nil.not_nil?
 ```
 
 Much better. Now pass me another PBR and my fedora.
+
+#### `Object#cascade`
+
+This method is designed to facilitate a set of consecutive, mutating actions which may be interrupted at multiple arbitrary points. In pseudo-code, the logic we're trying to write looks like this:
+
+1. Begin stepwise process.
+2. Set `[values]` to a default starting state.
+3. If `[first requirement]` is not met, bail out.
+4. Perform steps that require `[first requirement]`, possibly mutating `[values]`.
+5. If [next requirement] is not met, bail out.
+6. Perform steps that require `[first requirement]`, possibly mutating `[values]` again.
+7. (Repeat for as many steps as necessary.)
+8. End stepwise process.
+9. Perform follow-up action(s) based on resulting `[values]`.
+
+A common real-world scenario would be a login approval process. Here's a contrived Rails-y sample:
+
+```ruby
+cascade do
+  logged_in = false
+  # not doing anything if they didn't provide creds
+  break if params['username'].nil? || params['password'].nil?
+  # ok, got creds, do they exist?
+  user = User.find_by username: params['username']
+  # does the user exist?
+  break if user.nil?
+  # does the password match?
+  break if user.validate_password(params['password'])
+  # maybe the user account is banned?
+  break if user.banned?
+  # everything looks good, let's do it
+  login user
+  logged_in = true
+end
+
+if logged_in
+  # additional follow-up steps for authenticated users
+else
+  # display error message, log the failed attempt, whatever
+end
+```
+
+We're using the [`loop`](http://www.ruby-doc.org/core-2.1.5/Kernel.html#method-i-loop) construct under the hood, which is what allows us to use the `break` statement as outlined in the example.
+
+###### *"Why would I use this when I can just shove all that logic in a method and issue `return`'s instead of `break`'s?"*
+
+You should absolutely use methods if it makes sense. The example above is probably best handled by its own method, given it's complexity and the likelihood that you'll want to run tests on it.
+
+`cascade` is ideal for small sets of logic, where you're *already* inside a method and further breakout is just silly.
+
+To illustrate, here's an actual sample from a real project:
+
+```ruby
+class ReportsController
+
+  before_action :define_search_params, only: :run_report
+
+  def define_search_params
+    # Set the report type
+    # defaults to medical, skip if building a dismissals report
+    cascade do
+      @part = :medical
+      break if @report == :dismissals
+      @part = params[:part].to_sym if params[:part].to_sym.in? APP.enum.part.to_hash
+    end
+
+    # set date range, defaults to year-to-date
+    if params[:start_date].blank?
+      @start_date = Date.new(Date.today.year, 1, 1)
+    else
+      @start_date = Date.parse(params[:start_date])
+    end
+
+    if params[:end_date].blank?
+      @end_date = Date.today
+    else
+      @end_date = Date.parse(params[:end_date])
+    end
+  end
+
+end
+```
+
+It's overkill to break that first bit of logic out into another method. We could have alternatively used nested `if` statements, but the vertically aligned codes reads better, in my opinion.
+
 
 ### Extensions to `Hash`
 
@@ -445,7 +527,7 @@ For consistency, we added matching methods to `Float` and `BigDecimal` that simp
 # => ArgumentError: Cannot get length: "12356469.987" is not an integer
 
 1265437718438866624512.123.class.name
-# => "Float" (it's really BigDecimal, trust us)
+# => "Float" (it's really BigDecimal, trust me)
 1265437718438866624512.123.length
 # => ArgumentError: Cannot get length: "1.2654377184388666e+21" is not an integer
 ```
