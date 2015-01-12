@@ -62,7 +62,7 @@ echo 'gem: --no-document'                   >> $USER_HOME/.gemrc
 
 # Install Ruby for $USER_NAME.
 install_ruby $DEFAULT_RUBY
-echo $DEFAULT_RUBY > $USER_HOME/.ruby-version
+rbenv system $DEFAULT_RUBY
 
 ###############################################################################
 # EDIT HERE!
