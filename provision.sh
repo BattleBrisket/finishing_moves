@@ -14,13 +14,6 @@ as_user() {
   su -l $USER_NAME -c "$*"
 }
 
-# Install the requested version of Ruby, with Bundler.
-install_ruby() {
-  as_user "rbenv install -s $1"
-  as_user "RBENV_VERSION=$1 gem install bundler"
-  as_user "rbenv rehash"
-}
-
 ###############################################################################
 # Base System
 ###############################################################################
@@ -60,12 +53,12 @@ echo 'eval "$(rbenv init -)"'               >> $USER_HOME/.bashrc
 echo 'cd /vagrant'                          >> $USER_HOME/.bashrc
 echo 'gem: --no-document'                   >> $USER_HOME/.gemrc
 
-# Install Ruby for $USER_NAME.
-install_ruby $DEFAULT_RUBY
-rbenv system $DEFAULT_RUBY
-
-###############################################################################
-# EDIT HERE!
-# Install any Rubies (other than $DEFAULT_RUBY) required for individual apps.
-###############################################################################
-# e.g. `install_ruby 2.1.4`
+su $USER_NAME
+########################
+#
+# ALL STUFF FOR USER VAGRANT HERE
+#
+rbenv install -s $DEFAULT_RUBY
+rbenv global $DEFAULT_RUBY
+rbenv rehash
+gem install bundler whiskey_disk
