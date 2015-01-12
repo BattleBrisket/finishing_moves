@@ -23,15 +23,3 @@ end
 class DateTime
   include FinishingMovesFiscalLogic
 end
-
-
-# also what a reverse_map method?
-# https://www.ruby-forum.com/topic/110660
-# http://www.ruby-doc.org/core-2.2.0/Array.html#method-i-reverse_each
-# http://stackoverflow.com/questions/2070574/is-there-a-reason-that-we-cannot-iterate-on-reverse-range-in-ruby#2070587
-#
-
-# sorting a hash in place by key
-# http://www.rubyinside.com/how-to/ruby-sort-hash
-# http://www.informit.com/articles/article.aspx?p=1244471&seqNum=9
-# http://stackoverflow.com/questions/2540435/how-to-sort-a-ruby-hash-by-number-value

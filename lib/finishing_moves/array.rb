@@ -35,4 +35,9 @@ class Array
   alias_method :use_as_keys_for_hash, :to_hash_as_keys
   alias_method :use_as_keys, :to_hash_as_keys
 
+  # What about a reverse_map method?
+  # https://www.ruby-forum.com/topic/110660
+  # http://www.ruby-doc.org/core-2.2.0/Array.html#method-i-reverse_each
+  # http://stackoverflow.com/questions/2070574/is-there-a-reason-that-we-cannot-iterate-on-reverse-range-in-ruby#2070587
+
 end

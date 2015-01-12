@@ -7,23 +7,13 @@ class String
   end
 
   def keyify
-    lowercase
-    replace spaces with underscore
-    remove non-alphas
-    ensure starts with letter
-    make symbol
+    # Throw error if string doesn't contain a letter
+    # lowercase
+    # replace non-alpha numerics /^[a-z0-9]/ with underscore
+    # Strip leading number(s)
+    # Strip leading underscore(s)
+    # combine multiple concurrent underscores
+    # make symbol
   end
-
-  def pathify
-  end
-
-  def depathify
-  end
-
-  # http://stackoverflow.com/questions/3574028/how-do-i-convert-a-string-text-into-a-class-name
-  # # Attempt to convert a string (usually from params) into an ActiveRecord model name
-  # def depathify(str)
-  #   str.tr('-', '_').classify
-  # end
 
 end
