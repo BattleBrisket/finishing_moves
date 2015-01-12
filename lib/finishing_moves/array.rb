@@ -13,4 +13,9 @@ class Array
     Hash[self.map { |key| [key, default_value] } ]
   end
 
+  # What about a reverse_map method?
+  # https://www.ruby-forum.com/topic/110660
+  # http://www.ruby-doc.org/core-2.2.0/Array.html#method-i-reverse_each
+  # http://stackoverflow.com/questions/2070574/is-there-a-reason-that-we-cannot-iterate-on-reverse-range-in-ruby#2070587
+
 end

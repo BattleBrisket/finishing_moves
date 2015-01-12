@@ -44,24 +44,4 @@ class Object
     end
   end
 
-  # module Forge::ActiveRecordExtensions
-  #   extend ActiveSupport::Concern
-  #   # Convert a class name into a URL-friendly string
-  #   # Use depathify() in the controller to convert the value back
-  #   def pathify
-  #     self.class.pathify_string self.class.name
-  #   end
-  #   def pathify_string(str)
-  #     self.class.pathify_string(str)
-  #   end
-  #   module ClassMethods
-  #     def pathify
-  #       pathify_string self.name
-  #     end
-  #     def pathify_string(str)
-  #       str.underscore.gsub(/[-_\s]+/, '-').pluralize
-  #     end
-  #   end
-  # end
-
 end
