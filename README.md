@@ -288,7 +288,7 @@ class_exists? :DefinitelyFakeClass
 # => false (at least it better be; if you *actually* use this name, I will find you...)
 ```
 
-#### `Object#cascade`
+#### `Kernel#cascade`
 
 This method is designed to facilitate a set of **consecutive, mutating actions** which may be interrupted at multiple arbitrary points. In pseudo-code, the logic we're trying to write looks like this:
 
