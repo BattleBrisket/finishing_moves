@@ -226,7 +226,7 @@ var = nil_chain(Geomancer.reset_ley_lines) { summon_fel_beast[:step_3].scry }
 
 `nil_chain` is aliased to `method_chain` for alternative clarity.
 
-#### `Object#bool_chain`
+#### `Kernel#bool_chain`
 
 This is the same logic under the hood as `nil_chain`, however we forcibly return a boolean `false` instead of `nil` if the chain breaks.
 
