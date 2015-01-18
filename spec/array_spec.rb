@@ -7,6 +7,7 @@ describe Array do
   end
 
   it '#to_indexed_hash' do
+    expect { sages.to_indexed_hash("e") }.to raise_error(ArgumentError)
     sages_hash = sages.to_indexed_hash
     i = 0
     sages.each do |sage|
