@@ -29,12 +29,12 @@ gem install 'finishing_moves'
 
 ## List of Methods
 
-- [`Object#nil_chain`](#objectnil_chain)
-- [`Object#bool_chain`](#objectbool_chain)
+- [`Kernel#nil_chain`](#kernelnil_chain)
+- [`Kernel#bool_chain`](#kernelbool_chain)
+- [`Kernel#class_exists?`](#kernelclass_exists)
+- [`Kernel#cascade`](#kernelcascade)
 - [`Object#same_as`](#objectsame_as)
-- [`Object#class_exists?`](#objectclass_exists)
 - [`Object#not_nil?`](#objectnot_nil)
-- [`Object#cascade`](#objectcascade)
 - [`Hash#delete!`](#hashdelete)
 - [`Hash#delete_each`](#hashdelete_each)
 - [`Hash#delete_each!`](#hashdelete_each-1)
@@ -46,9 +46,9 @@ gem install 'finishing_moves'
   - [`TrueClass#to_bool` and `FalseClass#to_bool`](#trueclassto_bool-and-falseclassto_bool)
 - [Typecasting *from* `Boolean` and `Nil`](#typecasting-from-boolean-and-nil)
 
-### Extensions to `Object`
+### Extensions to `Kernel`
 
-#### `Object#nil_chain`
+#### `Kernel#nil_chain`
 Arguably the sharpest knife in the block, `#nil_chain` allows you to write elaborate method chains without fear of tripping over `NoMethodError` and `NameError` exceptions when something in the chain throws out a nil value.
 
 ##### Examples
@@ -226,7 +226,7 @@ var = nil_chain(Geomancer.reset_ley_lines) { summon_fel_beast[:step_3].scry }
 
 `nil_chain` is aliased to `method_chain` for alternative clarity.
 
-#### `Object#bool_chain`
+#### `Kernel#bool_chain`
 
 This is the same logic under the hood as `nil_chain`, however we forcibly return a boolean `false` instead of `nil` if the chain breaks.
 
@@ -244,63 +244,7 @@ nil_chain(false) { a.b.c.hello }
 # => false
 ```
 
-#### `Object#same_as`
-
-Comparison operator that normalizes both sides into strings, then runs them over `==`.
-
-The comparison will work on any class that has a `to_s` method defined on it.
-
-```ruby
-# All these comparisons will return true
-
-:foobar.same_as 'foobar'
-'foobar'.same_as :foobar
-'1'.same_as 1
-2.same_as '2'
-3.same_as 3
-```
-
-Normal case-sensitivity rules apply.
-
-```ruby
-:symbol.same_as :SYMBOL
-# => false
-
-:symbol.same_as 'SYMBOL'
-# => still false
-```
-
-Since this method is defined in Object, your own custom classes inherit it automatically, allowing you to compare literally anything at any time, without worrying about typecasting!
-
-**Make sure you define sane output for `to_s`** and you're all set.
-
-We love working with symbols in our code, but symbol values become strings when they hit the database. This meant typecasting wherever new and existing data might collide. No more!
-
-```ruby
-class User
-  attr_writer :handle
-
-  def handle
-    @handle || "faceless_one"
-  end
-
-  def to_s
-    handle.to_s
-  end
-end
-
-user = User.new
-:faceless_one.same_as user
-# => true
-user.same_as :faceless_one
-# => true
-user.same_as 'faceless_one'
-# => true
-user.same_as 'FACELESS_ONE'
-# => false
-```
-
-#### `Object#class_exists?`
+#### `Kernel#class_exists?`
 
 > *I just want to know if [insert class name] has been defined!*
 >
@@ -344,20 +288,7 @@ class_exists? :DefinitelyFakeClass
 # => false (at least it better be; if you *actually* use this name, I will find you...)
 ```
 
-#### `Object#not_nil?`
-
-Because that dangling `!` on the front of a call to `nil?` is just oh so not-ruby-chic.
-
-```ruby
-nil.not_nil?
-# => false
-'foobar'.not_nil?
-# => true
-```
-
-Much better. Now pass me another PBR and my fedora.
-
-#### `Object#cascade`
+#### `Kernel#cascade`
 
 This method is designed to facilitate a set of **consecutive, mutating actions** which may be interrupted at multiple arbitrary points. In pseudo-code, the logic we're trying to write looks like this:
 
@@ -441,6 +372,76 @@ It's overkill to break that bit of logic for the value of `@category` out into a
 
 We could have alternatively used nested `if` statements, but we find the vertically aligned codes reads better, especially as the list of conditionals goes beyond two. This pattern also has the added benefit of making top-to-bottom "readable" sense.
 
+### Extensions to `Object`
+
+#### `Object#same_as`
+
+Comparison operator that normalizes both sides into strings, then runs them over `==`.
+
+The comparison will work on any class that has a `to_s` method defined on it.
+
+```ruby
+# All these comparisons will return true
+
+:foobar.same_as 'foobar'
+'foobar'.same_as :foobar
+'1'.same_as 1
+2.same_as '2'
+3.same_as 3
+```
+
+Normal case-sensitivity rules apply.
+
+```ruby
+:symbol.same_as :SYMBOL
+# => false
+
+:symbol.same_as 'SYMBOL'
+# => still false
+```
+
+Since this method is defined in Object, your own custom classes inherit it automatically, allowing you to compare literally anything at any time, without worrying about typecasting!
+
+**Make sure you define sane output for `to_s`** and you're all set.
+
+We love working with symbols in our code, but symbol values become strings when they hit the database. This meant typecasting wherever new and existing data might collide. No more!
+
+```ruby
+class User
+  attr_writer :handle
+
+  def handle
+    @handle || "faceless_one"
+  end
+
+  def to_s
+    handle.to_s
+  end
+end
+
+user = User.new
+:faceless_one.same_as user
+# => true
+user.same_as :faceless_one
+# => true
+user.same_as 'faceless_one'
+# => true
+user.same_as 'FACELESS_ONE'
+# => false
+```
+
+#### `Object#not_nil?`
+
+Because that dangling `!` on the front of a call to `nil?` is just oh so not-ruby-chic.
+
+```ruby
+nil.not_nil?
+# => false
+'foobar'.not_nil?
+# => true
+```
+
+Much better. Now pass me another PBR and my fedora.
 
 ### Extensions to `Hash`
 
