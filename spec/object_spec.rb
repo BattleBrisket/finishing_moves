@@ -79,16 +79,6 @@ describe Object do
     expect(test_cascade('foobar')).to eq 4
   end
 
-  it "#keyify" do
-    expect(SizedQueue.keyify).to eq :sized_queue
-    expect('FooBarBaz'.keyify).to eq :foo_bar_baz
-    expect(:FooBarBaz.keyify).to eq :foo_bar_baz
-    expect('(Foo*&Bar!Baz?'.keyify).to eq :foo_bar_baz
-    expect('!@#$Foo0987'.keyify).to eq :foo
-    expect{ '!@#$%^'.keyify }.to raise_error(ArgumentError)
-    expect{ '12345678'.keyify }.to raise_error(ArgumentError)
-  end
-
 end
 
 # some small test fixtures

@@ -44,4 +44,8 @@ class Object
     end
   end
 
+  def self.keyify
+    self.class.name.to_s.keyify
+  end
+
 end
