@@ -10,4 +10,8 @@ class Object
       raise ArgumentError.new("Cannot compare \"#{self.class.name}\" to \"#{compare.class.name}\", no string conversion")
     end
   end
+  def self.keyify
+    self.class.name.to_s.keyify
+  end
+
 end
