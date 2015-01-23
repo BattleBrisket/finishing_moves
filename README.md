@@ -12,6 +12,7 @@ In gamer terms, if standard Ruby methods are your default moves, `finishing_move
 - **Never** override default Ruby behavior, only add functionality.
 - Follow the Unix philosophy of *"Do one job really well."*
 - Minimize assumptions within the method, e.g. avoid formatting output, mutating values, and long conditional logic flows.
+- Play nice with major Ruby players like Rake, Rails, and Sinatra.
 - Test all the things.
 
 ## Installation
@@ -34,11 +35,9 @@ gem install 'finishing_moves'
 - [`Kernel#bool_chain`](#kernelbool_chain)
 - [`Kernel#class_exists?`](#kernelclass_exists)
 - [`Kernel#cascade`](#kernelcascade)
-
 - [`Object#same_as`](#objectsame_as)
 - [`Object#not_nil?`](#objectnot_nil)
 - [`Object#is_an?`](#objectis_an)
-
 - [`Hash#delete!`](#hashdelete)
 - [`Hash#delete_each`](#hashdelete_each)
 - [`Hash#delete_each!`](#hashdelete_each-1)
@@ -50,7 +49,6 @@ gem install 'finishing_moves'
   - [`Fixnum#to_bool`](#fixnumto_bool)
   - [`NilClass#to_bool`](#nilclassto_bool)
   - [`TrueClass#to_bool` and `FalseClass#to_bool`](#trueclassto_bool-and-falseclassto_bool)
-
 - [Typecasting *from* `Boolean` and `Nil`](#typecasting-from-boolean-and-nil)
 
 ### Extensions to `Kernel`
@@ -342,7 +340,7 @@ We're using the [`loop`](http://www.ruby-doc.org/core-2.1.5/Kernel.html#method-i
 
 ###### *"Why not just shove the logic into a method and use `return` instead of `break`?"*
 
-You should absolutely use methods if it makes sense! The example above is probably best handled by its own method, given it's complexity and the likelihood that you'll want to run tests on it.
+You should absolutely use methods if it makes sense!
 
 `cascade` is ideal for small sets of logic, when you've *already* broken out your logic into a method and further breakout is just silly.
 
@@ -379,7 +377,7 @@ end
 
 It's overkill to break that bit of logic for the value of `@category` out into another method.
 
-We could have alternatively used nested `if` statements, but we find the vertically aligned codes reads better, especially as the list of conditionals goes beyond two. This pattern also has the added benefit of making top-to-bottom "readable" sense.
+Plus, we find the vertically aligned codes reads better, especially as the list of conditionals goes beyond two. This pattern also has the added benefit of making top-to-bottom "readable" sense.
 
 ### Extensions to `Object`
 
@@ -663,7 +661,7 @@ where `:+` can be any named method of `memo`, and is applied to each value (just
 
 Boolean values are frequently represented as strings and integers in databases and file storage. So we always thought it was a little odd that Ruby lacked a boolean typecasting method, given the proliferation of `to_*` methods for `String`, `Symbol`, `Integer`, `Float`, `Hash`, etc.
 
-So we made one for strings, integers, and nil.
+So we made some for `String`, `Integer`, and `Nil`.
 
 #### `String#to_bool`
 
@@ -772,6 +770,12 @@ nil.to_i
 nil.to_sym
 # => :nil
 ```
+
+## Bug Reports
+
+**[Drop us a line in the issues section.](https://github.com/forgecrafted/finishing_moves/issues)**
+
+Be sure to include some sample code that reproduces the problem.
 
 ## Add your own finisher!
 
