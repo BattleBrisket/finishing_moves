@@ -33,17 +33,23 @@ gem install 'finishing_moves'
 - [`Kernel#bool_chain`](#kernelbool_chain)
 - [`Kernel#class_exists?`](#kernelclass_exists)
 - [`Kernel#cascade`](#kernelcascade)
+
 - [`Object#same_as`](#objectsame_as)
 - [`Object#not_nil?`](#objectnot_nil)
+- [`Object#is_an?`](#objectis_an)
+
 - [`Hash#delete!`](#hashdelete)
 - [`Hash#delete_each`](#hashdelete_each)
 - [`Hash#delete_each!`](#hashdelete_each-1)
-- [`Fixnum#length`](#fixnumlength-and-bignumlength)
+
+- [`Integer#length`](#integerlength)
+
 - [Typecasting *to* `Boolean`](#typecasting-to-boolean)
   - [`String#to_bool`](#stringto_bool)
   - [`Fixnum#to_bool`](#fixnumto_bool)
   - [`NilClass#to_bool`](#nilclassto_bool)
   - [`TrueClass#to_bool` and `FalseClass#to_bool`](#trueclassto_bool-and-falseclassto_bool)
+
 - [Typecasting *from* `Boolean` and `Nil`](#typecasting-from-boolean-and-nil)
 
 ### Extensions to `Kernel`
@@ -223,6 +229,8 @@ var = nil_chain(Geomancer.reset_ley_lines) { summon_fel_beast[:step_3].scry }
 # => value of summon_fel_beast[:step_3].scry if it's set, or
 #    Geomancer.reset_ley_lines if it's not
 ```
+
+#### Alias
 
 `nil_chain` is aliased to `method_chain` for alternative clarity.
 
@@ -441,7 +449,20 @@ nil.not_nil?
 # => true
 ```
 
-Much better. Now pass me another PBR and my fedora.
+Pass me one of those PBR's.
+
+#### `Object#is_an?`
+
+Alias for the [`is_a?` method](http://ruby-doc.org/core-2.2.0/Object.html#method-i-is_a-3F), for even more Ruby chic!
+
+```ruby
+1.is_a? Integer
+# => true, and a thorn in the side of grammar teachers everywhere!
+1.is_an? Integer
+# => still true, but now I don't mentally pause every time I read it.
+```
+
+Now pass me another PBR and my fedora.
 
 ### Extensions to `Hash`
 
@@ -512,7 +533,7 @@ mega_man_bosses.delete_each! :crash_man, :quick_man
 # => { }
 ```
 
-### `Fixnum#length` and `Bignum#length`
+### `Integer#length`
 
 Ruby doesn't provide a native way to see how many digits are in an integer, but that's exactly what we worry about anytime database `INT` lengths collide with Ruby `Fixnum` or `Bignum` values.
 
@@ -549,6 +570,10 @@ For consistency, we added matching methods to `Float` and `BigDecimal` that simp
 1265437718438866624512.123.length
 # => ArgumentError: Cannot get length: "1.2654377184388666e+21" is not an integer
 ```
+
+#### Alias
+
+`length` is aliased to `digits` for alternative clarity.
 
 ### Typecasting *to* `Boolean`
 

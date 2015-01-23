@@ -1,4 +1,5 @@
 module Kernel
+
   def nil_chain(ret_val = nil, &block)
     begin
       result = yield
@@ -30,4 +31,5 @@ module Kernel
       break
     end
   end
+
 end

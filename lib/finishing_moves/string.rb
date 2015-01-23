@@ -1,5 +1,3 @@
-# http://www.channaly.info/nl2br-strtr-php-functions-in-ruby/
-
 class String
 
   def nl2br
@@ -7,47 +5,93 @@ class String
   end
 
   def keyify
-    retval = nil_chain do
-      str = self
+    retval = nil_chain('') do
       # replace non-alpha numerics with underscore
-      str = str.gsub(/[^0-9a-z]/i, '_')
+      gsub(/[^0-9a-z]/i, '_').
       # Strip leading numbers and underscores
-      str = str.gsub(/^[0-9_]+/, '')
+      lstrip_all('0-9_').
       # Strip trailing underscores
-      str = str.gsub(/_+$/, '')
+      rstrip_all.
       # Combine multiple concurrent underscores
-      str = str.gsub(/_{2,}/, '_')
+      dedupe('_').
       # lowercase and make symbol
-      str.downcase.to_sym
+      downcase.to_sym
     end
-    return "" if retval.nil?
+    raise ArgumentError, '#{self.inspect} cannot be keyified, no valid characters' if retval == ''
     retval
   end
 
-  # strip leading and trailing characters
-  def unwrap(chars, options = {})
-    whitespace = options[:whitespace] || true
-    regex = options[:regex] || false
+  def strip_all(chars = nil)
+    expr = _strip_all_prep(chars)
+    gsub Regexp.union(_lstrip_all_regex(expr), _rstrip_all_regex(expr)), ''
+  end
 
-    if regex
-      expr = chars.to_s
-    else
-      escapes = '. $ ^ { [ ( | ) ] } * + ? \ '
-      expr = ''
-      chars.to_s.gsub(/\s+/, '').strip.each_char do |c|
-        expr << "\\" if escapes.include? c
-        expr << c
-      end
-      expr = expr + ' ' if whitespace
-    end
+  def strip_all!(chars = nil)
+    expr = _strip_all_prep(chars)
+    gsub! Regexp.union(_lstrip_all_regex(expr), _rstrip_all_regex(expr)), ''
+  end
 
-    self.gsub(/^[#{expr}]+/i, '').gsub(/[#{expr}]+$/i, '')
+  def lstrip_all(chars = nil)
+    gsub _lstrip_all_regex(_strip_all_prep(chars)), ''
+  end
+
+  def lstrip_all!(chars = nil)
+    gsub! _lstrip_all_regex(_strip_all_prep(chars)), ''
+  end
+
+  def rstrip_all(chars = nil)
+    gsub _rstrip_all_regex(_strip_all_prep(chars)), ''
+  end
+
+  def rstrip_all!(chars = nil)
+    gsub! _rstrip_all_regex(_strip_all_prep(chars)), ''
   end
 
   # strip multiple concurrent characters
-  # remove all whitespace
-  # replace all whitespace
-  # return true/false on regex match
+  def dedupe(str)
+    raise ArgumentError, '#{str.inspect} is not a string' unless str.is_a? String
+    gsub(/(#{Regexp.escape str}){2,}/, str)
+  end
 
-  # catch methods in NilClass, return empty string
+  def remove_whitespace
+  end
+
+  def replace_whitespace(replace = '')
+  end
+
+  # return true/false on regex match
+  def match?(pattern, pos = 0)
+    match(pattern, pos).not_nil?
+  end
+
+  protected
+
+    def _lstrip_all_regex(expr)
+      /\A[#{expr}]+/
+    end
+
+    def _rstrip_all_regex(expr)
+      /[#{expr}]+\Z/
+    end
+
+    def _strip_all_prep(chars)
+      chars = '-_' if chars.nil?
+      raise ArgumentError, '#{chars.inspect} is not a string' unless chars.is_a? String
+
+      expr = Regexp.escape( chars.gsub(/(0-9)+|(a-z)+|(A-Z)+|\s+/, '').strip )
+      ['0-9', 'a-z', 'A-Z'].each { |range| expr << range if chars.include? range }
+      expr << ' '
+    end
+
+end
+
+# default to dashes and underscores
+# strip_all("0-9_", ".rb")
+
+class Symbol
+
+  def keyify
+    to_s.keyify
+  end
+
 end

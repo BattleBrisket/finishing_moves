@@ -1,4 +1,5 @@
 class Object
+
   def not_nil?
     !self.nil?
   end
@@ -10,8 +11,11 @@ class Object
       raise ArgumentError.new("Cannot compare \"#{self.class.name}\" to \"#{compare.class.name}\", no string conversion")
     end
   end
+
   def self.keyify
     self.class.name.to_s.keyify
   end
+
+  alias_method :is_an?, :is_a?
 
 end

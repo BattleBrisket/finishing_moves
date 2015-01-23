@@ -23,21 +23,16 @@ describe Array do
     end
   end
 
-  it '#to_hash_as_values <#to_indexed_hash behaviour>' do
+  it '#to_hash_values <#to_indexed_hash behaviour>' do
     block = proc { |key| key + 1 }
-    sages_hash = sages.to_hash_as_values 0, &block
-    # alias check
-    _ = sages.use_as_values_for_hash 0, &block
-    __ = sages.use_as_values 0, &block
-    expect((sages_hash == _) && (sages_hash == __)).to eq true
-
+    sages_hash = sages.to_hash_values 0, &block
     i = 0
     sages.each do |sage|
       expect(sages_hash[i]).to eq sage
       i += 1
     end
 
-    sages_hash = sages.to_hash_as_values(22)
+    sages_hash = sages.to_hash_values(22)
     i = 22
     sages.each do |sage|
       expect(sages_hash[i]).to eq sage
@@ -45,30 +40,28 @@ describe Array do
     end
   end
 
-  it '#to_hash_as_values' do
+  it '#to_hash_values' do
     block = proc { |key| key + 3 }
-    sages_hash = sages.to_hash_as_values 0, &block
-    # alias check
-    _ = sages.use_as_values_for_hash 0, &block
-    __ = sages.use_as_values 0, &block
-    expect((sages_hash == _) && (sages_hash == __)).to eq true
-
+    sages_hash = sages.to_hash_values 0, &block
     i = 0
     sages.each do |sage|
       expect(sages_hash[i]).to eq sage
       i += 3
     end
 
-    sages_hash = sages.to_hash_as_values 22, &block
+    sages_hash = sages.to_hash_values 22, &block
     i = 22
     sages.each do |sage|
       expect(sages_hash[i]).to eq sage
       i += 3
     end
+
+    # alias check
+    expect(sages.to_hash_as_values(0, &block)).to eq sages_hash
   end
 
-  it '#to_hash_as_keys' do
-    sages_hash = sages.to_hash_as_keys
+  it '#to_hash_keys' do
+    sages_hash = sages.to_hash_keys
     # alias check
     _ = sages.use_as_keys_for_hash
     __ = sages.use_as_keys
@@ -78,12 +71,12 @@ describe Array do
       expect(sages_hash[sage]).to eq nil
     end
 
-    sages_hash = sages.to_hash_as_keys('foobar')
+    sages_hash = sages.to_hash_keys('foobar')
     sages.each do |sage|
       expect(sages_hash[sage]).to eq 'foobar'
     end
 
-    sages_hash = sages.to_hash_as_keys { |key| key + "1" }
+    sages_hash = sages.to_hash_keys { |key| key + "1" }
     sages.each do |sage|
       expect(sages_hash[sage]).to eq sage + "1"
     end

@@ -24,10 +24,4 @@ class Hash
     return self
   end
 
-  # How about sorting a hash in place by key?
-  #
-  # http://www.rubyinside.com/how-to/ruby-sort-hash
-  # http://www.informit.com/articles/article.aspx?p=1244471&seqNum=9
-  # http://stackoverflow.com/questions/2540435/how-to-sort-a-ruby-hash-by-number-value
-
 end
