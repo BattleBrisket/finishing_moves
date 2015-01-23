@@ -1,4 +1,5 @@
 # Finishing Moves
+[![Gem Version](https://badge.fury.io/rb/finishing_moves.svg)](http://badge.fury.io/rb/finishing_moves)
 
 ##### By the guys at [Forge Software](http://www.forgecrafted.com/)
 
