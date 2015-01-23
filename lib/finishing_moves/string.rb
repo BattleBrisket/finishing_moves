@@ -80,15 +80,12 @@ class String
     str.each_char { |c| gsub! /#{Regexp.escape c}{2,}/, c }
   end
 
-  def remove_whitespace
-    gsub /[ ]*/, ''
+  def remove_whitespace(replace = '')
+    gsub /[ ]+/, replace
   end
 
-  def remove_whitespace!
-    gsub! /[ ]*/, ''
-  end
-
-  def replace_whitespace(replace = '')
+  def remove_whitespace!(replace = '')
+    gsub! /[ ]+/, replace
   end
 
   # return true/false on regex match
