@@ -2,33 +2,34 @@ require 'spec_helper'
 
 describe String do
 
-  it '#nl2br' do
+  it '#dedupe' do
+    expect('___foo___'.dedupe('_')).to eq '_foo_'
+    expect('---foo---'.dedupe('-')).to eq '-foo-'
+    expect('___foo---'.dedupe('_-')).to eq '_foo-'
+    expect('___foo__bar_baz--bing'.dedupe('_')).to eq '_foo_bar_baz--bing'
+    expect('foo'.dedupe('o')).to eq 'fo'
+    expect('foo'.dedupe('O')).to eq 'foo'
+    expect('[[foo]]]'.dedupe('[]')).to eq '[foo]'
   end
 
-  it '#keyify' do
-    expect(SizedQueue.keyify).to eq :sized_queue
-    expect('FooBarBaz'.keyify).to eq :foo_bar_baz
-    expect(:FooBarBaz.keyify).to eq :foo_bar_baz
-    expect('(Foo*&Bar!Baz?'.keyify).to eq :foo_bar_baz
-    expect('!@#$Foo0987'.keyify).to eq :foo
-    expect{ '!@#$%^'.keyify }.to raise_error(ArgumentError)
-    expect{ '12345678'.keyify }.to raise_error(ArgumentError)
+  it '#dedupe!' do
+    str = '___foo___'
+    str.dedupe!('_')
+    expect(str).to eq '_foo_'
   end
 
   it '#strip_all (incl _strip_all_prep)' do
     expect('___foo___'.strip_all).to eq 'foo'
-    expect("___foo___\n".strip_all).to eq 'foo'
-    expect("___foo___\n\r".strip_all).to eq 'foo'
     expect('---foo---'.strip_all).to eq 'foo'
     expect('-_-foo-_-'.strip_all).to eq 'foo'
     expect('_-_8-foo-8_-_'.strip_all).to eq '8-foo-8'
-
     expect('0123456789-foo-9876543210'.strip_all('0-9')).to eq '-foo-'
     expect('0123-foo-3210'.strip_all('0-9-')).to eq 'foo'
-    expect('0123-foo-3210'.strip_all('a-z')).to eq '0123--3210'
-    expect('0123-foo-3210'.strip_all('a-z-')).to eq '01233210'
-    expect('0123-foo-3210'.strip_all('A-Z')).to eq '0123-foo-3210'
-    expect('0123-FOO-3210'.strip_all('A-Z')).to eq '0123--3210'
+    expect('0123-foo-3210'.strip_all('a-z')).to eq '0123-foo-3210'
+    expect('foo-314-foo'.strip_all('a-z')).to eq '-314-'
+    expect('foo-314-foo'.strip_all('a-z-')).to eq '314'
+    expect('foo-314-foo'.strip_all('A-Z')).to eq 'foo-314-foo'
+    expect('FOO-314-FOO'.strip_all('A-Z')).to eq '-314-'
 
     expect('abcdefghijklmnopqrstuvwxyz'.strip_all('a-z')).to eq ''
     expect('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.strip_all('A-Z')).to eq ''
@@ -67,12 +68,8 @@ describe String do
 
   it '#rstrip_all!' do
     str = '___foo___'
-    str.lstrip_all!
+    str.rstrip_all!
     expect(str).to eq '___foo'
-  end
-
-  it '#dedupe' do
-    expect('___foo__bar_baz--bing'.dedupe('_')).to eq 'foo_bar_baz--bing'
   end
 
   it '#match?' do
@@ -82,6 +79,26 @@ describe String do
   end
 
   it '#replace_whitespace' do
+  end
+
+  it '#nl2br' do
+  end
+
+  it '#keyify' do
+    expect(SizedQueue.keyify).to eq :thread_sized_queue
+    expect(Integer.keyify).to eq :integer
+    expect(Math::DomainError.keyify).to eq :math_domain_error
+    expect('FooBarBaz'.keyify).to eq :foo_bar_baz
+    expect(:FooBarBaz.keyify).to eq :foo_bar_baz
+    expect('(Foo*&Bar!Baz?'.keyify).to eq :foo_bar_baz
+    expect('!@#$Foo0987'.keyify).to eq :foo0987
+    expect('!@#$%^'.keyify).to eq nil
+    expect('12345678'.keyify).to eq nil
+  end
+
+  it '#keyify!' do
+    expect{ '!@#$%^'.keyify! }.to raise_error(ArgumentError)
+    expect{ '12345678'.keyify! }.to raise_error(ArgumentError)
   end
 
 end

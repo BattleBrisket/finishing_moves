@@ -4,6 +4,8 @@ class Object
     !self.nil?
   end
 
+  alias_method :is_an?, :is_a?
+
   def same_as(compare)
     if compare.respond_to? :to_s
       self.to_s == compare.to_s
@@ -13,9 +15,7 @@ class Object
   end
 
   def self.keyify
-    self.class.name.to_s.keyify
+    name.keyify
   end
-
-  alias_method :is_an?, :is_a?
 
 end

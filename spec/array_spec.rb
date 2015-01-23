@@ -24,6 +24,13 @@ describe Array do
   end
 
   it '#to_hash_values <#to_indexed_hash behaviour>' do
+    sages_hash = sages.to_hash_values
+    i = 0
+    sages.each do |sage|
+      expect(sages_hash[i]).to eq sage
+      i += 1
+    end
+
     block = proc { |key| key + 1 }
     sages_hash = sages.to_hash_values 0, &block
     i = 0
@@ -57,18 +64,16 @@ describe Array do
     end
 
     # alias check
-    expect(sages.to_hash_as_values(0, &block)).to eq sages_hash
+    expect(sages.to_hash_as_values(22, &block)).to eq sages_hash
   end
 
   it '#to_hash_keys' do
     sages_hash = sages.to_hash_keys
     # alias check
-    _ = sages.use_as_keys_for_hash
-    __ = sages.use_as_keys
-    expect((sages_hash == _) && (sages_hash == __)).to eq true
+    expect(sages.to_hash_as_keys).to eq sages_hash
 
     sages.each do |sage|
-      expect(sages_hash[sage]).to eq nil
+      expect(sages_hash[sage]).to eq 0
     end
 
     sages_hash = sages.to_hash_keys('foobar')

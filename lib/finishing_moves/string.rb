@@ -5,20 +5,38 @@ class String
   end
 
   def keyify
-    retval = nil_chain('') do
-      # replace non-alpha numerics with underscore
-      gsub(/[^0-9a-z]/i, '_').
-      # Strip leading numbers and underscores
-      lstrip_all('0-9_').
+    result = nil_chain do
+      the_key = self
+
+      # strip all non-alphanumerics
+      the_key.gsub!(/[^0-9a-z]+/i, '_')
+
+      # borrowing some logic from Rails method underscore
+      # http://api.rubyonrails.org/classes/ActiveSupport/Inflector.html#method-i-underscore
+      if the_key =~ /[A-Z-]|::/
+        the_key.gsub!(/::/, '_')
+        the_key.gsub!(/([A-Z\d]+)([A-Z][a-z])/,'\1_\2')
+        the_key.gsub!(/([a-z\d])([A-Z])/,'\1_\2')
+      end
+
+      # Strip any leading numbers and underscores
+      the_key.lstrip_all!('0-9_')
       # Strip trailing underscores
-      rstrip_all.
+      the_key.rstrip_all!('_')
       # Combine multiple concurrent underscores
-      dedupe('_').
-      # lowercase and make symbol
-      downcase.to_sym
+      the_key.dedupe!('_')
+      # lowercase
+      the_key.downcase!
+      next the_key
     end
-    raise ArgumentError, '#{self.inspect} cannot be keyified, no valid characters' if retval == ''
-    retval
+    return nil if result.nil? || result == ''
+    result.to_sym
+  end
+
+  def keyify!
+    result = self.keyify
+    raise ArgumentError, '#{self.inspect} cannot be keyified, no valid characters' if result.nil?
+    result
   end
 
   def strip_all(chars = nil)
@@ -50,7 +68,15 @@ class String
   # strip multiple concurrent characters
   def dedupe(str)
     raise ArgumentError, '#{str.inspect} is not a string' unless str.is_a? String
-    gsub(/(#{Regexp.escape str}){2,}/, str)
+    # Yes, this is inefficient. We welcome optimizations from the regex ninjas out there.
+    ret = self
+    str.each_char { |c| ret.gsub! /#{Regexp.escape c}{2,}/, c }
+    ret
+  end
+
+  def dedupe!(str)
+    raise ArgumentError, '#{str.inspect} is not a string' unless str.is_a? String
+    str.each_char { |c| gsub! /#{Regexp.escape c}{2,}/, c }
   end
 
   def remove_whitespace
@@ -79,7 +105,9 @@ class String
       raise ArgumentError, '#{chars.inspect} is not a string' unless chars.is_a? String
 
       expr = Regexp.escape( chars.gsub(/(0-9)+|(a-z)+|(A-Z)+|\s+/, '').strip )
-      ['0-9', 'a-z', 'A-Z'].each { |range| expr << range if chars.include? range }
+      ['0-9', 'a-z', 'A-Z'].each do |range|
+        expr << range if chars.include? range
+      end
       expr << ' '
     end
 
