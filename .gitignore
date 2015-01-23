@@ -1,3 +1,6 @@
+## Virtual Machine files
+/.vagrant/
+
 *.gem
 *.rbc
 /.config
