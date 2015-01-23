@@ -10,6 +10,12 @@ describe String do
     expect('foo'.dedupe('o')).to eq 'fo'
     expect('foo'.dedupe('O')).to eq 'foo'
     expect('[[foo]]]'.dedupe('[]')).to eq '[foo]'
+
+    # make sure our use of gsub! isn't screwing us over
+    orig = '___foo___'
+    modified = orig.dedupe('_')
+    expect(modified).to eq '_foo_'
+    expect(orig).to eq '___foo___'
   end
 
   it '#dedupe!' do
@@ -76,6 +82,16 @@ describe String do
   end
 
   it '#remove_whitespace' do
+    expect('   a b c d     e'.remove_whitespace).to eq 'abcde'
+    expect(' [  foo ]   '.remove_whitespace).to eq '[foo]'
+    expect('   '.remove_whitespace).to eq ''
+    expect('. $ ^ { [ ( | ) * + ? \ '.remove_whitespace).to eq '.$^{[(|)*+?\\'
+  end
+
+  it '#remove_whitespace!' do
+    str = '   a b c d     e'
+    str.remove_whitespace!
+    expect(str).to eq 'abcde'
   end
 
   it '#replace_whitespace' do

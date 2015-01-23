@@ -69,17 +69,23 @@ class String
   def dedupe(str)
     raise ArgumentError, '#{str.inspect} is not a string' unless str.is_a? String
     # Yes, this is inefficient. We welcome optimizations from the regex ninjas out there.
-    ret = self
+    ret = String.new self
     str.each_char { |c| ret.gsub! /#{Regexp.escape c}{2,}/, c }
     ret
   end
 
   def dedupe!(str)
     raise ArgumentError, '#{str.inspect} is not a string' unless str.is_a? String
+    # Yes, this is inefficient. We welcome optimizations from the regex ninjas out there.
     str.each_char { |c| gsub! /#{Regexp.escape c}{2,}/, c }
   end
 
   def remove_whitespace
+    gsub /[ ]*/, ''
+  end
+
+  def remove_whitespace!
+    gsub! /[ ]*/, ''
   end
 
   def replace_whitespace(replace = '')
