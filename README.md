@@ -42,9 +42,9 @@ gem install 'finishing_moves'
 - [`Hash#delete!`](#hashdelete)
 - [`Hash#delete_each`](#hashdelete_each)
 - [`Hash#delete_each!`](#hashdelete_each-1)
-
 - [`Integer#length`](#integerlength)
-
+- [`Enumerable#key_map`](#enumerable-key_map)
+- [`Enumerable#key_map_reduce`](#enumerable-key_map_reduce)
 - [Typecasting *to* `Boolean`](#typecasting-to-boolean)
   - [`String#to_bool`](#stringto_bool)
   - [`Fixnum#to_bool`](#fixnumto_bool)
@@ -575,6 +575,89 @@ For consistency, we added matching methods to `Float` and `BigDecimal` that simp
 #### Alias
 
 `length` is aliased to `digits` for alternative clarity.
+
+### Extensions to  `Enumerable`
+
+#### `Enumerable#key_map`
+
+Standard `Enumerable#map` has a great shortcut when you want to create an `Array` by calling a method on each element in the collection. For example:
+
+```ruby
+class Pokemon
+  attr_accessor :name
+  def initialize(n)
+    @name = n
+  end
+end
+
+your_pokedex = [
+  Pokemon.new("Bulbasaur"),
+  Pokemon.new("Charmander"),
+  Pokemon.new("Squirtle"),
+]
+```
+
+If you want an Array of Pokemon names, you use `Enumerable#map`:
+
+    your_pokedex.map { |p| p.name }
+    # => ["Bulbasaur", "Charmander", "Squirtle"]
+
+The shortcut makes it easy for trivial repeatable method calls (such as to `:name`):
+
+    your_pokedex.map(&:name)
+    # => ["Bulbasaur", "Charmander", "Squirtle"]
+
+But what happens when my Pokedex isn't as well-structured as yours?
+
+```ruby
+my_pokedex = [
+  {name: "Bulbasaur"},
+  {name: "Charmander"},
+  {name: "Squirtle"},
+]
+```
+
+I can still map the `:name` keys out to an `Array` with full block notation...
+
+    my_pokedex.map { |p| p[:name] }
+    # => ["Bulbasaur", "Charmander", "Squirtle"]
+
+But such sad! I can haz no shortcut.
+
+    my_pokedex.map(??????)
+    # => ["Bulbasaur", "Charmander", "Squirtle"]
+
+Enter `Enumerable#key_map`:
+
+    my_pokedex.key_map(:name)
+    # => ["Bulbasaur", "Charmander", "Squirtle"]
+
+#### `Enumerable#key_map_reduce`
+
+Building off of `Enumerable#key_map`, finishing_moves provides a convenience method when you need to perform a one-step map/reduce operation on a collection.
+
+```ruby
+my_pokedex = [
+  {name: "Bulbasaur",   level: 2},
+  {name: "Charmander",  level: 2},
+  {name: "Squirtle",    level: 2},
+]
+```
+
+In other words, this map/reduce operation
+
+    my_pokedex.key_map(:level).reduce(0) { |memo,lvl| memo + lvl }
+    # => 6
+
+can be simplified to
+
+    my_pokedex.key_map_reduce(:level, :+)
+    # => 6
+
+where `:+` can be any named method of `memo`, and is applied to each value (just as in `Enumerable#reduce`). For additional flexibility, you can pass an intial value for `memo` and a custom `block` (and again, this works just like `Enumerable#reduce`):
+
+    my_pokedex.key_map_reduce(:level, 0) { |memo,lvl| memo + lvl }
+    # => 6
 
 ### Typecasting *to* `Boolean`
 
