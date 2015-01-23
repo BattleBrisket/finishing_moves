@@ -597,7 +597,7 @@ your_pokedex = [
 ]
 ```
 
-If you want an Array of Pokemon names, you use `Enumerable#map`:
+If you want an `Array` of Pokemon names, you use `Enumerable#map`:
 
     your_pokedex.map { |p| p.name }
     # => ["Bulbasaur", "Charmander", "Squirtle"]
