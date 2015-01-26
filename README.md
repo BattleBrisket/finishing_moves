@@ -42,6 +42,9 @@ gem install 'finishing_moves'
 - [`Hash#delete_each!`](#hashdelete_each-1)
 - [`Integer#length`](#integerlength)
 - [`Boolean` Typecasting](#typecasting-to-boolean)
+
+###### *New in 0.3.0!*
+
 - [`Array#to_hash_values`](#arrayto_hash_values)
 - [`Array#to_indexed_hash`](#arrayto_indexed_hash)
 - [`Array#to_hash_keys`](#arrayto_hash_keys)
@@ -57,6 +60,8 @@ gem install 'finishing_moves'
 ### Extensions to `Kernel`
 
 #### `Kernel#nil_chain`
+###### `nil_chain(ret_val = nil, &block)`
+
 Arguably the sharpest knife in the block, `#nil_chain` allows you to write elaborate method chains without fear of tripping over `NoMethodError` and `NameError` exceptions when something in the chain throws out a nil value.
 
 ##### Examples
@@ -232,7 +237,7 @@ var = nil_chain(Geomancer.reset_ley_lines) { summon_fel_beast[:step_3].scry }
 #    Geomancer.reset_ley_lines if it's not
 ```
 
-#### Alias
+##### Alias
 
 `nil_chain` is aliased to `method_chain` for alternative clarity.
 
@@ -429,6 +434,11 @@ user.same_as 'FACELESS_ONE'
 # => false
 ```
 
+##### Alias
+
+`same_as` is aliased to `same_as?` for alternative clarity.
+
+
 #### `Object#not_nil?`
 
 Because that dangling `!` on the front of a call to `nil?` is just oh so not-ruby-chic.
@@ -483,6 +493,7 @@ power_rangers.delete! :radiant_orchid
 ```
 
 #### `Hash#delete_each`
+
 Deletes all records in a hash matching the keys passed in as an array. Returns a hash of deleted entries. Silently ignores any keys which are not found.
 
 ```ruby
@@ -562,7 +573,7 @@ For consistency, we added matching methods to `Float` and `BigDecimal` that simp
 # => ArgumentError: Cannot get length: "1.2654377184388666e+21" is not an integer
 ```
 
-#### Alias
+##### Alias
 
 `length` is aliased to `digits` for alternative clarity.
 
@@ -682,21 +693,113 @@ nil.to_sym
 
 ### Extensions to `Array`
 
-### `Array#to_hash_values`
+Ruby's [`to_h` method](http://ruby-doc.org/core-2.2.0/Array.html#method-i-to_h) converts an array to a hash by interpreting the array as an array of `[key, value]` pairs. But what if you have a one-dimensional array of things that you want to push into a hash, and the values (or keys) are yet to be determined? Finishing Moves provides a more flexible implementation.
+
+#### `Array#to_hash_values`
+###### `to_hash_values(starting_key = 0, &block)`
+
+Convert an array of things into a hash with the array elements stored as values. By default the hash will be numerically indexed starting from zero.
+
+```ruby
+sages = ['Rauru', 'Saria', 'Darunia', 'Princess Ruto', 'Impa', 'Nabooru', 'Zelda']
+
+sages_hash = sages.to_hash_values
+# => {0=>"Rauru", 1=>"Saria", 2=>"Darunia", 3=>"Princess Ruto", 4=>"Impa", 5=>"Nabooru", 6=>"Zelda"}
+```
+
+`starting_key` represents where key indexing should start. Unless a block is provided, keys are assumed to be numerical and will increment by one. The above example is equivalent to `sages_hash = sages.to_hash_values(0)`.
+
+The block syntax allows you to easily increment at any rate.
+
+```ruby
+sages_hash = sages.to_hash_values(0) { |key| key + 3 }
+# => {0=>"Rauru", 3=>"Saria", 6=>"Darunia", 9=>"Princess Ruto", 12=>"Impa", 15=>"Nabooru", 18=>"Zelda"}
+```
+
+Using the block syntax you can create keys out of almost anything, making `to_hash_values` a powerful tool for generating collections of objects.
+
+```ruby
+class SageElements
+
+  def initialize
+    @keys = {
+      :first  => :light,
+      :light  => :forest,
+      :forest => :fire,
+      :fire   => :water,
+      :water  => :shadow,
+      :shadow => :spirit,
+      :spirit => :time,
+      :time   => :first,
+    }
+  end
+
+  def first_key
+    @keys[:first]
+  end
+
+  def next_key(pointer)
+    @keys[pointer]
+  end
+
+end
+
+sages_hash = sages.to_hash_values(elements.first_key) do |key|
+  elements.next_key(key)
+end
+# => {:light=>"Rauru", :forest=>"Saria", :fire=>"Darunia", :water=>"Princess Ruto", :shadow=>"Impa", :spirit=>"Nabooru", :time=>"Zelda"}
+```
+
+#### `Array#to_indexed_hash`
+###### `to_indexed_hash(starting_key = 0)`
+
+Same logic as `to_hash_values`, but assumes an integer key, increments by 1, and skips the block syntax. It will raise an `ArgumentError` if the key is not of type `Integer` (floating point keys must use `to_hash_values` syntax).
+
+```ruby
+sages.to_indexed_hash(22)
+# => {22=>"Rauru", 23=>"Saria", 24=>"Darunia", 25=>"Princess Ruto", 26=>"Impa", 27=>"Nabooru", 28=>"Zelda"}
+
+sages.to_indexed_hash("e")
+# => ArgumentError: "e" is not an integer
+```
+
+##### Alias
+
+`to_hash_values` is aliased to `to_hash_as_values` for alternative clarity.
+
+#### `Array#to_hash_keys`
+###### `to_hash_keys(starting_value = 0, &block)`
+
+Convert an array of things into a hash, with the array values becoming keys. `starting_value` will be set as the value for each pair in the new array.
+
+```ruby
+sages = ['Rauru', 'Saria', 'Darunia', 'Princess Ruto', 'Impa', 'Nabooru', 'Zelda']
+
+sages_hash = sages.to_hash_keys
+# => {"Rauru"=>0, "Saria"=>0, "Darunia"=>0, "Princess Ruto"=>0, "Impa"=>0, "Nabooru"=>0, "Zelda"=>0}
+```
+
+Note that the default `starting_value` is a numerical zero rather than `nil` deliberately. Ruby reports an undefined key as `nil`, so a non-nil value ensures each hash pair is fully "existent" in Ruby terms.
+
+The block syntax allows for complex definitions of the value. This logic works precisely the same as `to_hash_values`, so see above for details.
+
+##### Alias
+
+`to_hash_keys` is aliased to `to_hash_as_keys` for alternative clarity.
 
 
-### `Array#to_indexed_hash`
+#### `Array#to_hash`
 
+###### **We Need your feedback!**
 
-### `Array#to_hash_keys`
-
-
+This is **not** currently defined, either in the standard Ruby spec or in Finishing Moves. We planned to make it an alias of either `to_hash_values` or `to_hash_keys`, but couldn't come to an agreement about which makes more sense. If you have some input, please drop your thoughts in the issues.
 
 ### Extensions to `Enumerable`
 
 #### `Enumerable#key_map`
+###### `key_map(key)`
 
-Standard `Enumerable#map` has a great shortcut when you want to create an `Array` by calling a method on each element in the collection. For example:
+[Standard `Enumerable#map`](http://ruby-doc.org/core-2.2.0/Enumerable.html#method-i-map) has a great shortcut when you want to create an `Array` by calling a method on each element in the collection. For example:
 
 ```ruby
 class Pokemon
@@ -718,7 +821,7 @@ If you want an `Array` of Pokemon names, you use `Enumerable#map`:
     your_pokedex.map { |p| p.name }
     # => ["Bulbasaur", "Charmander", "Squirtle"]
 
-The shortcut makes it easy for trivial repeatable method calls (such as to `:name`):
+A shortcut makes it easy for trivial, repeatable method calls (such as to `:name`):
 
     your_pokedex.map(&:name)
     # => ["Bulbasaur", "Charmander", "Squirtle"]
@@ -749,6 +852,7 @@ Enter `Enumerable#key_map`:
     # => ["Bulbasaur", "Charmander", "Squirtle"]
 
 #### `Enumerable#key_map_reduce`
+###### `key_map_reduce(key, arg = :+, &block)`
 
 Building off of `Enumerable#key_map`, finishing_moves provides a convenience method when you need to perform a one-step map/reduce operation on a collection.
 
@@ -770,7 +874,7 @@ can be simplified to
     my_pokedex.key_map_reduce(:level, :+)
     # => 6
 
-where `:+` can be any named method of `memo`, and is applied to each value (just as in `Enumerable#reduce`). For additional flexibility, you can pass an intial value for `memo` and a custom `block` (and again, this works just like `Enumerable#reduce`):
+where `:+` can be any named method of `memo`, and is applied to each value (just as in [`Enumerable#reduce`](http://ruby-doc.org/core-2.2.0/Enumerable.html#method-i-reduce)). For additional flexibility, you can pass an intial value for `memo` and a custom `block` (and again, this works just like `Enumerable#reduce`):
 
     my_pokedex.key_map_reduce(:level, 0) { |memo,lvl| memo + lvl }
     # => 6
@@ -778,6 +882,7 @@ where `:+` can be any named method of `memo`, and is applied to each value (just
 ### Extensions to `String`
 
 #### `String#dedupe`
+###### `dedupe(str)`
 
 Find multiple concurrent occurrences of a character and reduce them to a single occurrence.
 
@@ -799,12 +904,16 @@ You can dedupe multiple characters by passing them all together within a single 
 `dedupe` won't automatically strip leading or trailing characters. You'll want to combine it with [`strip_all`](#stringstrip_all) to do that.
 
 ```ruby
-'___foo___bar_baz---bing--'.dedupe('-_')
-# => '_foo_bar_baz-bing-'
+'/crazy//concatenated////file/path/'.dedupe('/')
+# => '/crazy/concatenated/file/path/'
 
-'___foo___bar_baz---bing--'.dedupe('-_').strip_all('-_')
-# => 'foo_bar_baz-bing'
+'/crazy//concatenated////file/path/'.dedupe('/').strip_all('/')
+# => 'crazy/concatenated/file/path'
 ```
+
+##### Bang variant
+
+`dedupe!` will perform the modifications in place, rather than returning a copy.
 
 #### `String#keyify`
 
@@ -1062,7 +1171,7 @@ The one exception is when you pass in regex character ranges: `0-9`, `a-z`, and 
 # => ''
 ```
 
-##### Variants to `strip_all`
+##### Variants
 
 We provide the same set of associated methods as `strip`.
 
@@ -1089,13 +1198,12 @@ We'll take pull requests on those too. Bonus karma points if you apply the refer
 
 ## Credits
 
-![forge software](http://www.forgecrafted.com/logo.png)
+[![forge software](http://www.forgecrafted.com/logo.png)](http://www.forgecrafted.com)
 
 Finishing Moves is maintained and funded by [Forge Software (forgecrafted.com)](http://www.forgecrafted.com)
 
-If you like our code, please give us a hollar if your company needs outside pro's who write damn-good code AND run servers at the same time!
+If you like our code, please give us a hollar if your company needs outside pro's who can write good code AND run servers at the same time!
 
 ## License
 
-Finishing Moves is Copyright 20XX (that means "forever") Forge Software, LLC. It is free software, and may be
-redistributed under the terms specified in the LICENSE file.
+Finishing Moves is Copyright Forge Software, LLC. It is free software, and may be redistributed under the terms specified in the LICENSE file.

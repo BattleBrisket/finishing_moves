@@ -13,6 +13,7 @@ class Object
       raise ArgumentError.new("Cannot compare \"#{self.class.name}\" to \"#{compare.class.name}\", no string conversion")
     end
   end
+  alias_method :same_as?, :same_as
 
   # Allows us to call keyify directly on a class name.
   # See keyify() in string.rb for details.

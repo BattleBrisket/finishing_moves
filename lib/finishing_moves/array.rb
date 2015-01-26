@@ -13,11 +13,11 @@ class Array
   alias_method :to_hash_as_values, :to_hash_values
 
   def to_indexed_hash(starting_key = 0)
-    raise ArgumentError, '#{starting_key.inspect} is not an integer' unless starting_key.is_a? Integer
+    raise ArgumentError, "#{starting_key.inspect} is not an integer" unless starting_key.is_a? Integer
     to_hash_values(starting_key) { |i| i + 1 }
   end
 
-  def to_hash_keys(default_value = 0, &block)
+  def to_hash_keys(starting_value = 0, &block)
     t = {}
     block = proc { default_value } unless block_given?
     each do |entry|
