@@ -6,7 +6,7 @@ class String
 
   def keyify
     result = nil_chain do
-      the_key = self
+      the_key = self.clone
 
       # strip all non-alphanumerics
       the_key.gsub!(/[^0-9a-z]+/i, '_')
@@ -35,7 +35,7 @@ class String
 
   def keyify!
     result = self.keyify
-    raise ArgumentError, '#{self.inspect} cannot be keyified, no valid characters' if result.nil?
+    raise ArgumentError, "#{self.inspect} cannot be keyified, no valid characters" if result.nil?
     result
   end
 
@@ -67,7 +67,7 @@ class String
 
   # strip multiple concurrent characters
   def dedupe(str)
-    raise ArgumentError, '#{str.inspect} is not a string' unless str.is_a? String
+    raise ArgumentError, "#{str.inspect} is not a string" unless str.is_a? String
     # Yes, this is inefficient. We welcome optimizations from the regex ninjas out there.
     ret = String.new self
     str.each_char { |c| ret.gsub! /#{Regexp.escape c}{2,}/, c }
@@ -75,7 +75,7 @@ class String
   end
 
   def dedupe!(str)
-    raise ArgumentError, '#{str.inspect} is not a string' unless str.is_a? String
+    raise ArgumentError, "#{str.inspect} is not a string" unless str.is_a? String
     # Yes, this is inefficient. We welcome optimizations from the regex ninjas out there.
     str.each_char { |c| gsub! /#{Regexp.escape c}{2,}/, c }
   end
@@ -105,7 +105,7 @@ class String
 
     def _strip_all_prep(chars)
       chars = '-_' if chars.nil?
-      raise ArgumentError, '#{chars.inspect} is not a string' unless chars.is_a? String
+      raise ArgumentError, "#{chars.inspect} is not a string" unless chars.is_a? String
 
       expr = Regexp.escape( chars.gsub(/(0-9)+|(a-z)+|(A-Z)+|\s+/, '').strip )
       ['0-9', 'a-z', 'A-Z'].each do |range|
@@ -116,9 +116,8 @@ class String
 
 end
 
-# default to dashes and underscores
-# strip_all("0-9_", ".rb")
-
+# We aren't reopening Symbol class for anything else yet, so we'll just define
+# it in this file.
 class Symbol
 
   def keyify

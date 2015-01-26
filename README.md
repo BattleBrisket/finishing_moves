@@ -3,15 +3,15 @@
 
 ##### By the guys at [Forge Software](http://www.forgecrafted.com/)
 
-Ruby includes a huge amount of default awesomeness that tackles most common development challenges. But every now and then, you find yourself in a situation where an *elaborate-yet-precise* coding maneuver wins the day. Finishing Moves is a collection of methods designed to assist in those just-typical-enough-to-be-annoying scenarios.
+Ruby includes a huge amount of default awesomeness that tackles most common development challenges. But every now and then, you find yourself in a situation where an **elaborate-yet-precise** coding maneuver wins the day. Finishing Moves is a collection of methods designed to assist in those just-typical-enough-to-be-annoying scenarios.
 
-In gamer terms, if standard Ruby methods are your default moves, `finishing_moves` would be mana-consuming techniques. Your cooldown spells. Your grenades (there's never enough grenades). In the right situation, they kick serious [cyclomatic butt](https://en.wikipedia.org/wiki/Cyclomatic_complexity).
+In gamer terms, if standard Ruby methods are your default moves, `finishing_moves` would be mana-consuming techniques. Your cooldown spells. Your grenades (there's never enough grenades!). In the right situation, they kick serious [cyclomatic butt](https://en.wikipedia.org/wiki/Cyclomatic_complexity).
 
 ## Development approach
 
 - **Never** override default Ruby behavior, only add functionality.
 - Follow the Unix philosophy of *"Do one job really well."*
-- Minimize assumptions within the method, e.g. avoid formatting output, mutating values, and long conditional logic flows.
+- Minimize assumptions, e.g. avoid formatting output, mutating values, and long conditional logic flows.
 - Play nice with major Ruby players like Rake, Rails, and Sinatra.
 - Test all the things.
 
@@ -32,9 +32,8 @@ gem install 'finishing_moves'
 ## List of Methods
 
 - [`Kernel#nil_chain`](#kernelnil_chain)
-- [`Kernel#bool_chain`](#kernelbool_chain)
-- [`Kernel#class_exists?`](#kernelclass_exists)
 - [`Kernel#cascade`](#kernelcascade)
+- [`Kernel#class_exists?`](#kernelclass_exists)
 - [`Object#same_as`](#objectsame_as)
 - [`Object#not_nil?`](#objectnot_nil)
 - [`Object#is_an?`](#objectis_an)
@@ -42,10 +41,18 @@ gem install 'finishing_moves'
 - [`Hash#delete_each`](#hashdelete_each)
 - [`Hash#delete_each!`](#hashdelete_each-1)
 - [`Integer#length`](#integerlength)
-- [Typecasting *to* `Boolean`](#typecasting-to-boolean)
-- [Typecasting *from* `Boolean` and `Nil`](#typecasting-from-boolean-and-nil)
-- [`Enumerable#key_map`](#enumerable-key_map)
-- [`Enumerable#key_map_reduce`](#enumerable-key_map_reduce)
+- [`Boolean` Typecasting](#typecasting-to-boolean)
+- [`Array#to_hash_values`](#arrayto_hash_values)
+- [`Array#to_indexed_hash`](#arrayto_indexed_hash)
+- [`Array#to_hash_keys`](#arrayto_hash_keys)
+- [`Enumerable#key_map`](#enumerablekey_map)
+- [`Enumerable#key_map_reduce`](#enumerablekey_map_reduce)
+- [`String#dedupe`](#stringdedupe)
+- [`String#keyify`](#stringkeyify)
+- [`String#match?`](#stringmatch)
+- [`String#nl2br`](#stringnl2br)
+- [`String#remove_whitespace`](#stringremove_whitespace)
+- [`String#strip_all`](#stringstrip_all)
 
 ### Extensions to `Kernel`
 
@@ -240,18 +247,7 @@ bool_chain{ a.b.c.hello }
 # => false
 ```
 
-If you read about `nil_chain`'s custom return value, you know that you can do this explicitly too. This shortcut just saves some typing.
-
-```ruby
-nil_chain(false) { a.b.c.hello }
-# => false
-```
-
 #### `Kernel#class_exists?`
-
-> *I just want to know if [insert class name] has been defined!*
->
-> -- Every dev at some point
 
 Sure, Ruby has the `defined?` method, but the output is less than helpful when you're doing conditional flows.
 
@@ -684,6 +680,18 @@ nil.to_sym
 # => :nil
 ```
 
+### Extensions to `Array`
+
+### `Array#to_hash_values`
+
+
+### `Array#to_indexed_hash`
+
+
+### `Array#to_hash_keys`
+
+
+
 ### Extensions to `Enumerable`
 
 #### `Enumerable#key_map`
@@ -769,9 +777,220 @@ where `:+` can be any named method of `memo`, and is applied to each value (just
 
 ### Extensions to `String`
 
+#### `String#dedupe`
+
+Find multiple concurrent occurrences of a character and reduce them to a single occurrence.
+
+```ruby
+'hello___world'.dedupe('_')
+# => 'hello_world'
+
+'/crazy//concatenated////file/path'.dedupe('/')
+# => '/crazy/concatenated/file/path'
+```
+
+You can dedupe multiple characters by passing them all together within a single string.
+
+```ruby
+'foo___bar_baz---bing'.dedupe('-_')
+# => 'foo_bar_baz-bing'
+```
+
+`dedupe` won't automatically strip leading or trailing characters. You'll want to combine it with [`strip_all`](#stringstrip_all) to do that.
+
+```ruby
+'___foo___bar_baz---bing--'.dedupe('-_')
+# => '_foo_bar_baz-bing-'
+
+'___foo___bar_baz---bing--'.dedupe('-_').strip_all('-_')
+# => 'foo_bar_baz-bing'
+```
+
+#### `String#keyify`
+
+Sometimes we find ourselves in need of a codified version of a string value. For example, user-generated values that must be compared for basic sameness, or creating database keys based on user-driven data entry. We use `keyify` in these situations to normalize the string down into a handy code for these comparison and data storage purposes.
+
+`keyify` will perform the following actions...
+
+1. Replace all non-alphanumerics with underscores
+2. Convert any existing `CamelCase` into `snake_case`
+3. Strip any leading numbers and underscores
+4. Combine multiple concurrent underscores into a single one
+5. Convert to lowercase
+6. Return as a symbol
+
+```ruby
+'FooBarBaz'.keyify
+# => :foo_bar_baz
+
+"Foo-Bar'Baz".keyify
+# => :foo_bar_baz
+
+'1234FooBAR'.keyify
+# => :foo_bar
+
+# Works with symbols as well
+:FooBarBaz.keyify
+# => :foo_bar_baz
+```
+
+Say a person's name is entered into a system by two different people, and we must now compare the values to see if they match. We all know user-entered data sucks, hopefully `keyify` can make it suck just a little less.
+
+```ruby
+'John Doe'.keyify
+# => :john_doe
+
+'JOHN   DOE'.keyify
+# => :john_doe
+
+'John Doe'.keyify == 'JOHN   DOE'.keyify
+# => true
+
+"Ted O'Baxter".keyify == 'Ted O Baxter'.keyify
+# => true
+```
+
+How about a dropdown menu populated with options created by end users? An identifier other than the database's primary key can often be useful.
+
+```ruby
+'Not a covered benefit'.keyify
+# => :not_a_covered_benefit
+
+"User's Duplicate Claim".keyify
+# => :user_s_duplicate_claim
+
+"Included in global amount/bundled".keyify
+# => :included_in_global_amount_bundled
+```
+
+In case you need something from the Ruby-verse, `keyify` also works on static class declarations.
+
+```ruby
+Integer.keyify
+# => :integer
+
+Math::DomainError.keyify
+# => :math_domain_error
+```
+
+It also makes it easy to build a hash with keys based on string values.
+
+```ruby
+my_hash = {}
+['Option A', 'Option B', 'Option C', 'Option D'].each do |opt|
+  my_hash[opt.keyify] = opt
+end
+
+my_hash
+# => {:option_a=>"Option A", :option_b=>"Option B", :option_c=>"Option C", :option_d=>"Option D"}
+```
+
+##### Bang variant
+
+The `keyify!` version performs the same actions, but will raise an `ArgumentError` if the value being keyified results in an empty string.
+
+```ruby
+'  '.keyify!
+# => ArgumentError: "  " cannot be keyified, no valid characters
+
+'!@#$%^'.keyify!
+# => ArgumentError: "!@#$%^" cannot be keyified, no valid characters
+
+'12345678'.keyify!
+# => ArgumentError: "12345678" cannot be keyified, no valid characters
+```
+
+#### `String#match?`
+
+Ruby's [`match` method](http://ruby-doc.org/core-2.2.0/String.html#method-i-match) is often used in boolean operations to determine the presence or absence of a given pattern within a string. That's why we found it odd that Ruby doesn't include a shortcut method to return a boolean result.
+
+`match?` operates exactly like `match`, and simply returns `true` or `false` based on the results of the lookup.
+
+```ruby
+'hello'.match?('he')
+# => true
+
+'hello'.match?('o')
+# => true
+
+'hello'.match?('(.)')
+# => true
+
+'hello'.match?(/(.)/)
+# => true
+
+'hello'.match?('xx')
+# => false
+
+'hello'.match?('he', 1)
+# => false
+```
+
+#### `String#nl2br`
+
+Converts newlines in a string into break tags. Will recognize Unix line feed (`\n`), standalone carriage returns (`\r`), and Windows formats (both `\r\n` and the improperly formatted `\n\r`).
+
+A Unix newline is appended immediately following each break tag replacement.
+
+```ruby
+"\n".nl2br
+# => "<br />\n"
+
+"\n\r".nl2br
+# => "<br />\n"
+
+"\r\n".nl2br
+# => "<br />\n"
+
+"\n\r\n".nl2br
+# => "<br />\n<br />\n"
+
+"\r\n\r\n".nl2br
+# => "<br />\n<br />\n"
+
+"\r\r\n".nl2br
+# => "<br />\n<br />\n"
+
+"\r\r".nl2br
+# => "<br />\n<br />\n"
+
+"\n\r\r".nl2br
+# => "<br />\n<br />\n"
+```
+
+#### `String#remove_whitespace`
+
+Removes all the whitespace from a string. No muss, no fuss.
+
+```ruby
+'   a b c d     e'.remove_whitespace
+# => 'abcde'
+
+# Absolutely any string is valid
+'. $ ^ { [ ( " | " ) * + ?'.remove_whitespace
+# => '.$^{[("|")*+?'
+```
+
+You can optionally provide a string that will replace the whitespace, rather than remove it entirely.
+
+```ruby
+'1 2 3 4 5'.remove_whitespace('+')
+# => '1+2+3+4+5'
+```
+
+Be careful, as `remove_whitespace` won't consolidate spaces before performing a replacement! If that's necessary, you should run your string over the [`dedupe`](#stringdedupe) method first.
+
+```ruby
+'1   2 3 4 5'.remove_whitespace('+')
+# => '1+++2+3+4+5'
+
+'1   2 3 4 5'.dedupe(' ').remove_whitespace('+')
+# => '1+2+3+4+5'
+```
+
 #### `String#strip_all`
 
-The built-in `strip` method removes leading and trailing whitespace, but there's no complementary function to strip other characters, like newlines, dashes, and/or underscores. `strip_all` allows you to perform these kinds of cleanups without having to deal directly with regex.
+Ruby's [`strip` method](http://ruby-doc.org/core-2.2.0/String.html#method-i-strip) removes leading and trailing whitespace, but there's no method to strip other characters like dashes, underscores, or numbers. `strip_all` allows you to perform these kinds of cleanups without having to write any regular expressions.
 
 The lone argument is a string of the characters you want to remove. By default, `strip_all` will remove dashes `-` and underscores `_`.
 
@@ -796,17 +1015,17 @@ Note that the argument is processed as a **regex group** (your argument ends up 
 # => 'foo'
 ```
 
-This also means that case-sensitivity still applies.
+Case-sensitivity still applies.
 
 ```ruby
 'ABCfooABC'.strip_all('abc')
 # => 'ABCfooABC'
 ```
 
-Because this method is intended to be a drop-in enhancement of `strip`, `strip_all` will always remove whitespace, even when providing your own set of characters.
+`strip_all` is intended to be a drop-in enhancement of `strip`, and will therefore always remove whitespace and newlines, even when providing your own set of characters.
 
 ```ruby
-'////   foo   ////'.strip_all('/')
+"////   foo   ////\n".strip_all('/')
 # => 'foo'
 ```
 
@@ -816,11 +1035,11 @@ Everything passed in is escaped by default, so you don't have to worry about sym
 '/[a|valid|regex]+/'.strip_all('/[]+|')
 # => 'a|valid|regex'
 
-# Remember, we're enhancing the strip method; the pipes are still because
-# they are not lead or trailing in this string.
+# The | pipes are still present because they are not leading or trailing in this string.
+# Remember, we're enhancing the strip method.
 ```
 
-The one exception is when you pass in the regex character ranges `0-9`, `a-z`, and `A-Z`. Those will be read as expressions to capture all numbers, all lowercase or all uppercase letters, respectively.
+The one exception is when you pass in regex character ranges: `0-9`, `a-z`, and `A-Z`. Those will be read as expressions to capture all numbers, all lowercase or all uppercase letters, respectively.
 
 ```ruby
 '0123456789   foo   9876543210'.strip_all('0-9')
@@ -851,18 +1070,11 @@ We provide the same set of associated methods as `strip`.
 - **`rstrip_all`** removes only trailing characters
 - All three have bang variants -- **`strip_all!`**, **`lstrip_all!`**, and **`rstrip_all!`** -- that perform the replacement in place, rather than returning a copy.
 
-#### `String#remove_whitespace`
-#### `String#nl2br`
-#### `String#match?`
-#### `String#dedupe`
-#### `String#keyify`
-
-
 ## Bug Reports
 
-**[Drop us a line in the issues section.](https://github.com/forgecrafted/finishing_moves/issues)**
+[Drop us a line in the issues section](https://github.com/forgecrafted/finishing_moves/issues).
 
-Be sure to include some sample code that reproduces the problem.
+**Be sure to include some sample code that reproduces the problem.**
 
 ## Add your own finisher!
 

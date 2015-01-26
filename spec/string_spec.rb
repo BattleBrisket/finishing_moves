@@ -10,6 +10,7 @@ describe String do
     expect('foo'.dedupe('o')).to eq 'fo'
     expect('foo'.dedupe('O')).to eq 'foo'
     expect('[[foo]]]'.dedupe('[]')).to eq '[foo]'
+    expect('/crazy//concatenated////file/path'.dedupe('/')).to eq '/crazy/concatenated/file/path'
 
     # make sure our use of gsub! isn't screwing us over
     orig = '___foo___'
@@ -85,6 +86,7 @@ describe String do
 
   it '#match?' do
     expect('hello'.match?('he')).to be true
+    expect('hello'.match?('he', 1)).to be false
     expect('hello'.match?('o')).to be true
     expect('hello'.match?('ol')).to be false
     expect('hello'.match?('(.)')).to be true
@@ -129,15 +131,29 @@ describe String do
     expect(Math::DomainError.keyify).to eq :math_domain_error
     expect('FooBarBaz'.keyify).to eq :foo_bar_baz
     expect(:FooBarBaz.keyify).to eq :foo_bar_baz
+    expect("Foo-Bar'Baz".keyify).to eq :foo_bar_baz
     expect('(Foo*&Bar!Baz?'.keyify).to eq :foo_bar_baz
+    expect('1234FooBAR'.keyify).to eq :foo_bar
     expect('!@#$Foo0987'.keyify).to eq :foo0987
     expect('!@#$%^'.keyify).to eq nil
     expect('12345678'.keyify).to eq nil
+    expect("Bill O'Shea".keyify).to eq :bill_o_shea
+    expect("Bill O Shea".keyify).to eq :bill_o_shea
+    expect("Bill O   Shea".keyify).to eq :bill_o_shea
+
+    # make sure we're not performing in place
+    str = 'FooBarBaz'
+    expect(str.keyify).to eq :foo_bar_baz
+    expect(str).to eq 'FooBarBaz'
   end
 
   it '#keyify!' do
     expect{ '!@#$%^'.keyify! }.to raise_error(ArgumentError)
     expect{ '12345678'.keyify! }.to raise_error(ArgumentError)
+  end
+
+  it "dedupe + remove_whitespace" do
+    expect('1   2 3 4  5'.dedupe(' ').remove_whitespace('+')).to eq '1+2+3+4+5'
   end
 
 end
