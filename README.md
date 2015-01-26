@@ -36,7 +36,6 @@ gem install 'finishing_moves'
 - [`Kernel#class_exists?`](#kernelclass_exists)
 - [`Object#same_as`](#objectsame_as)
 - [`Object#not_nil?`](#objectnot_nil)
-- [`Object#is_an?`](#objectis_an)
 - [`Hash#delete!`](#hashdelete)
 - [`Hash#delete_each`](#hashdelete_each)
 - [`Hash#delete_each!`](#hashdelete_each-1)
@@ -45,6 +44,7 @@ gem install 'finishing_moves'
 
 ###### *New in 0.3.0!*
 
+- [`Object#is_an?`](#objectis_an)
 - [`Array#to_hash_values`](#arrayto_hash_values)
 - [`Array#to_indexed_hash`](#arrayto_indexed_hash)
 - [`Array#to_hash_keys`](#arrayto_hash_keys)
