@@ -126,7 +126,6 @@ describe String do
   end
 
   it '#keyify' do
-    expect(SizedQueue.keyify).to eq :thread_sized_queue
     expect(Integer.keyify).to eq :integer
     expect(Math::DomainError.keyify).to eq :math_domain_error
     expect('FooBarBaz'.keyify).to eq :foo_bar_baz
