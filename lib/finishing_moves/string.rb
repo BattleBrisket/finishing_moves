@@ -81,11 +81,11 @@ class String
   end
 
   def remove_whitespace(replace = '')
-    gsub /[ ]+/, replace
+    gsub /[ ]/, replace
   end
 
   def remove_whitespace!(replace = '')
-    gsub! /[ ]+/, replace
+    gsub! /[ ]/, replace
   end
 
   # return true/false on regex match

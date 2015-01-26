@@ -79,6 +79,12 @@ describe String do
   end
 
   it '#match?' do
+    expect('hello'.match?('he')).to be true
+    expect('hello'.match?('o')).to be true
+    expect('hello'.match?('ol')).to be false
+    expect('hello'.match?('(.)')).to be true
+    expect('hello'.match?(/(.)/)).to be true
+    expect('hello'.match?('xx')).to be false
   end
 
   it '#remove_whitespace' do
@@ -87,6 +93,7 @@ describe String do
     expect('   '.remove_whitespace).to eq ''
     expect('. $ ^ { [ ( | ) * + ? \ '.remove_whitespace).to eq '.$^{[(|)*+?\\'
     expect('a b c d e'.remove_whitespace('+')).to eq 'a+b+c+d+e'
+    expect('a  b c d e'.remove_whitespace('+')).to eq 'a++b+c+d+e'
     expect('a b c d e'.remove_whitespace('__')).to eq 'a__b__c__d__e'
   end
 
@@ -97,6 +104,15 @@ describe String do
   end
 
   it '#nl2br' do
+    expect("\n".nl2br).to       eq "<br />\n"
+    expect("\n\r".nl2br).to     eq "<br />\n"
+    expect("\r\n".nl2br).to     eq "<br />\n"
+    expect("\n\r\n".nl2br).to   eq "<br />\n<br />\n"
+    expect("\r\n\r\n".nl2br).to eq "<br />\n<br />\n"
+    expect("\r\r\n".nl2br).to   eq "<br />\n<br />\n"
+    expect("\r\r".nl2br).to     eq "<br />\n<br />\n"
+    expect("\n\r\r".nl2br).to   eq "<br />\n<br />\n"
+
     expect("Let's play Global Thermonuclear War.\n\r".nl2br).to eq "Let's play Global Thermonuclear War.<br />\n"
     expect("A strange game.\n\nThe only winning move is not to play.\r\nHow about a nice game of chess?\r".nl2br).
       to eq "A strange game.<br />\n<br />\nThe only winning move is not to play.<br />\nHow about a nice game of chess?<br />\n"
