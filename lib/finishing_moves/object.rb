@@ -14,6 +14,8 @@ class Object
     end
   end
 
+  # Allows us to call keyify directly on a class name.
+  # See keyify() in string.rb for details.
   def self.keyify
     name.keyify
   end

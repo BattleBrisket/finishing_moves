@@ -36,18 +36,23 @@ describe String do
     expect('foo-314-foo'.strip_all('a-z-')).to eq '314'
     expect('foo-314-foo'.strip_all('A-Z')).to eq 'foo-314-foo'
     expect('FOO-314-FOO'.strip_all('A-Z')).to eq '-314-'
+    expect('FOO  314  FOO'.strip_all('A-Z')).to eq '314'
 
     expect('abcdefghijklmnopqrstuvwxyz'.strip_all('a-z')).to eq ''
     expect('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.strip_all('A-Z')).to eq ''
+    expect('ABCDEFGHIJKLM   FOO   NOPQRSTUVWXYZ'.strip_all('A-Z')).to eq ''
 
     expect('000000'.strip_all('0')).to eq ''
     expect('[[000]]'.strip_all('[0]')).to eq ''
     expect('. $ ^ { [ ( | ) * + ? \ '.strip_all('. $ ^ { [ ( | ) * + ? \ ')).to eq ''
+    expect('/[a|valid|regex]+/'.strip_all('/[]+')).to eq 'a|valid|regex'
 
     expect('_1 0__spaces_incl__0 1_'.strip_all('0-9_')).to eq 'spaces_incl'
     expect('  _spaces_incl_  '.strip_all).to eq 'spaces_incl'
 
     expect("__'''foo__'".strip_all('_\'') ).to eq 'foo'
+    expect('abcdefghijklm   foo123   nopqrstuvwxyz'.strip_all('a-z0-9')).to eq ''
+    expect('hello world'.strip_all('a-z')).to eq ''
 
     expect{'bad call'.strip_all(101)}.to raise_error(ArgumentError)
   end

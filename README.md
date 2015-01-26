@@ -42,14 +42,10 @@ gem install 'finishing_moves'
 - [`Hash#delete_each`](#hashdelete_each)
 - [`Hash#delete_each!`](#hashdelete_each-1)
 - [`Integer#length`](#integerlength)
+- [Typecasting *to* `Boolean`](#typecasting-to-boolean)
+- [Typecasting *from* `Boolean` and `Nil`](#typecasting-from-boolean-and-nil)
 - [`Enumerable#key_map`](#enumerable-key_map)
 - [`Enumerable#key_map_reduce`](#enumerable-key_map_reduce)
-- [Typecasting *to* `Boolean`](#typecasting-to-boolean)
-  - [`String#to_bool`](#stringto_bool)
-  - [`Fixnum#to_bool`](#fixnumto_bool)
-  - [`NilClass#to_bool`](#nilclassto_bool)
-  - [`TrueClass#to_bool` and `FalseClass#to_bool`](#trueclassto_bool-and-falseclassto_bool)
-- [Typecasting *from* `Boolean` and `Nil`](#typecasting-from-boolean-and-nil)
 
 ### Extensions to `Kernel`
 
@@ -574,89 +570,6 @@ For consistency, we added matching methods to `Float` and `BigDecimal` that simp
 
 `length` is aliased to `digits` for alternative clarity.
 
-### Extensions to  `Enumerable`
-
-#### `Enumerable#key_map`
-
-Standard `Enumerable#map` has a great shortcut when you want to create an `Array` by calling a method on each element in the collection. For example:
-
-```ruby
-class Pokemon
-  attr_accessor :name
-  def initialize(n)
-    @name = n
-  end
-end
-
-your_pokedex = [
-  Pokemon.new("Bulbasaur"),
-  Pokemon.new("Charmander"),
-  Pokemon.new("Squirtle"),
-]
-```
-
-If you want an `Array` of Pokemon names, you use `Enumerable#map`:
-
-    your_pokedex.map { |p| p.name }
-    # => ["Bulbasaur", "Charmander", "Squirtle"]
-
-The shortcut makes it easy for trivial repeatable method calls (such as to `:name`):
-
-    your_pokedex.map(&:name)
-    # => ["Bulbasaur", "Charmander", "Squirtle"]
-
-But what happens when my Pokedex isn't as well-structured as yours?
-
-```ruby
-my_pokedex = [
-  {name: "Bulbasaur"},
-  {name: "Charmander"},
-  {name: "Squirtle"},
-]
-```
-
-I can still map the `:name` keys out to an `Array` with full block notation...
-
-    my_pokedex.map { |p| p[:name] }
-    # => ["Bulbasaur", "Charmander", "Squirtle"]
-
-But such sad! I can haz no shortcut.
-
-    my_pokedex.map(??????)
-    # => ["Bulbasaur", "Charmander", "Squirtle"]
-
-Enter `Enumerable#key_map`:
-
-    my_pokedex.key_map(:name)
-    # => ["Bulbasaur", "Charmander", "Squirtle"]
-
-#### `Enumerable#key_map_reduce`
-
-Building off of `Enumerable#key_map`, finishing_moves provides a convenience method when you need to perform a one-step map/reduce operation on a collection.
-
-```ruby
-my_pokedex = [
-  {name: "Bulbasaur",   level: 2},
-  {name: "Charmander",  level: 2},
-  {name: "Squirtle",    level: 2},
-]
-```
-
-In other words, this map/reduce operation
-
-    my_pokedex.key_map(:level).reduce(0) { |memo,lvl| memo + lvl }
-    # => 6
-
-can be simplified to
-
-    my_pokedex.key_map_reduce(:level, :+)
-    # => 6
-
-where `:+` can be any named method of `memo`, and is applied to each value (just as in `Enumerable#reduce`). For additional flexibility, you can pass an intial value for `memo` and a custom `block` (and again, this works just like `Enumerable#reduce`):
-
-    my_pokedex.key_map_reduce(:level, 0) { |memo,lvl| memo + lvl }
-    # => 6
-
 ### Typecasting *to* `Boolean`
 
 Boolean values are frequently represented as strings and integers in databases and file storage. So we always thought it was a little odd that Ruby lacked a boolean typecasting method, given the proliferation of `to_*` methods for `String`, `Symbol`, `Integer`, `Float`, `Hash`, etc.
@@ -770,6 +683,180 @@ nil.to_i
 nil.to_sym
 # => :nil
 ```
+
+### Extensions to `Enumerable`
+
+#### `Enumerable#key_map`
+
+Standard `Enumerable#map` has a great shortcut when you want to create an `Array` by calling a method on each element in the collection. For example:
+
+```ruby
+class Pokemon
+  attr_accessor :name
+  def initialize(n)
+    @name = n
+  end
+end
+
+your_pokedex = [
+  Pokemon.new("Bulbasaur"),
+  Pokemon.new("Charmander"),
+  Pokemon.new("Squirtle"),
+]
+```
+
+If you want an `Array` of Pokemon names, you use `Enumerable#map`:
+
+    your_pokedex.map { |p| p.name }
+    # => ["Bulbasaur", "Charmander", "Squirtle"]
+
+The shortcut makes it easy for trivial repeatable method calls (such as to `:name`):
+
+    your_pokedex.map(&:name)
+    # => ["Bulbasaur", "Charmander", "Squirtle"]
+
+But what happens when my Pokedex isn't as well-structured as yours?
+
+```ruby
+my_pokedex = [
+  {name: "Bulbasaur"},
+  {name: "Charmander"},
+  {name: "Squirtle"},
+]
+```
+
+I can still map the `:name` keys out to an `Array` with full block notation...
+
+    my_pokedex.map { |p| p[:name] }
+    # => ["Bulbasaur", "Charmander", "Squirtle"]
+
+But such sad! I can haz no shortcut.
+
+    my_pokedex.map(??????)
+    # => ["Bulbasaur", "Charmander", "Squirtle"]
+
+Enter `Enumerable#key_map`:
+
+    my_pokedex.key_map(:name)
+    # => ["Bulbasaur", "Charmander", "Squirtle"]
+
+#### `Enumerable#key_map_reduce`
+
+Building off of `Enumerable#key_map`, finishing_moves provides a convenience method when you need to perform a one-step map/reduce operation on a collection.
+
+```ruby
+my_pokedex = [
+  {name: "Bulbasaur",   level: 2},
+  {name: "Charmander",  level: 2},
+  {name: "Squirtle",    level: 2},
+]
+```
+
+In other words, this map/reduce operation
+
+    my_pokedex.key_map(:level).reduce(0) { |memo,lvl| memo + lvl }
+    # => 6
+
+can be simplified to
+
+    my_pokedex.key_map_reduce(:level, :+)
+    # => 6
+
+where `:+` can be any named method of `memo`, and is applied to each value (just as in `Enumerable#reduce`). For additional flexibility, you can pass an intial value for `memo` and a custom `block` (and again, this works just like `Enumerable#reduce`):
+
+    my_pokedex.key_map_reduce(:level, 0) { |memo,lvl| memo + lvl }
+    # => 6
+
+### Extensions to `String`
+
+#### `String#strip_all`
+
+The built-in `strip` method removes leading and trailing whitespace, but there's no complementary function to strip other characters, like newlines, dashes, and/or underscores. `strip_all` allows you to perform these kinds of cleanups without having to deal directly with regex.
+
+The lone argument is a string of the characters you want to remove. By default, `strip_all` will remove dashes `-` and underscores `_`.
+
+```ruby
+'___foo___'.strip_all
+# => 'foo'
+
+'---foo---'.strip_all
+# => 'foo'
+```
+
+Note that the argument is processed as a **regex group** (your argument ends up inside of a regex `[]`). This means we evaluate the individual characters of the argument, not an explicit character sequence. You do not need spaces between the characters.
+
+```ruby
+'__-_--foo--_-__'.strip_all
+# => 'foo'
+
+'123foo123'.strip_all('321')
+# => 'foo'
+
+'xXxXfooXxXx'.strip_all('XYZx')
+# => 'foo'
+```
+
+This also means that case-sensitivity still applies.
+
+```ruby
+'ABCfooABC'.strip_all('abc')
+# => 'ABCfooABC'
+```
+
+Because this method is intended to be a drop-in enhancement of `strip`, `strip_all` will always remove whitespace, even when providing your own set of characters.
+
+```ruby
+'////   foo   ////'.strip_all('/')
+# => 'foo'
+```
+
+Everything passed in is escaped by default, so you don't have to worry about symbols.
+
+```ruby
+'/[a|valid|regex]+/'.strip_all('/[]+|')
+# => 'a|valid|regex'
+
+# Remember, we're enhancing the strip method; the pipes are still because
+# they are not lead or trailing in this string.
+```
+
+The one exception is when you pass in the regex character ranges `0-9`, `a-z`, and `A-Z`. Those will be read as expressions to capture all numbers, all lowercase or all uppercase letters, respectively.
+
+```ruby
+'0123456789   foo   9876543210'.strip_all('0-9')
+# => 'foo'
+
+'FOO  314   BARBAZ'.strip_all('A-Z')
+# => '314'
+
+'hello--314--world'.strip_all('a-z')
+# => '--314--'
+
+'hello--314--world'.strip_all('a-z-') # note the extra dash at the end
+# => '314'
+
+# you can really shoot yourself in the foot if you're not careful
+'hello world'.strip_all('a-z')
+# => ''
+
+'abcdefghijklm   foo123   nopqrstuvwxyz'.strip_all('a-z0-9')
+# => ''
+```
+
+##### Variants to `strip_all`
+
+We provide the same set of associated methods as `strip`.
+
+- **`lstrip_all`** removes only leading characters
+- **`rstrip_all`** removes only trailing characters
+- All three have bang variants -- **`strip_all!`**, **`lstrip_all!`**, and **`rstrip_all!`** -- that perform the replacement in place, rather than returning a copy.
+
+#### `String#remove_whitespace`
+#### `String#nl2br`
+#### `String#match?`
+#### `String#dedupe`
+#### `String#keyify`
+
 
 ## Bug Reports
 
