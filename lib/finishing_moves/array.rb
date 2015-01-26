@@ -19,7 +19,7 @@ class Array
 
   def to_hash_keys(starting_value = 0, &block)
     t = {}
-    block = proc { default_value } unless block_given?
+    block = proc { starting_value } unless block_given?
     each do |entry|
       t[entry] = block.call entry
     end
