@@ -40,6 +40,7 @@ gem install 'finishing_moves'
 - [`Hash#delete_each`](#hashdelete_each)
 - [`Hash#delete_each!`](#hashdelete_each-1)
 - [`Integer#length`](#integerlength)
+- [`Fixnum#subtract_percent`](#fixnumsubtract_percent)
 - [`Boolean` Typecasting](#typecasting-to-boolean)
 
 ###### *New in 0.3.0!*
@@ -576,6 +577,21 @@ For consistency, we added matching methods to `Float` and `BigDecimal` that simp
 ##### Alias
 
 `length` is aliased to `digits` for alternative clarity.
+
+### `Fixnum#subtract_percent`
+
+Ruby does not provide a nice method to subtract a percentage from a Fixnum. This works on an Integer, Float and BigDecimal.
+
+```ruby
+50.subtract_percent(10)
+# => 45.0
+
+1.0.subtract_percent(10)
+# => 0.9
+
+12654377184.123123.subtract_percent(10)
+# => 11388939465.710812
+```
 
 ### Typecasting *to* `Boolean`
 

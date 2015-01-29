@@ -4,7 +4,7 @@ class Integer
   end
   alias_method :digits, :length
   
-  def percentage_off(percent)
+  def subtract_percent(percent)
     self * ((100.0 - percent.to_f)/100.0)
   end
 end
@@ -15,7 +15,7 @@ class Float
   end
   alias_method :digits, :length
   
-  def percentage_off(percent)
+  def subtract_percent(percent)
     self * ((100.0 - percent.to_f)/100.0)
   end
 end
@@ -26,7 +26,7 @@ class BigDecimal
   end
   alias_method :digits, :length
   
-  def percentage_off(percent)
+  def subtract_percent(percent)
     self * ((100.0 - percent.to_f)/100.0)
   end
 end
