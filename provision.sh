@@ -3,7 +3,7 @@
 # Shell user settings.
 USER_NAME=vagrant
 USER_HOME=/home/$USER_NAME
-DEFAULT_RUBY='2.1.5'
+DEFAULT_RUBY='2.2.1'
 
 ###############################################################################
 # Functions
@@ -61,7 +61,7 @@ echo 'gem: --no-document'                   >> $USER_HOME/.gemrc
 
 # Install Ruby for $USER_NAME.
 install_ruby $DEFAULT_RUBY
-echo $DEFAULT_RUBY > $USER_HOME/.ruby-version
+/home/$USER_NAME/.rbenv/bin/rbenv global $DEFAULT_RUBY
 
 ###############################################################################
 # EDIT HERE!
