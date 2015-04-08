@@ -1,5 +1,6 @@
 # Finishing Moves
 [![Gem Version](https://badge.fury.io/rb/finishing_moves.svg)](http://badge.fury.io/rb/finishing_moves)
+[![Build Status](https://travis-ci.org/forgecrafted/finishing_moves.svg?branch=master)](https://travis-ci.org/forgecrafted/finishing_moves.svg?branch=master)
 
 ##### By the guys at [Forge Software](http://www.forgecrafted.com/)
 
@@ -11,8 +12,9 @@ In gamer terms, if standard Ruby methods are your default moves, `finishing_move
 
 - **Never** override default Ruby behavior, only add functionality.
 - Follow the Unix philosophy of *"Do one job really well."*
-- Minimize assumptions, e.g. avoid formatting output, mutating values, and long conditional logic flows.
+- Minimize assumptions, e.g. avoid formatting output, mutating values, and conditional logic flows.
 - Play nice with major Ruby players like Rake, Rails, and Sinatra.
+- Never duplicate existing methods from Rails and the like.
 - Test all the things.
 
 ## Installation
@@ -26,8 +28,11 @@ Command line
 ```
 gem install 'finishing_moves'
 ```
-
 [Here's the gem link](https://rubygems.org/gems/finishing_moves), if you like looking at that stuff.
+
+### Ruby Version
+
+Tested against **`2.0.0` and above**. Probably works in `1.9.3`.
 
 ## List of Methods
 
@@ -749,6 +754,9 @@ sages_hash = sages.to_hash_values(elements.first_key) do |key|
 end
 # => {:light=>"Rauru", :forest=>"Saria", :fire=>"Darunia", :water=>"Princess Ruto", :shadow=>"Impa", :spirit=>"Nabooru", :time=>"Zelda"}
 ```
+##### Alias
+
+`to_hash_values` is aliased to `to_hash` for brevity, and `to_hash_as_values` for alternative clarity.
 
 #### `Array#to_indexed_hash`
 ###### `to_indexed_hash(starting_key = 0)`
@@ -762,10 +770,6 @@ sages.to_indexed_hash(22)
 sages.to_indexed_hash("e")
 # => ArgumentError: "e" is not an integer
 ```
-
-##### Alias
-
-`to_hash_values` is aliased to `to_hash_as_values` for alternative clarity.
 
 #### `Array#to_hash_keys`
 ###### `to_hash_keys(starting_value = 0, &block)`
@@ -786,13 +790,6 @@ The block syntax allows for complex definitions of the value. This logic works p
 ##### Alias
 
 `to_hash_keys` is aliased to `to_hash_as_keys` for alternative clarity.
-
-
-#### `Array#to_hash`
-
-###### **We Need your feedback!**
-
-This is **not** currently defined, either in the standard Ruby spec or in Finishing Moves. We planned to make it an alias of either `to_hash_values` or `to_hash_keys`, but couldn't come to an agreement about which makes more sense. If you have some input, please drop your thoughts in the issues.
 
 ### Extensions to `Enumerable`
 

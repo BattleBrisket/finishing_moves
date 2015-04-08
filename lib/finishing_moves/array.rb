@@ -10,6 +10,7 @@ class Array
     end
     t
   end
+  alias_method :to_hash, :to_hash_values
   alias_method :to_hash_as_values, :to_hash_values
 
   def to_indexed_hash(starting_key = 0)
