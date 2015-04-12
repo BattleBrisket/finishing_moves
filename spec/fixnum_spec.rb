@@ -39,5 +39,24 @@ describe "Count number length" do
     # alias
     expect{ -0.9999999999999062.digits }.to raise_error(ArgumentError)
   end
+  
+  it "Fixnum#subtract_percent" do
+    expect(1.subtract_percent(10)).to eq 0.9
+    expect(10.subtract_percent(10)).to eq 9.0
+    expect(25.subtract_percent(5)).to eq 23.75
+    expect(76.subtract_percent(40)).to eq 45.6
+  end
+  
+  it "Float#subtract_percent" do
+    expect(1.0.subtract_percent(10)).to eq 0.9
+    expect(10.4.subtract_percent(10)).to eq 9.360000000000001
+    expect(25.2.subtract_percent(5)).to eq 23.939999999999998
+    expect(76.6.subtract_percent(40)).to eq 45.959999999999994
+  end
+  
+  it "BigDecimal#subtract_percent" do
+    expect(12654377184.123123.subtract_percent(10)).to eq 11388939465.710812
+    expect(123.129405.subtract_percent(25)).to eq 92.34705375
+  end
 
 end
