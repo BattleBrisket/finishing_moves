@@ -1,13 +1,28 @@
 module FinishingMovesFiscalLogic
 
+  attr_reader :fiscal_start
+  attr_reader :quarters
+
+  def self.included(base) # built-in Ruby hook for modules
+    base.class_eval do
+      original_method = instance_method(:initialize)
+      define_method(:initialize) do |*args, &block|
+        original_method.bind(self).call(*args, &block)
+        @fiscal_start = 1
+      end
+    end
+  end
+
+  def fiscal_start=(month)
+    @fiscal_start = Integer(month)
+  end
+
   def fiscal_quarter
-    ((self.month - 1) / 3) + 1
+    (((self.month + (12 - @fiscal_start) ) / 3) % 4) + 1
   end
 
   # return array of month integers correspond to appropriate quarter interger
   def quarter_months
-    quarters = [[1,2,3], [4,5,6], [7,8,9], [10,11,12]]
-    quarters[self.month - 1]
   end
 
 end
