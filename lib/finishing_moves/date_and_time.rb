@@ -86,15 +86,11 @@ module FinishingMovesFiscalLogic
   end
 
   def quarter_starts
+    starting_year = fiscal_start > 1 ? self.year - 1 : self.year
     ret = []
     (0..3).each do |n|
       this_month = all_quarter_months[n][0]
-      # y = this_month < fiscal_start ? self.year : self.year - 1
-      if this_month == fiscal_start && this_month == self.month
-        y = self.year
-      else
-        y = this_month < fiscal_start ? self.year : self.year - 1
-      end
+      y = this_month >= fiscal_start ? starting_year : starting_year + 1
       ret << self.class.new(y, this_month)
     end
     ret

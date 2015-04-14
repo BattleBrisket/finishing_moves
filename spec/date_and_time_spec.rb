@@ -189,7 +189,7 @@ describe FinishingMovesFiscalLogic do
     expect(@jan01_datetime.end_of_fiscal_year.strftime('%F')).to eq '2015-11-30'
   end
 
-  it "#quarter_starts", focus: true do
+  it "#quarter_starts" do
     expect(@jan01.quarter_starts).to be_an Array
     expect(@jan01.quarter_starts.length).to eq 4
 
@@ -209,6 +209,12 @@ describe FinishingMovesFiscalLogic do
     expect(@jan01.quarter_starts[1].strftime('%F')).to eq '2014-12-01'
     expect(@jan01.quarter_starts[2].strftime('%F')).to eq '2015-03-01'
     expect(@jan01.quarter_starts[3].strftime('%F')).to eq '2015-06-01'
+
+    @jan01_date = Date.new(2015, 1)
+    expect(@jan01_date.quarter_starts[0].strftime('%F')).to eq '2015-01-01'
+    expect(@jan01_date.quarter_starts[1].strftime('%F')).to eq '2015-04-01'
+    expect(@jan01_date.quarter_starts[2].strftime('%F')).to eq '2015-07-01'
+    expect(@jan01_date.quarter_starts[3].strftime('%F')).to eq '2015-10-01'
   end
 
 end
