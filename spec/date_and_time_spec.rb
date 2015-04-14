@@ -21,9 +21,9 @@ describe FinishingMovesFiscalLogic do
     expect(Date.method_defined? :all_quarter_months).to be true
     expect(DateTime.method_defined? :all_quarter_months).to be true
 
-    expect(Time.method_defined? :quarter_months).to be true
-    expect(Date.method_defined? :quarter_months).to be true
-    expect(DateTime.method_defined? :quarter_months).to be true
+    expect(Time.method_defined? :fiscal_quarter_months).to be true
+    expect(Date.method_defined? :fiscal_quarter_months).to be true
+    expect(DateTime.method_defined? :fiscal_quarter_months).to be true
   end
 
   it "#fiscal_quarter" do
@@ -68,19 +68,19 @@ describe FinishingMovesFiscalLogic do
     expect(@jan01.q4).to eq default_quarters[3]
   end
 
-  it "#quarter_months" do
-    expect(Time.new(2015, 1).quarter_months).to eq [1,2,3]
-    expect(Date.new(2015, 2).quarter_months).to eq [1,2,3]
-    expect(DateTime.new(2015, 5).quarter_months).to eq [4,5,6]
+  it "#fiscal_quarter_months" do
+    expect(Time.new(2015, 1).fiscal_quarter_months).to eq [1,2,3]
+    expect(Date.new(2015, 2).fiscal_quarter_months).to eq [1,2,3]
+    expect(DateTime.new(2015, 5).fiscal_quarter_months).to eq [4,5,6]
 
     @jan01.fiscal_start = 4
-    expect(@jan01.quarter_months).to eq [1,2,3]
+    expect(@jan01.fiscal_quarter_months).to eq [1,2,3]
     @jan01.fiscal_start = 2
-    expect(@jan01.quarter_months).to eq [11,12,1]
+    expect(@jan01.fiscal_quarter_months).to eq [11,12,1]
     @jan01.fiscal_start = 11
-    expect(@jan01.quarter_months).to eq [11,12,1]
+    expect(@jan01.fiscal_quarter_months).to eq [11,12,1]
     @jan01.fiscal_start = 9
-    expect(@jan01.quarter_months).to eq [12,1,2]
+    expect(@jan01.fiscal_quarter_months).to eq [12,1,2]
   end
 
   it "#first_month_of_quarter" do
@@ -107,11 +107,27 @@ describe FinishingMovesFiscalLogic do
     @jan01.fiscal_start = 4
     expect(@jan01.beginning_of_fiscal_quarter.strftime('%F')).to eq '2015-01-01'
     @jan01.fiscal_start = 2
-    expect(@jan01.beginning_of_fiscal_quarter.strftime('%F')).to eq '2015-11-01'
+    expect(@jan01.beginning_of_fiscal_quarter.strftime('%F')).to eq '2014-11-01'
     @jan01.fiscal_start = 11
-    expect(@jan01.beginning_of_fiscal_quarter.strftime('%F')).to eq '2015-11-01'
+    expect(@jan01.beginning_of_fiscal_quarter.strftime('%F')).to eq '2014-11-01'
     @jan01.fiscal_start = 9
-    expect(@jan01.beginning_of_fiscal_quarter.strftime('%F')).to eq '2015-12-01'
+    expect(@jan01.beginning_of_fiscal_quarter.strftime('%F')).to eq '2014-12-01'
+  end
+
+  it "#end_of_fiscal_quarter" do
+    expect(Time.new.end_of_fiscal_quarter).to be_a Time
+    expect(Date.new.end_of_fiscal_quarter).to be_a Date
+    expect(DateTime.new.end_of_fiscal_quarter).to be_a DateTime
+
+    expect(@jan01.end_of_fiscal_quarter.strftime('%F')).to eq '2015-03-31'
+    @jan01.fiscal_start = 4
+    expect(@jan01.end_of_fiscal_quarter.strftime('%F')).to eq '2015-03-31'
+    @jan01.fiscal_start = 2
+    expect(@jan01.end_of_fiscal_quarter.strftime('%F')).to eq '2015-01-31'
+    @jan01.fiscal_start = 11
+    expect(@jan01.end_of_fiscal_quarter.strftime('%F')).to eq '2015-01-31'
+    @jan01.fiscal_start = 9
+    expect(@jan01.end_of_fiscal_quarter.strftime('%F')).to eq '2015-02-28'
   end
 
   it "#beginning_of_fiscal_year" do
@@ -120,11 +136,28 @@ describe FinishingMovesFiscalLogic do
     expect(DateTime.new.beginning_of_fiscal_year).to be_a DateTime
 
     @jan01.fiscal_start = 3
-    expect(@jan01.beginning_of_fiscal_year.strftime('%F')).to eq '2015-03-01'
+    expect(@jan01.beginning_of_fiscal_year.strftime('%F')).to eq '2014-03-01'
     @jan01.fiscal_start = 9
-    expect(@jan01.beginning_of_fiscal_year.strftime('%F')).to eq '2015-09-01'
+    expect(@jan01.beginning_of_fiscal_year.strftime('%F')).to eq '2014-09-01'
     @jan01.fiscal_start = 12
-    expect(@jan01.beginning_of_fiscal_year.strftime('%F')).to eq '2015-12-01'
+    expect(@jan01.beginning_of_fiscal_year.strftime('%F')).to eq '2014-12-01'
+
+    # Separate logic for Date and DateTime means separate tests
+    @jan01_date = Date.new(2015, 1)
+    @jan01_date.fiscal_start = 3
+    expect(@jan01_date.beginning_of_fiscal_year.strftime('%F')).to eq '2014-03-01'
+    @jan01_date.fiscal_start = 9
+    expect(@jan01_date.beginning_of_fiscal_year.strftime('%F')).to eq '2014-09-01'
+    @jan01_date.fiscal_start = 12
+    expect(@jan01_date.beginning_of_fiscal_year.strftime('%F')).to eq '2014-12-01'
+
+    @jan01_datetime = DateTime.new(2015, 1)
+    @jan01_datetime.fiscal_start = 3
+    expect(@jan01_datetime.beginning_of_fiscal_year.strftime('%F')).to eq '2014-03-01'
+    @jan01_datetime.fiscal_start = 9
+    expect(@jan01_datetime.beginning_of_fiscal_year.strftime('%F')).to eq '2014-09-01'
+    @jan01_datetime.fiscal_start = 12
+    expect(@jan01_datetime.beginning_of_fiscal_year.strftime('%F')).to eq '2014-12-01'
   end
 
   it "#end_of_fiscal_year" do
@@ -133,15 +166,49 @@ describe FinishingMovesFiscalLogic do
     expect(DateTime.new.end_of_fiscal_year).to be_a DateTime
 
     @jan01.fiscal_start = 3
-    expect(@jan01.end_of_fiscal_year.strftime('%F')).to eq '2016-02-29'
+    expect(@jan01.end_of_fiscal_year.strftime('%F')).to eq '2015-02-28'
     @jan01.fiscal_start = 9
-    expect(@jan01.end_of_fiscal_year.strftime('%F')).to eq '2016-08-31'
+    expect(@jan01.end_of_fiscal_year.strftime('%F')).to eq '2015-08-31'
     @jan01.fiscal_start = 12
-    expect(@jan01.end_of_fiscal_year.strftime('%F')).to eq '2016-11-30'
+    expect(@jan01.end_of_fiscal_year.strftime('%F')).to eq '2015-11-30'
+
+    @jan01_date = Date.new(2015, 1)
+    @jan01_date.fiscal_start = 3
+    expect(@jan01_date.end_of_fiscal_year.strftime('%F')).to eq '2015-02-28'
+    @jan01_date.fiscal_start = 9
+    expect(@jan01_date.end_of_fiscal_year.strftime('%F')).to eq '2015-08-31'
+    @jan01_date.fiscal_start = 12
+    expect(@jan01_date.end_of_fiscal_year.strftime('%F')).to eq '2015-11-30'
+
+    @jan01_datetime = DateTime.new(2015, 1)
+    @jan01_datetime.fiscal_start = 3
+    expect(@jan01_datetime.end_of_fiscal_year.strftime('%F')).to eq '2015-02-28'
+    @jan01_datetime.fiscal_start = 9
+    expect(@jan01_datetime.end_of_fiscal_year.strftime('%F')).to eq '2015-08-31'
+    @jan01_datetime.fiscal_start = 12
+    expect(@jan01_datetime.end_of_fiscal_year.strftime('%F')).to eq '2015-11-30'
   end
 
-  it "#quarter_starts" do
-    # gotta figure out how to do the calendar rollover elegantly
+  it "#quarter_starts", focus: true do
+    expect(@jan01.quarter_starts).to be_an Array
+    expect(@jan01.quarter_starts.length).to eq 4
+
+    expect(@jan01.quarter_starts[0].strftime('%F')).to eq '2015-01-01'
+    expect(@jan01.quarter_starts[1].strftime('%F')).to eq '2015-04-01'
+    expect(@jan01.quarter_starts[2].strftime('%F')).to eq '2015-07-01'
+    expect(@jan01.quarter_starts[3].strftime('%F')).to eq '2015-10-01'
+
+    @jan01.fiscal_start = 2
+    expect(@jan01.quarter_starts[0].strftime('%F')).to eq '2014-02-01'
+    expect(@jan01.quarter_starts[1].strftime('%F')).to eq '2014-05-01'
+    expect(@jan01.quarter_starts[2].strftime('%F')).to eq '2014-08-01'
+    expect(@jan01.quarter_starts[3].strftime('%F')).to eq '2014-11-01'
+
+    @jan01.fiscal_start = 9
+    expect(@jan01.quarter_starts[0].strftime('%F')).to eq '2014-09-01'
+    expect(@jan01.quarter_starts[1].strftime('%F')).to eq '2014-12-01'
+    expect(@jan01.quarter_starts[2].strftime('%F')).to eq '2015-03-01'
+    expect(@jan01.quarter_starts[3].strftime('%F')).to eq '2015-06-01'
   end
 
 end

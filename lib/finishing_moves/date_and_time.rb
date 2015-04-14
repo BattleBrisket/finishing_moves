@@ -29,6 +29,14 @@ module FinishingMovesFiscalLogic
   end
   alias_method :fiscal_calendar, :all_quarter_months
 
+  def fiscal_quarter_months
+    all_quarter_months[fiscal_quarter - 1]
+  end
+
+  def first_month_of_quarter
+    fiscal_quarter_months[0]
+  end
+
   def first_quarter
     all_quarter_months[0]
   end
@@ -50,37 +58,56 @@ module FinishingMovesFiscalLogic
   alias_method :q4, :fourth_quarter
 
   def beginning_of_fiscal_year
-    self.class.new self.year, first_quarter[0]
+    self.class.new _last_fiscal_year_for_month(q1[0]), q1[0]
   end
 
   def end_of_fiscal_year
     if self.class.name == 'Time'
       d = beginning_of_fiscal_year + (60*60*24*385)
+      self.class.new(d.year, d.month) - (60*60*24)
     else
-      d = beginning_of_fiscal_year >> 13
+      d = beginning_of_fiscal_year >> 12
+      self.class.new(d.year, d.month) - 1
     end
-    self.class.new(d.year, d.month) - 1
-  end
-
-  def quarter_months
-    all_quarter_months[fiscal_quarter - 1]
-  end
-
-  def first_month_of_quarter
-    quarter_months[0]
   end
 
   def beginning_of_fiscal_quarter
-    self.class.new self.year, first_month_of_quarter
+    self.class.new _last_fiscal_year_for_month(first_month_of_quarter), first_month_of_quarter
+  end
+
+  def end_of_fiscal_quarter
+    if self.class.name == 'Time'
+      d = beginning_of_fiscal_quarter + (60*60*24*100)
+      self.class.new(d.year, d.month) - (60*60*24)
+    else
+      d = beginning_of_fiscal_quarter >> 3
+      self.class.new(d.year, d.month) - 1
+    end
   end
 
   def quarter_starts
-    [
-      self.class.new(self.year, first_quarter[0]),
-      self.class.new(self.year, second_quarter[0]),
-      self.class.new(self.year, third_quarter[0]),
-      self.class.new(self.year, fourth_quarter[0]),
-    ]
+    ret = []
+    (0..3).each do |n|
+      this_month = all_quarter_months[n][0]
+      # y = this_month < fiscal_start ? self.year : self.year - 1
+      if this_month == fiscal_start && this_month == self.month
+        y = self.year
+      else
+        y = this_month < fiscal_start ? self.year : self.year - 1
+      end
+      ret << self.class.new(y, this_month)
+    end
+    ret
+  end
+
+  protected
+
+  def _last_fiscal_year_for_month(month)
+    if month == fiscal_start && month == self.month
+      self.year
+    else
+      month >= fiscal_start ? self.year - 1 : self.year
+    end
   end
 
 end
