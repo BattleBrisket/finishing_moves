@@ -128,6 +128,29 @@ describe FinishingMovesFiscalLogic do
     expect(@jan01.end_of_fiscal_quarter.strftime('%F')).to eq '2015-01-31'
     @jan01.fiscal_start = 9
     expect(@jan01.end_of_fiscal_quarter.strftime('%F')).to eq '2015-02-28'
+
+    # Separate logic for Date and DateTime means separate tests
+    @jan01_date = Date.new(2015, 1)
+    expect(@jan01_date.end_of_fiscal_quarter.strftime('%F')).to eq '2015-03-31'
+    @jan01_date.fiscal_start = 4
+    expect(@jan01_date.end_of_fiscal_quarter.strftime('%F')).to eq '2015-03-31'
+    @jan01_date.fiscal_start = 2
+    expect(@jan01_date.end_of_fiscal_quarter.strftime('%F')).to eq '2015-01-31'
+    @jan01_date.fiscal_start = 11
+    expect(@jan01_date.end_of_fiscal_quarter.strftime('%F')).to eq '2015-01-31'
+    @jan01_date.fiscal_start = 9
+    expect(@jan01_date.end_of_fiscal_quarter.strftime('%F')).to eq '2015-02-28'
+
+    @jan01_datetime = DateTime.new(2015, 1)
+    expect(@jan01_datetime.end_of_fiscal_quarter.strftime('%F')).to eq '2015-03-31'
+    @jan01_datetime.fiscal_start = 4
+    expect(@jan01_datetime.end_of_fiscal_quarter.strftime('%F')).to eq '2015-03-31'
+    @jan01_datetime.fiscal_start = 2
+    expect(@jan01_datetime.end_of_fiscal_quarter.strftime('%F')).to eq '2015-01-31'
+    @jan01_datetime.fiscal_start = 11
+    expect(@jan01_datetime.end_of_fiscal_quarter.strftime('%F')).to eq '2015-01-31'
+    @jan01_datetime.fiscal_start = 9
+    expect(@jan01_datetime.end_of_fiscal_quarter.strftime('%F')).to eq '2015-02-28'
   end
 
   it "#beginning_of_fiscal_year" do
@@ -141,23 +164,6 @@ describe FinishingMovesFiscalLogic do
     expect(@jan01.beginning_of_fiscal_year.strftime('%F')).to eq '2014-09-01'
     @jan01.fiscal_start = 12
     expect(@jan01.beginning_of_fiscal_year.strftime('%F')).to eq '2014-12-01'
-
-    # Separate logic for Date and DateTime means separate tests
-    @jan01_date = Date.new(2015, 1)
-    @jan01_date.fiscal_start = 3
-    expect(@jan01_date.beginning_of_fiscal_year.strftime('%F')).to eq '2014-03-01'
-    @jan01_date.fiscal_start = 9
-    expect(@jan01_date.beginning_of_fiscal_year.strftime('%F')).to eq '2014-09-01'
-    @jan01_date.fiscal_start = 12
-    expect(@jan01_date.beginning_of_fiscal_year.strftime('%F')).to eq '2014-12-01'
-
-    @jan01_datetime = DateTime.new(2015, 1)
-    @jan01_datetime.fiscal_start = 3
-    expect(@jan01_datetime.beginning_of_fiscal_year.strftime('%F')).to eq '2014-03-01'
-    @jan01_datetime.fiscal_start = 9
-    expect(@jan01_datetime.beginning_of_fiscal_year.strftime('%F')).to eq '2014-09-01'
-    @jan01_datetime.fiscal_start = 12
-    expect(@jan01_datetime.beginning_of_fiscal_year.strftime('%F')).to eq '2014-12-01'
   end
 
   it "#end_of_fiscal_year" do
@@ -172,6 +178,7 @@ describe FinishingMovesFiscalLogic do
     @jan01.fiscal_start = 12
     expect(@jan01.end_of_fiscal_year.strftime('%F')).to eq '2015-11-30'
 
+    # Separate logic for Date and DateTime means separate tests
     @jan01_date = Date.new(2015, 1)
     @jan01_date.fiscal_start = 3
     expect(@jan01_date.end_of_fiscal_year.strftime('%F')).to eq '2015-02-28'
@@ -189,32 +196,60 @@ describe FinishingMovesFiscalLogic do
     expect(@jan01_datetime.end_of_fiscal_year.strftime('%F')).to eq '2015-11-30'
   end
 
-  it "#quarter_starts" do
-    expect(@jan01.quarter_starts).to be_an Array
-    expect(@jan01.quarter_starts.length).to eq 4
+  it "#quarter_starting_dates" do
+    expect(@jan01.quarter_starting_dates).to be_an Array
+    expect(@jan01.quarter_starting_dates.length).to eq 4
 
-    expect(@jan01.quarter_starts[0].strftime('%F')).to eq '2015-01-01'
-    expect(@jan01.quarter_starts[1].strftime('%F')).to eq '2015-04-01'
-    expect(@jan01.quarter_starts[2].strftime('%F')).to eq '2015-07-01'
-    expect(@jan01.quarter_starts[3].strftime('%F')).to eq '2015-10-01'
+    expect(@jan01.quarter_starting_dates[0].strftime('%F')).to eq '2015-01-01'
+    expect(@jan01.quarter_starting_dates[1].strftime('%F')).to eq '2015-04-01'
+    expect(@jan01.quarter_starting_dates[2].strftime('%F')).to eq '2015-07-01'
+    expect(@jan01.quarter_starting_dates[3].strftime('%F')).to eq '2015-10-01'
 
     @jan01.fiscal_start = 2
-    expect(@jan01.quarter_starts[0].strftime('%F')).to eq '2014-02-01'
-    expect(@jan01.quarter_starts[1].strftime('%F')).to eq '2014-05-01'
-    expect(@jan01.quarter_starts[2].strftime('%F')).to eq '2014-08-01'
-    expect(@jan01.quarter_starts[3].strftime('%F')).to eq '2014-11-01'
+    expect(@jan01.quarter_starting_dates[0].strftime('%F')).to eq '2014-02-01'
+    expect(@jan01.quarter_starting_dates[1].strftime('%F')).to eq '2014-05-01'
+    expect(@jan01.quarter_starting_dates[2].strftime('%F')).to eq '2014-08-01'
+    expect(@jan01.quarter_starting_dates[3].strftime('%F')).to eq '2014-11-01'
 
     @jan01.fiscal_start = 9
-    expect(@jan01.quarter_starts[0].strftime('%F')).to eq '2014-09-01'
-    expect(@jan01.quarter_starts[1].strftime('%F')).to eq '2014-12-01'
-    expect(@jan01.quarter_starts[2].strftime('%F')).to eq '2015-03-01'
-    expect(@jan01.quarter_starts[3].strftime('%F')).to eq '2015-06-01'
+    expect(@jan01.quarter_starting_dates[0].strftime('%F')).to eq '2014-09-01'
+    expect(@jan01.quarter_starting_dates[1].strftime('%F')).to eq '2014-12-01'
+    expect(@jan01.quarter_starting_dates[2].strftime('%F')).to eq '2015-03-01'
+    expect(@jan01.quarter_starting_dates[3].strftime('%F')).to eq '2015-06-01'
 
     @jan01_date = Date.new(2015, 1)
-    expect(@jan01_date.quarter_starts[0].strftime('%F')).to eq '2015-01-01'
-    expect(@jan01_date.quarter_starts[1].strftime('%F')).to eq '2015-04-01'
-    expect(@jan01_date.quarter_starts[2].strftime('%F')).to eq '2015-07-01'
-    expect(@jan01_date.quarter_starts[3].strftime('%F')).to eq '2015-10-01'
+    expect(@jan01_date.quarter_starting_dates[0].strftime('%F')).to eq '2015-01-01'
+    expect(@jan01_date.quarter_starting_dates[1].strftime('%F')).to eq '2015-04-01'
+    expect(@jan01_date.quarter_starting_dates[2].strftime('%F')).to eq '2015-07-01'
+    expect(@jan01_date.quarter_starting_dates[3].strftime('%F')).to eq '2015-10-01'
+  end
+
+  it "#quarter_ending_dates" do
+    expect(@jan01.quarter_ending_dates).to be_an Array
+    expect(@jan01.quarter_ending_dates.length).to eq 4
+
+    expect(@jan01.quarter_ending_dates[0].strftime('%F')).to eq '2015-03-31'
+    expect(@jan01.quarter_ending_dates[1].strftime('%F')).to eq '2015-06-30'
+    expect(@jan01.quarter_ending_dates[2].strftime('%F')).to eq '2015-09-30'
+    expect(@jan01.quarter_ending_dates[3].strftime('%F')).to eq '2015-12-31'
+
+    @jan01.fiscal_start = 2
+    expect(@jan01.quarter_ending_dates[0].strftime('%F')).to eq '2014-04-30'
+    expect(@jan01.quarter_ending_dates[1].strftime('%F')).to eq '2014-07-31'
+    expect(@jan01.quarter_ending_dates[2].strftime('%F')).to eq '2014-10-31'
+    expect(@jan01.quarter_ending_dates[3].strftime('%F')).to eq '2015-01-31'
+
+    @jan01.fiscal_start = 9
+    expect(@jan01.quarter_ending_dates[0].strftime('%F')).to eq '2014-11-30'
+    expect(@jan01.quarter_ending_dates[1].strftime('%F')).to eq '2015-02-28'
+    expect(@jan01.quarter_ending_dates[2].strftime('%F')).to eq '2015-05-31'
+    expect(@jan01.quarter_ending_dates[3].strftime('%F')).to eq '2015-08-31'
+
+    @jan01_date = Date.new(2015, 1)
+    expect(@jan01_date.quarter_ending_dates[0].strftime('%F')).to eq '2015-03-31'
+    expect(@jan01_date.quarter_ending_dates[1].strftime('%F')).to eq '2015-06-30'
+    expect(@jan01_date.quarter_ending_dates[2].strftime('%F')).to eq '2015-09-30'
+    expect(@jan01_date.quarter_ending_dates[3].strftime('%F')).to eq '2015-12-31'
   end
 
 end

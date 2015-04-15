@@ -1,3 +1,5 @@
+require 'date'
+
 module FinishingMovesFiscalLogic
 
   def fiscal_start
@@ -61,6 +63,10 @@ module FinishingMovesFiscalLogic
     self.class.new _last_fiscal_year_for_month(q1[0]), q1[0]
   end
 
+  def beginning_of_fiscal_quarter
+    self.class.new _last_fiscal_year_for_month(first_month_of_quarter), first_month_of_quarter
+  end
+
   def end_of_fiscal_year
     if self.class.name == 'Time'
       d = beginning_of_fiscal_year + (60*60*24*385)
@@ -69,10 +75,6 @@ module FinishingMovesFiscalLogic
       d = beginning_of_fiscal_year >> 12
       self.class.new(d.year, d.month) - 1
     end
-  end
-
-  def beginning_of_fiscal_quarter
-    self.class.new _last_fiscal_year_for_month(first_month_of_quarter), first_month_of_quarter
   end
 
   def end_of_fiscal_quarter
@@ -85,18 +87,35 @@ module FinishingMovesFiscalLogic
     end
   end
 
-  def quarter_starts
-    starting_year = fiscal_start > 1 ? self.year - 1 : self.year
+  def quarter_starting_dates
     ret = []
-    (0..3).each do |n|
-      this_month = all_quarter_months[n][0]
-      y = this_month >= fiscal_start ? starting_year : starting_year + 1
-      ret << self.class.new(y, this_month)
+    all_quarter_months.map { |months| months[0] }.each do |m|
+      y = m >= fiscal_start ? starting_year : starting_year + 1
+      ret << self.class.new(y, m)
+    end
+    ret
+  end
+
+  def quarter_ending_dates
+    ret = []
+    all_quarter_months.map { |months| months[2] }.each do |m|
+      y = m >= fiscal_start ? starting_year : starting_year + 1
+      if self.class.name == 'Time'
+        d = self.class.new(y, m) + (60*60*24*42)
+        ret << self.class.new(d.year, d.month) - (60*60*24)
+      else
+        d = self.class.new(y, m) >> 1
+        ret << self.class.new(d.year, d.month) - 1
+      end
     end
     ret
   end
 
   protected
+
+  def starting_year
+    fiscal_start > 1 ? self.year - 1 : self.year
+  end
 
   def _last_fiscal_year_for_month(month)
     if month == fiscal_start && month == self.month
@@ -109,7 +128,5 @@ module FinishingMovesFiscalLogic
 end
 
 Time.send :include, FinishingMovesFiscalLogic
-
-require 'date'
 Date.send :include, FinishingMovesFiscalLogic
 DateTime.send :include, FinishingMovesFiscalLogic
