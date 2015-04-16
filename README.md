@@ -27,16 +27,18 @@ Tested against **`2.0.0` and above**. Probably works in `1.9.3`.
 ## List of Methods
 ##### (all documented in the [GitHub wiki](https://github.com/forgecrafted/finishing_moves/wiki))
 
-  - [`Array#to_hash_values`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_hash_values)
+Not sure if this gem is for you? Check out the methods marked with a :boom: first?
+
+  - [`Array#to_hash_values`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_hash_values) :boom:
   - [`Array#to_indexed_hash`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_indexed_hash)
   - [`Array#to_hash_keys`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_hash_keys)
-  - [`Enumerable#key_map`](https://github.com/forgecrafted/finishing_moves/wiki/Enumerable#enumerablekey_map)
+  - [`Enumerable#key_map`](https://github.com/forgecrafted/finishing_moves/wiki/Enumerable#enumerablekey_map) :boom:
   - [`Enumerable#key_map_reduce`](https://github.com/forgecrafted/finishing_moves/wiki/Enumerable#enumerablekey_map_reduce)
   - [`Hash#delete!`](https://github.com/forgecrafted/finishing_moves/wiki/Hash#hashdelete)
   - [`Hash#delete_each`](https://github.com/forgecrafted/finishing_moves/wiki/Hash#hashdelete_each)
   - [`Hash#delete_each!`](https://github.com/forgecrafted/finishing_moves/wiki/Hash#hashdelete_each-1)
   - [`Integer#length`](https://github.com/forgecrafted/finishing_moves/wiki/Integer#integerlength)
-  - [`Kernel#nil_chain`](https://github.com/forgecrafted/finishing_moves/wiki/Kernel#kernelnil_chain) << Not sure if this gem is for you? Check this first.
+  - [`Kernel#nil_chain`](https://github.com/forgecrafted/finishing_moves/wiki/Kernel#kernelnil_chain) :boom:
   - [`Kernel#cascade`](https://github.com/forgecrafted/finishing_moves/wiki/Kernel#kernelcascade)
   - [`Kernel#class_exists?`](https://github.com/forgecrafted/finishing_moves/wiki/Kernel#kernelclass_exists)
   - [`Object#same_as`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objectsame_as)
@@ -47,7 +49,7 @@ Tested against **`2.0.0` and above**. Probably works in `1.9.3`.
   - [`String#match?`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringmatch)
   - [`String#nl2br`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringnl2br)
   - [`String#remove_whitespace`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringremove_whitespace)
-  - [`String#strip_all`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringstrip_all)
+  - [`String#strip_all`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringstrip_all) :boom:
   - [Boolean Typecasting](https://github.com/forgecrafted/finishing_moves/wiki/Boolean-Typecasting)
 
 ## Development approach
