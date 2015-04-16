@@ -1,7 +1,7 @@
 # Finishing Moves
 [![Gem Version](https://badge.fury.io/rb/finishing_moves.svg)](http://badge.fury.io/rb/finishing_moves)
 [![Build Status](https://travis-ci.org/forgecrafted/finishing_moves.svg?branch=master)](https://travis-ci.org/forgecrafted/finishing_moves.svg?branch=master)
-[![Hire Us!](https://img.shields.io/badge/biz-hire%20us!-F7931E.svg)](http://www.forgecrafted.com)
+[![Hire Us!](https://img.shields.io/badge/pros-for%20hire-F7931E.svg)](http://www.forgecrafted.com)
 
 Ruby includes a huge amount of default awesomeness that tackles most common development challenges. But every now and then, you find yourself in a situation where an **elaborate-yet-precise** coding maneuver wins the day. Finishing Moves is a collection of methods designed to assist in those just-typical-enough-to-be-annoying scenarios.
 
@@ -36,7 +36,7 @@ Tested against **`2.0.0` and above**. Probably works in `1.9.3`.
   - [`Hash#delete_each`](https://github.com/forgecrafted/finishing_moves/wiki/Hash#hashdelete_each)
   - [`Hash#delete_each!`](https://github.com/forgecrafted/finishing_moves/wiki/Hash#hashdelete_each-1)
   - [`Integer#length`](https://github.com/forgecrafted/finishing_moves/wiki/Integer#integerlength)
-  - [`Kernel#nil_chain`](https://github.com/forgecrafted/finishing_moves/wiki/Kernel#kernelnil_chain)
+  - [`Kernel#nil_chain`](https://github.com/forgecrafted/finishing_moves/wiki/Kernel#kernelnil_chain) << Not sure if this gem is for you? Check this first.
   - [`Kernel#cascade`](https://github.com/forgecrafted/finishing_moves/wiki/Kernel#kernelcascade)
   - [`Kernel#class_exists?`](https://github.com/forgecrafted/finishing_moves/wiki/Kernel#kernelclass_exists)
   - [`Object#same_as`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objectsame_as)
