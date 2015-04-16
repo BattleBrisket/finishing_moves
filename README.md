@@ -25,9 +25,8 @@ gem install 'finishing_moves'
 Tested against **`2.0.0` and above**. Probably works in `1.9.3`.
 
 ## List of Methods
-##### (all documented in the [GitHub wiki](https://github.com/forgecrafted/finishing_moves/wiki))
 
-Not sure if this gem is for you? Check out the methods marked with a :boom: first?
+**Not sure if this gem is for you?** Check out the methods marked with a :boom: first.
 
   - [`Array#to_hash_values`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_hash_values) :boom:
   - [`Array#to_indexed_hash`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_indexed_hash)
@@ -51,6 +50,8 @@ Not sure if this gem is for you? Check out the methods marked with a :boom: firs
   - [`String#remove_whitespace`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringremove_whitespace)
   - [`String#strip_all`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringstrip_all) :boom:
   - [Boolean Typecasting](https://github.com/forgecrafted/finishing_moves/wiki/Boolean-Typecasting)
+
+###### Complete documentation can be found in the [GitHub wiki](https://github.com/forgecrafted/finishing_moves/wiki)
 
 ## Development approach
 
