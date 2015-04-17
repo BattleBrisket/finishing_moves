@@ -36,10 +36,12 @@ Tested against **`2.0.0` and above**. Probably works in `1.9.3`.
   - [`Hash#delete!`](https://github.com/forgecrafted/finishing_moves/wiki/Hash#hashdelete)
   - [`Hash#delete_each`](https://github.com/forgecrafted/finishing_moves/wiki/Hash#hashdelete_each)
   - [`Hash#delete_each!`](https://github.com/forgecrafted/finishing_moves/wiki/Hash#hashdelete_each-1)
-  - [`Integer#length`](https://github.com/forgecrafted/finishing_moves/wiki/Integer#integerlength)
+  - [`Integer#length`](https://github.com/forgecrafted/finishing_moves/wiki/Numeric#integerlength)
   - [`Kernel#nil_chain`](https://github.com/forgecrafted/finishing_moves/wiki/Kernel#kernelnil_chain) :boom:
   - [`Kernel#cascade`](https://github.com/forgecrafted/finishing_moves/wiki/Kernel#kernelcascade)
   - [`Kernel#class_exists?`](https://github.com/forgecrafted/finishing_moves/wiki/Kernel#kernelclass_exists)
+  - [`Numeric#add_percent`](https://github.com/forgecrafted/finishing_moves/wiki/Numeric#numericadd_percent)
+  - [`Numeric#subtract_percent`](https://github.com/forgecrafted/finishing_moves/wiki/Numeric#numericsubtract_percent)
   - [`Object#same_as`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objectsame_as)
   - [`Object#not_nil?`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objectnot_nil)
   - [`Object#is_an?`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objectis_an)
