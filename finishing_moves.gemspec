@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'priscilla', '>= 0'
   s.add_development_dependency 'pry-byebug', '>= 0'
   s.add_development_dependency 'fuubar', '>= 0'
+  s.add_development_dependency 'coveralls', '>= 0.8.0'
 
   s.required_ruby_version = '>= 2.0.0'
 
