@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Count number length" do
+describe "Numeric methods" do
 
   it "Fixnum#length" do
     expect(1.length).to eq 1
@@ -67,6 +67,35 @@ describe "Count number length" do
     expect(12654377184.123123.subtract_percent(10)).to eq 11388939465.710812
     expect(123.129405.subtract_percent(25)).to eq 92.34705375
     expect(123.129405.percentage_off(25)).to eq 92.34705375
+  end
+
+
+  it "Fixnum#add_percent" do
+    expect(1.add_percent(10)).to eq 1.1
+    expect(10.add_percent(10)).to eq 11.0
+    expect(25.add_percent(5)).to eq 26.25
+    expect(76.add_percent(40)).to eq 106.4
+    expect(76.markup_by_percent(40)).to eq 106.4
+    expect(200.markup_by_percent(100)).to eq 400
+  end
+
+  it "Bignum#add_percent" do
+    expect(12356469787881584554556.add_percent(10)).to eq 1.3592116766669745e+22
+    expect(12356469787881584554556.markup_by_percent(10)).to eq 1.3592116766669745e+22
+  end
+
+  it "Float#add_percent" do
+    expect(1.5.add_percent(100)).to eq 3.0
+    expect(10.4.add_percent(10)).to eq 11.440000000000001
+    expect(25.2.add_percent(5)).to eq 26.46
+    expect(76.6.add_percent(40)).to eq 107.24
+    expect(1.5.markup_by_percent(100)).to eq 3.0
+  end
+
+  it "BigDecimal#add_percent" do
+    expect(12654377184.123123.add_percent(10)).to eq 13919814902.535435
+    expect(123.129405.add_percent(25)).to eq 153.91175625
+    expect(123.129405.markup_by_percent(25)).to eq 153.91175625
   end
 
 end
