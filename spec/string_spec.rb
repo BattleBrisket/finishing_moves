@@ -155,4 +155,30 @@ describe String do
     expect('1   2 3 4  5'.dedupe(' ').remove_whitespace('+')).to eq '1+2+3+4+5'
   end
 
+  it '#slugify' do
+    expect(Integer.slugify).to eq 'integer'
+    expect(Math::DomainError.slugify).to eq 'math-domain-error'
+    expect('FooBarBaz'.slugify).to eq 'foo-bar-baz'
+    expect(:FooBarBaz.slugify).to eq 'foo-bar-baz'
+    expect("Foo-Bar'Baz".slugify).to eq 'foo-bar-baz'
+    expect('(Foo*&Bar!Baz?'.slugify).to eq 'foo-bar-baz'
+    expect('1234FooBAR'.slugify).to eq 'foo-bar'
+    expect('!@#$Foo0987'.slugify).to eq 'foo0987'
+    expect('!@#$%^'.slugify).to eq nil
+    expect('12345678'.slugify).to eq nil
+    expect("Bill O'Shea".slugify).to eq 'bill-o-shea'
+    expect("Bill O Shea".slugify).to eq 'bill-o-shea'
+    expect("Bill O   Shea".slugify).to eq 'bill-o-shea'
+
+    # make sure we're not performing in place
+    str = 'FooBarBaz'
+    expect(str.slugify).to eq 'foo-bar-baz'
+    expect(str).to eq 'FooBarBaz'
+  end
+
+  it '#slugify!' do
+    expect{ '!@#$%^'.slugify! }.to raise_error(ArgumentError)
+    expect{ '12345678'.slugify! }.to raise_error(ArgumentError)
+  end
+
 end

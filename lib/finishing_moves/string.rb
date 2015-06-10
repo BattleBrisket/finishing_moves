@@ -39,6 +39,14 @@ class String
     result
   end
 
+  def slugify
+    _slugify_gsub(self.keyify)
+  end
+
+  def slugify!
+    _slugify_gsub(self.keyify!)
+  end
+
   def strip_all(chars = nil)
     expr = _strip_all_prep(chars)
     gsub Regexp.union(_lstrip_all_regex(expr), _rstrip_all_regex(expr)), ''
@@ -114,6 +122,11 @@ class String
       expr << ' '
     end
 
+    def _slugify_gsub(str)
+      return nil if str.nil?
+      str.to_s.gsub('_', '-')
+    end
+
 end
 
 # We aren't reopening Symbol class for anything else yet, so we'll just define
@@ -122,6 +135,10 @@ class Symbol
 
   def keyify
     to_s.keyify
+  end
+
+  def slugify
+    to_s.slugify
   end
 
 end

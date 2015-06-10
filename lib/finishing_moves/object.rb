@@ -21,4 +21,8 @@ class Object
     name.keyify
   end
 
+  def self.slugify
+    name.slugify
+  end
+
 end

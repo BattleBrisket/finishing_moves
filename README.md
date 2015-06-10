@@ -49,6 +49,7 @@ Tested against **`2.0.0` and above**. Probably works in `1.9.3`.
   - [`Object#is_an?`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objectis_an)
   - [`String#dedupe`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringdedupe)
   - [`String#keyify`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringkeyify)
+  - [`String#slugify`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringslugify)
   - [`String#match?`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringmatch)
   - [`String#nl2br`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringnl2br)
   - [`String#remove_whitespace`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringremove_whitespace)
