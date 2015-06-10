@@ -26,6 +26,7 @@ gem install 'finishing_moves'
 Tested against **`2.0.0` and above**. Probably works in `1.9.3`.
 
 ## List of Methods
+###### Complete documentation can be found in the [GitHub wiki](https://github.com/forgecrafted/finishing_moves/wiki)
 
 **Not sure if this gem is for you?** Check out the methods marked with a :boom: first.
 
@@ -52,9 +53,9 @@ Tested against **`2.0.0` and above**. Probably works in `1.9.3`.
   - [`String#nl2br`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringnl2br)
   - [`String#remove_whitespace`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringremove_whitespace)
   - [`String#strip_all`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringstrip_all) :boom:
-  - [Boolean Typecasting](https://github.com/forgecrafted/finishing_moves/wiki/Boolean-Typecasting)
 
-###### Complete documentation can be found in the [GitHub wiki](https://github.com/forgecrafted/finishing_moves/wiki)
+  - [Fiscal Calendar Calculations](https://github.com/forgecrafted/finishing_moves/wiki/Fiscal-Calendar-Calculations) :boom:
+  - [Boolean Typecasting](https://github.com/forgecrafted/finishing_moves/wiki/Boolean-Typecasting)
 
 ## Development approach
 

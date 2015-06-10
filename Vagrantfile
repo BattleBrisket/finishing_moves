@@ -9,6 +9,10 @@ Vagrant.configure("2") do |config|
   config.vm.box       = "trusty32"
   config.vm.box_url   = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-i386-vagrant-disk1.box"
 
+  # Use the normal insecure key
+  # https://github.com/mitchellh/vagrant/issues/2608
+  config.ssh.insert_key = false
+
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id,
       # Basics.
