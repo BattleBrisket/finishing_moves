@@ -3,7 +3,7 @@
 # Shell user settings.
 USER_NAME=vagrant
 USER_HOME=/home/$USER_NAME
-DEFAULT_RUBY='2.2.1'
+DEFAULT_RUBY='2.2.2'
 
 ###############################################################################
 # Functions
@@ -12,12 +12,6 @@ DEFAULT_RUBY='2.2.1'
 as_user() {
   echo "$USER_NAME:~$ > ${*}"
   su -l $USER_NAME -c "$*"
-}
-
-# Install the requested version of Ruby, with Bundler.
-install_ruby() {
-  as_user "rbenv install -s $1"
-  as_user "RBENV_VERSION=$1 gem install bundler"
 }
 
 ###############################################################################
@@ -57,14 +51,11 @@ truncate -s 0 $USER_HOME/.bashrc
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> $USER_HOME/.bashrc
 echo 'eval "$(rbenv init -)"'               >> $USER_HOME/.bashrc
 echo 'cd /vagrant'                          >> $USER_HOME/.bashrc
-echo 'gem: --no-document'                   >> $USER_HOME/.gemrc
 
-# Install Ruby for $USER_NAME.
-install_ruby $DEFAULT_RUBY
-/home/$USER_NAME/.rbenv/bin/rbenv global $DEFAULT_RUBY
+echo 'gem: --no-document' > $USER_HOME/.gemrc
 
-###############################################################################
-# EDIT HERE!
-# Install any Rubies (other than $DEFAULT_RUBY) required for individual apps.
-###############################################################################
-# e.g. `install_ruby 2.1.4`
+# Install the requested version of Ruby, with Bundler.
+as_user "rbenv install -s $DEFAULT_RUBY"
+as_user "rbenv global $DEFAULT_RUBY"
+as_user "RBENV_VERSION=$DEFAULT_RUBY gem install bundler"
+as_user "cd /vagrant && bundle"
