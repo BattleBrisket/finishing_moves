@@ -54,7 +54,7 @@ Tested against **`2.0.0` and above**. Probably works in `1.9.3`.
   - [`String#remove_whitespace`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringremove_whitespace)
   - [`String#strip_all`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringstrip_all) :boom:
 
-Multi-class logic enhancements
+*Multi-class logic enhancements*
 
   - [Fiscal Calendar Calculations](https://github.com/forgecrafted/finishing_moves/wiki/Fiscal-Calendar-Calculations) :boom:
   - [Boolean Typecasting](https://github.com/forgecrafted/finishing_moves/wiki/Boolean-Typecasting)
