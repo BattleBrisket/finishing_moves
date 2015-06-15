@@ -5,46 +5,23 @@ class String
   end
 
   def keyify
-    result = nil_chain do
-      the_key = self.clone
-
-      # strip all non-alphanumerics
-      the_key.gsub!(/[^0-9a-z]+/i, '_')
-
-      # borrowing some logic from Rails method underscore
-      # http://api.rubyonrails.org/classes/ActiveSupport/Inflector.html#method-i-underscore
-      if the_key =~ /[A-Z-]|::/
-        the_key.gsub!(/::/, '_')
-        the_key.gsub!(/([A-Z\d]+)([A-Z][a-z])/,'\1_\2')
-        the_key.gsub!(/([a-z\d])([A-Z])/,'\1_\2')
-      end
-
-      # Strip any leading numbers and underscores
-      the_key.lstrip_all!('0-9_')
-      # Strip trailing underscores
-      the_key.rstrip_all!('_')
-      # Combine multiple concurrent underscores
-      the_key.dedupe!('_')
-      # lowercase
-      the_key.downcase!
-      next the_key
-    end
-    return nil if result.nil? || result == ''
-    result.to_sym
+    _prep_key_or_slug(true)
   end
 
   def keyify!
-    result = self.keyify
+    result = _prep_key_or_slug(true)
     raise ArgumentError, "#{self.inspect} cannot be keyified, no valid characters" if result.nil?
     result
   end
 
   def slugify
-    _slugify_gsub(self.keyify)
+    _prep_key_or_slug(false)
   end
 
   def slugify!
-    _slugify_gsub(self.keyify!)
+    result = _prep_key_or_slug(false)
+    raise ArgumentError, "#{self.inspect} cannot be slugified, no valid characters" if result.nil?
+    result
   end
 
   def strip_all(chars = nil)
@@ -122,9 +99,40 @@ class String
       expr << ' '
     end
 
-    def _slugify_gsub(str)
-      return nil if str.nil?
-      str.to_s.gsub('_', '-')
+    def _prep_key_or_slug(keyified = true)
+      result = nil_chain do
+        the_key = self.clone
+
+        # strip all non-alphanumerics
+        the_key.gsub!(/[^0-9a-z]+/i, '_')
+
+        # borrowing some logic from Rails method underscore
+        # http://api.rubyonrails.org/classes/ActiveSupport/Inflector.html#method-i-underscore
+        if the_key =~ /[A-Z-]|::/
+          the_key.gsub!(/::/, '_')
+          the_key.gsub!(/([A-Z\d]+)([A-Z][a-z])/,'\1_\2')
+          the_key.gsub!(/([a-z\d])([A-Z])/,'\1_\2')
+        end
+
+        # Strip any leading numbers (keyify only)
+        the_key.lstrip_all!('0-9') if keyified
+        # Strip any leading or trailing underscores
+        the_key.strip_all!('_')
+        # Combine multiple concurrent underscores
+        the_key.dedupe!('_')
+        # lowercase
+        the_key.downcase!
+        # replace underscore with dashes (slugify only)
+        the_key.gsub!('_', '-') unless keyified
+        next the_key
+      end
+      case
+        when result.nil? || result == ''
+          nil
+        when keyified
+          result.to_sym
+        else result
+      end
     end
 
 end

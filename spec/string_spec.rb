@@ -162,10 +162,8 @@ describe String do
     expect(:FooBarBaz.slugify).to eq 'foo-bar-baz'
     expect("Foo-Bar'Baz".slugify).to eq 'foo-bar-baz'
     expect('(Foo*&Bar!Baz?'.slugify).to eq 'foo-bar-baz'
-    expect('1234FooBAR'.slugify).to eq 'foo-bar'
     expect('!@#$Foo0987'.slugify).to eq 'foo0987'
     expect('!@#$%^'.slugify).to eq nil
-    expect('12345678'.slugify).to eq nil
     expect("Bill O'Shea".slugify).to eq 'bill-o-shea'
     expect("Bill O Shea".slugify).to eq 'bill-o-shea'
     expect("Bill O   Shea".slugify).to eq 'bill-o-shea'
@@ -174,11 +172,16 @@ describe String do
     str = 'FooBarBaz'
     expect(str.slugify).to eq 'foo-bar-baz'
     expect(str).to eq 'FooBarBaz'
+
+    # we permit leading numbers, unlike keyify
+    expect('!1234FooBAR'.slugify).to eq '1234-foo-bar'
+    expect('1234FooBAR'.slugify).to eq '1234-foo-bar'
+    expect('12345678'.slugify).to eq '12345678'
   end
 
   it '#slugify!' do
     expect{ '!@#$%^'.slugify! }.to raise_error(ArgumentError)
-    expect{ '12345678'.slugify! }.to raise_error(ArgumentError)
+    expect{ '12345678'.slugify! }.not_to raise_error
   end
 
 end
