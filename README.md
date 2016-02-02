@@ -47,9 +47,10 @@ Tested against **`2.0.0` and above**. Probably works in `1.9.3`.
   - [`Object#same_as`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objectsame_as)
   - [`Object#not_nil?`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objectnot_nil)
   - [`Object#is_an?`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objectis_an)
+  - [`Object#is_not_a?`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objectis_not_a)
   - [`String#dedupe`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringdedupe)
   - [`String#keyify`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringkeyify)
-  - [`String#slugify`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringslugify) *<-- new in 0.6.0!*
+  - [`String#slugify`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringslugify)
   - [`String#match?`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringmatch)
   - [`String#nl2br`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringnl2br)
   - [`String#remove_whitespace`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringremove_whitespace)
