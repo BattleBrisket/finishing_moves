@@ -6,6 +6,11 @@ class Object
 
   alias_method :is_an?, :is_a?
 
+  def is_not_a?(compare)
+    !is_a? compare
+  end
+  alias_method :is_not_an?, :is_not_a?
+
   def same_as(compare)
     if compare.respond_to? :to_s
       self.to_s == compare.to_s
