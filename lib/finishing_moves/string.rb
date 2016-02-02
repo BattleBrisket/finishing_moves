@@ -136,17 +136,3 @@ class String
     end
 
 end
-
-# We aren't reopening Symbol class for anything else yet, so we'll just define
-# it in this file.
-class Symbol
-
-  def keyify
-    to_s.keyify
-  end
-
-  def slugify
-    to_s.slugify
-  end
-
-end

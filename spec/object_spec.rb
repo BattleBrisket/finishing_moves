@@ -24,17 +24,17 @@ describe Object do
   end
 
   it "#is_an?" do
-    a = Array
-    expect(a.is_an?(Array)).to be_true
-    expect(a.is_an?(Hash)).to be_false
+    a = [1,2,3]
+    expect(a.is_an?(Array)).to eq true
+    expect(a.is_an?(Hash)).to eq false
   end
 
   it "#is_not_a?" do
-    a = Array
-    expect(a.is_not_a?(Array)).to be_false
-    expect(a.is_not_a?(Hash)).to be_true
-    expect(a.is_not_an?(Array)).to be_false
-    expect(a.is_not_an?(Hash)).to be_true
+    a = [1,2,3]
+    expect(a.is_not_a?(Array)).to eq false
+    expect(a.is_not_a?(Hash)).to eq true
+    expect(a.is_not_an?(Array)).to eq false
+    expect(a.is_not_an?(Hash)).to eq true
   end
 
 end
