@@ -62,7 +62,7 @@ describe "Boolean typecasting" do
       expect(nil.to_i).to eq 0
     end
     it "#to_sym" do
-      expect(nil.to_sym).to eq :nil
+      expect(nil.to_sym).to eq nil
     end
   end
 

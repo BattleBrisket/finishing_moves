@@ -29,5 +29,5 @@ end
 class NilClass
   def to_bool; false; end
   def to_i; 0; end
-  def to_sym; :nil; end
+  def to_sym; nil; end
 end
