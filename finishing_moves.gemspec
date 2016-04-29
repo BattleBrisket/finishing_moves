@@ -28,18 +28,4 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.0.0'
 
-  s.post_install_message = <<EOS
-********************************************************************************
-
-  Thank you for installing Finishing Moves!
-
-  Built and maintained by Forge Software
-  www.forgecrafted.com
-
-  Does your project or organization use this gem? Add it to the showcase page.
-  https://github.com/forgecrafted/finishing_moves/wiki/showcase
-
-********************************************************************************
-EOS
-
 end
