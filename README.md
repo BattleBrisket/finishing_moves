@@ -2,11 +2,10 @@
 [![Gem Version](https://badge.fury.io/rb/finishing_moves.svg)](https://rubygems.org/gems/finishing_moves)
 [![Build Status](https://travis-ci.org/forgecrafted/finishing_moves.svg?branch=master)](https://travis-ci.org/forgecrafted/finishing_moves)
 [![Coverage Status](https://coveralls.io/repos/forgecrafted/finishing_moves/badge.svg?branch=master)](https://coveralls.io/r/forgecrafted/finishing_moves?branch=master)
-[![Hire Us!](https://img.shields.io/badge/pros-for%20hire-F7931E.svg)](http://www.forgecrafted.com)
 
-Ruby includes a huge amount of default awesomeness that tackles most common development challenges. But every now and then, you find yourself in a situation where an **elaborate-yet-precise** coding maneuver wins the day. Finishing Moves is a collection of methods designed to assist in those just-typical-enough-to-be-annoying scenarios.
+Ruby includes a huge amount of default awesomeness that tackles most common development challenges. But every now and then, you find yourself performing contortions to achieve results that, honestly, should feel more natural given the language's design. Finishing Moves is a collection of methods designed to assist in those "just annoying enough" scenarios.
 
-In gamer terms, if standard Ruby methods are your default moves, Finishing Moves would be mana-consuming techniques. Your cooldown spells. Your grenades (there's never enough grenades!). In the right situation, they kick serious [cyclomatic butt](https://en.wikipedia.org/wiki/Cyclomatic_complexity).
+In the right situation, they kick serious [cyclomatic butt](https://en.wikipedia.org/wiki/Cyclomatic_complexity).
 
 ## Installation
 
@@ -19,14 +18,8 @@ Command line
 ```
 gem install 'finishing_moves'
 ```
-[Here's the gem link](https://rubygems.org/gems/finishing_moves), if you like looking at that stuff.
 
-### Ruby Version
-
-Tested against **`2.0.0` and above**. Probably works in `1.9.3`.
-
-## List of Methods
-###### Complete documentation in the [GitHub wiki](https://github.com/forgecrafted/finishing_moves/wiki)
+## Functionality
 
 **Not sure if this gem is for you?** Check out the methods marked with a :boom: first.
 
@@ -65,6 +58,10 @@ Tested against **`2.0.0` and above**. Probably works in `1.9.3`.
   - [Fiscal Calendar Calculations](https://github.com/forgecrafted/finishing_moves/wiki/Fiscal-Calendar-Calculations) :boom:
   - [Boolean Typecasting](https://github.com/forgecrafted/finishing_moves/wiki/Boolean-Typecasting)
 
+### Ruby Version
+
+Tested against **`2.0.0` and above**. Probably works in `1.9.3`.
+
 ## Development approach
 
 - **Never** override default Ruby behavior, only add functionality.
@@ -87,15 +84,3 @@ Tested against **`2.0.0` and above**. Probably works in `1.9.3`.
 3. Add your finisher
 4. Repeat steps 2 and 3 until you see a brilliant luster
 5. Submit a pull request
-
-## Credits
-
-[![forge software](http://www.forgecrafted.com/logo.png)](http://www.forgecrafted.com)
-
-Finishing Moves is maintained and funded by [Forge Software (forgecrafted.com)](http://www.forgecrafted.com)
-
-If you like our code, please give us a hollar if your company needs outside pro's who can write good code AND run servers at the same time!
-
-## License
-
-Finishing Moves is Copyright Forge Software, LLC. It is free software, and may be redistributed under the terms specified in the LICENSE file.
