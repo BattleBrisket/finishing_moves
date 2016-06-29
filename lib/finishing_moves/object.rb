@@ -30,4 +30,26 @@ class Object
     name.slugify
   end
 
+  def false?
+    return true if self.is_a? FalseClass
+    return false
+  end
+
+  def true?
+    return true if self.is_a? TrueClass
+    return false
+  end
+
+  def bool?
+    return true if self.is_one_of? TrueClass, FalseClass
+    return false
+  end
+
+  def is_one_of?( *klasses )
+    klasses.each do |klass|
+      return true if is_a? klass
+    end
+    return false
+  end
+
 end

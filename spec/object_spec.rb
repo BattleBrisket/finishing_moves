@@ -37,4 +37,50 @@ describe Object do
     expect(a.is_not_an?(Hash)).to eq true
   end
 
+  it "#true?" do
+    expect(true.true?).to eq true
+    expect(false.true?).to eq false
+    expect(nil.true?).to eq false
+    expect([:ar, :ray].true?).to eq false
+    expect({ha: :sh}.true?).to eq false
+    expect('string'.true?).to eq false
+    expect(:symbol.true?).to eq false
+  end
+
+  it "#false?" do
+    expect(false.false?).to eq true
+    expect(true.false?).to eq false
+    expect(nil.false?).to eq false
+    expect([:ar, :ray].false?).to eq false
+    expect({ha: :sh}.false?).to eq false
+    expect('string'.false?).to eq false
+    expect(:symbol.false?).to eq false
+  end
+
+  it "#bool?" do
+    expect(true.bool?).to eq true
+    expect(false.bool?).to eq true
+    expect(nil.bool?).to eq false
+    expect('string'.bool?).to eq false
+    expect(:symbol.bool?).to eq false
+    expect(1.bool?).to eq false
+    expect(0.bool?).to eq false
+  end
+
+  it "#is_one_of?" do
+    expect(nil.is_one_of? NilClass).to eq true
+    expect(nil.is_one_of? TrueClass, FalseClass, NilClass).to eq true
+    expect(nil.is_one_of? TrueClass, FalseClass).to eq false
+    expect(1.is_one_of? Integer, String).to eq true
+    expect('1'.is_one_of? Integer, String).to eq true
+    expect('1'.is_one_of? Integer, Float).to eq false
+    expect(1.1.is_one_of? Integer, Float).to eq true
+    expect(1.1.is_one_of? String, Float).to eq true
+    expect('1.1'.is_one_of? String, Float).to eq true
+    expect(:symbol.is_one_of? String, Symbol, Float).to eq true
+    expect(:symbol.is_one_of? String, Float).to eq false
+    expect(:symbol.is_one_of? String, Symbol).to eq true
+    expect(:symbol.is_one_of? String, Float, Object).to eq true
+  end
+
 end
