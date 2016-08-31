@@ -144,6 +144,9 @@ describe String do
     str = 'FooBarBaz'
     expect(str.keyify).to eq :foo_bar_baz
     expect(str).to eq 'FooBarBaz'
+
+    # should work on frozen values
+    expect('FooBarBaz'.freeze.keyify).to eq :foo_bar_baz
   end
 
   it '#keyify!' do
@@ -177,6 +180,9 @@ describe String do
     expect('!1234FooBAR'.slugify).to eq '1234-foo-bar'
     expect('1234FooBAR'.slugify).to eq '1234-foo-bar'
     expect('12345678'.slugify).to eq '12345678'
+
+    # should work on frozen values
+    expect('FooBarBaz'.freeze.slugify).to eq 'foo-bar-baz'
   end
 
   it '#slugify!' do

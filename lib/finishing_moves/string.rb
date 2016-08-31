@@ -109,7 +109,7 @@ class String
 
     def _prep_key_or_slug(keyified = true)
       result = nil_chain do
-        the_key = self.clone
+        the_key = self.dup
 
         # strip all non-alphanumerics
         the_key.gsub!(/[^0-9a-z]+/i, '_')
