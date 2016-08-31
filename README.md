@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/forgecrafted/finishing_moves.svg?branch=master)](https://travis-ci.org/forgecrafted/finishing_moves)
 [![Coverage Status](https://coveralls.io/repos/forgecrafted/finishing_moves/badge.svg?branch=master)](https://coveralls.io/r/forgecrafted/finishing_moves?branch=master)
 
-Ruby includes a huge amount of default awesomeness that tackles most common development challenges. But every now and then, you find yourself performing contortions to achieve results that, honestly, should feel more natural given the language's design. Finishing Moves is a collection of methods designed to assist in those "just annoying enough" scenarios.
+Ruby includes a huge amount of default awesomeness that tackles most common development challenges. But every now and then, you find yourself performing contortions to achieve results that, honestly, **should feel more natural** given the language's design elegance. Finishing Moves is a collection of methods designed to assist in those "why is this awkward?" scenarios.
 
 In the right situation, they kick serious [cyclomatic butt](https://en.wikipedia.org/wiki/Cyclomatic_complexity).
 
