@@ -32,4 +32,14 @@ module Kernel
     end
   end
 
+  def silently(ret_val = nil, &block)
+    begin
+      result = yield
+      return ret_val if result.nil?
+      result
+    rescue
+      return ret_val
+    end
+  end
+
 end

@@ -59,6 +59,47 @@ describe Kernel do
     expect(test_cascade('foobar')).to eq 4
   end
 
+  it "#silently" do
+    # lots of overlap with nil_chain, so...
+    expect(silently{bogus_variable}).to eq nil
+    expect(silently{bogus_hash[:foo]}).to eq nil
+    params = { :foo => 'bar' }
+    expect(silently{ params[:bogus_key] }).to eq nil
+    expect(silently{ params[:foo] }).to eq 'bar'
+    var = 'a simple string'
+    expect(silently{ var.transmogrify }).to eq nil
+
+    c = C.new
+    b = B.new c
+    a = A.new b
+    expect(a.b.c.hello).to eq "Hello, world!"
+    b.c = nil
+    expect(silently{a.b.c.hello}).to eq nil
+    a = nil
+    expect(silently{a.b.c.hello}).to eq nil
+
+    expect( silently(true) { bogus_variable } ).to equal true
+    expect( silently(false) { bogus_variable } ).to equal false
+    expect( silently('gotcha!') { bogus_variable } ).to eq 'gotcha!'
+    expect( silently('gotcha!') { params[:bogus_key] } ).to eq 'gotcha!'
+    expect( silently('gotcha!') { params[:foo] } ).to eq 'bar'
+
+    # and here's the new sauce
+    expect(silently{raise}).to eq nil
+    expect(silently{raise "oops"}).to eq nil
+    expect(silently{raise StandardError}).to eq nil
+    expect(silently{raise ArgumentError}).to eq nil
+    expect(silently{raise RuntimeError}).to eq nil
+    expect(silently{raise NoMethodError}).to eq nil
+    expect(silently{raise NameError}).to eq nil
+
+    # leave system-level stuff alone
+    expect{ silently{raise Exception} }.to raise_error(Exception)
+    expect{ silently{raise SystemExit} }.to raise_error(SystemExit)
+    expect{ silently{raise NoMemoryError} }.to raise_error(NoMemoryError)
+    expect{ silently{raise SignalException.new(0)} }.to raise_error(SignalException)
+  end
+
 end
 
 # some small test fixtures
@@ -115,3 +156,13 @@ module SomeModule
   end
 end
 
+class TestExceptionLibrary
+  class Error < RuntimeError
+  end
+
+  class WidgetError < Error
+  end
+
+  class FrobError < Error
+  end
+end
