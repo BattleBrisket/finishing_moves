@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email       = ["frank@forgecrafted.com", "chris@forgecrafted.com"]
   s.summary     = %q{Small, focused, incredibly useful methods added to core Ruby classes.}
   s.description = <<-EOF
-    Ruby includes a huge amount of default awesomeness that tackles most common development challenges. But every now and then, you find yourself in a situation where an elaborate-yet-precise coding maneuver wins the day. Finishing Moves is a collection of methods designed to assist in those just-typical-enough-to-be-annoying scenarios.
+    Ruby includes a huge amount of default awesomeness that tackles most common development challenges. But every now and then, you find yourself performing contortions to achieve results that, honestly, should feel more natural given the language's design elegance. Finishing Moves is a collection of methods designed to assist in those "why is this awkward?" scenarios.
   EOF
   s.homepage    = "https://github.com/forgecrafted/finishing_moves"
   s.license     = "MIT"
