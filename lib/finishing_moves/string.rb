@@ -1,7 +1,11 @@
 class String
 
   def nl2br
-    self.gsub(/(?:\n\r?|\r\n?)/, "<br />\n")
+    _nl_gsub("<br />\n")
+  end
+
+  def newline_to(rep = ' ')
+    _nl_gsub(rep.to_s)
   end
 
   def keyify
@@ -65,11 +69,19 @@ class String
     str.each_char { |c| gsub! /#{Regexp.escape c}{2,}/, c }
   end
 
-  def remove_whitespace(replace = '')
+  def remove_whitespace(_ignored = nil)
+    replace_whitespace('')
+  end
+
+  def remove_whitespace!(_ignored = nil)
+    replace_whitespace!('')
+  end
+
+  def replace_whitespace(replace = '')
     gsub /[ ]/, replace
   end
 
-  def remove_whitespace!(replace = '')
+  def replace_whitespace!(replace = '')
     gsub! /[ ]/, replace
   end
 
@@ -86,7 +98,17 @@ class String
     Float(self) != nil rescue false
   end
 
+  # TODO
+  def each_char_index(&block)
+    # how to return enumerator if no block given?
+    # http://blog.arkency.com/2014/01/ruby-to-enum-for-enumerator/
+  end
+
   protected
+
+    def _nl_gsub(rep)
+      self.gsub(/(?:\n\r?|\r\n?)/, rep)
+    end
 
     def _lstrip_all_regex(expr)
       /\A[#{expr}]+/

@@ -99,15 +99,28 @@ describe String do
     expect(' [  foo ]   '.remove_whitespace).to eq '[foo]'
     expect('   '.remove_whitespace).to eq ''
     expect('. $ ^ { [ ( | ) * + ? \ '.remove_whitespace).to eq '.$^{[(|)*+?\\'
-    expect('a b c d e'.remove_whitespace('+')).to eq 'a+b+c+d+e'
-    expect('a  b c d e'.remove_whitespace('+')).to eq 'a++b+c+d+e'
-    expect('a b c d e'.remove_whitespace('__')).to eq 'a__b__c__d__e'
+    expect('a b c d e'.remove_whitespace('+')).to eq 'abcde'
+    expect('a  b c d e'.remove_whitespace('+')).to eq 'abcde'
+    expect('a b c d e'.remove_whitespace('__')).to eq 'abcde'
   end
 
   it '#remove_whitespace!' do
     str = '   a b c d     e'
     str.remove_whitespace!
     expect(str).to eq 'abcde'
+  end
+
+  it '#replace_whitespace' do
+    expect('   a b c d     e'.replace_whitespace).to eq 'abcde'
+    expect('a b c d e'.replace_whitespace('+')).to eq 'a+b+c+d+e'
+    expect('a  b c d e'.replace_whitespace('+')).to eq 'a++b+c+d+e'
+    expect('a b c d e'.replace_whitespace('__')).to eq 'a__b__c__d__e'
+  end
+
+  it '#replace_whitespace!' do
+    str = 'a b c d e'
+    str.replace_whitespace!('-')
+    expect(str).to eq 'a-b-c-d-e'
   end
 
   it '#nl2br' do
@@ -123,6 +136,27 @@ describe String do
     expect("Let's play Global Thermonuclear War.\n\r".nl2br).to eq "Let's play Global Thermonuclear War.<br />\n"
     expect("A strange game.\n\nThe only winning move is not to play.\r\nHow about a nice game of chess?\r".nl2br).
       to eq "A strange game.<br />\n<br />\nThe only winning move is not to play.<br />\nHow about a nice game of chess?<br />\n"
+  end
+
+  it "#newline_to" do
+    expect("\n".newline_to).to       eq " "
+    expect("\n\r".newline_to).to     eq " "
+    expect("\r\n".newline_to).to     eq " "
+    expect("\n\r\n".newline_to).to   eq "  "
+    expect("\r\n\r\n".newline_to).to eq "  "
+    expect("\r\r\n".newline_to).to   eq "  "
+    expect("\r\r".newline_to).to     eq "  "
+    expect("\n\r\r".newline_to).to   eq "  "
+
+    # replacements should end up as strings
+    expect("\n".newline_to(:bar)).to eq 'bar'
+    expect("\n\n".newline_to('+')).to eq '++'
+    expect("\n\n".newline_to(0)).to eq '00'
+    expect("\n\n".newline_to(true)).to eq 'truetrue'
+
+    expect("Let's play Global Thermonuclear War.\n\r".newline_to).to eq "Let's play Global Thermonuclear War. "
+    expect("A strange game.\n\nThe only winning move is not to play.\r\nHow about a nice game of chess?\r".newline_to).
+      to eq "A strange game.  The only winning move is not to play. How about a nice game of chess? "
   end
 
   it '#keyify' do
@@ -155,7 +189,8 @@ describe String do
   end
 
   it "dedupe + remove_whitespace" do
-    expect('1   2 3 4  5'.dedupe(' ').remove_whitespace('+')).to eq '1+2+3+4+5'
+    expect('1   2 3 4  5'.dedupe(' ').remove_whitespace('+')).to eq '12345'
+    expect('1   2 3 4  5'.dedupe(' ').replace_whitespace('+')).to eq '1+2+3+4+5'
   end
 
   it '#slugify' do
