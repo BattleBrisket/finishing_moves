@@ -1,11 +1,15 @@
 class String
 
   def nl2br
-    _nl_gsub("<br />\n")
+    gsub _nl_gsub_regex, "<br />\n"
   end
 
   def newline_to(rep = ' ')
-    _nl_gsub(rep.to_s)
+    gsub _nl_gsub_regex, rep.to_s
+  end
+
+  def newline_to!(rep = ' ')
+    gsub! _nl_gsub_regex, rep.to_s
   end
 
   def keyify
@@ -99,15 +103,15 @@ class String
   end
 
   # TODO
-  def each_char_index(&block)
+  # def each_char_index(&block)
     # how to return enumerator if no block given?
     # http://blog.arkency.com/2014/01/ruby-to-enum-for-enumerator/
-  end
+  # end
 
   protected
 
-    def _nl_gsub(rep)
-      self.gsub(/(?:\n\r?|\r\n?)/, rep)
+    def _nl_gsub_regex
+      /(?:\n\r?|\r\n?)/
     end
 
     def _lstrip_all_regex(expr)
