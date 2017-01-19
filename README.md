@@ -51,6 +51,7 @@ gem install 'finishing_moves'
   - [`String#nl2br`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringnl2br)
   - [`String#numeric?`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringnumeric) :boom:
   - [`String#remove_whitespace`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringremove_whitespace)
+  - [`String#replace_whitespace`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringreplace_whitespace)
   - [`String#strip_all`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringstrip_all) :boom:
 
 *Multi-class logic enhancements*
