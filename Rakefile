@@ -22,3 +22,8 @@ namespace :gem do
     sh "gem push finishing_moves-#{FinishingMoves::VERSION}.gem"
   end
 end
+
+task :publish do
+  Rake::Task["gem:build"].invoke
+  Rake::Task["gem:push"].invoke
+end
