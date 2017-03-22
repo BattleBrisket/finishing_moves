@@ -19,7 +19,7 @@ Command line
 gem install 'finishing_moves'
 ```
 
-## Functionality
+## Documentation
 
 **Not sure if this gem is for you?** Check out the methods marked with a :boom: first.
 
@@ -43,12 +43,15 @@ gem install 'finishing_moves'
   - [`Object#is_not_a?`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objectis_not_a)
   - [`Object#true?`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objecttruefalsebool)
   - [`Object#false?`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objecttruefalsebool)
+  - [`Object#true_?`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objecttrueobjectfalse)
+  - [`Object#false_?`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objecttrueobjectfalse)
   - [`Object#bool?`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objecttruefalsebool)
   - [`String#dedupe`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringdedupe)
   - [`String#keyify`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringkeyify)
   - [`String#slugify`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringslugify)
   - [`String#match?`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringmatch)
   - [`String#nl2br`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringnl2br)
+  - [`String#newline_to`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringnewline_to)
   - [`String#numeric?`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringnumeric) :boom:
   - [`String#remove_whitespace`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringremove_whitespace)
   - [`String#replace_whitespace`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringreplace_whitespace)

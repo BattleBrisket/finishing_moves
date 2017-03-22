@@ -45,6 +45,16 @@ class Object
     return false
   end
 
+  def false_?
+    raise "value is not a boolean class (#{self.class.name})" if !bool?
+    false?
+  end
+
+  def true_?
+    raise "value is not a boolean class (#{self.class.name})" if !bool?
+    true?
+  end
+
   def is_one_of?( *klasses )
     klasses.each do |klass|
       return true if is_a? klass

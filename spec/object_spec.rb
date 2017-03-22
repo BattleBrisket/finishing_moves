@@ -83,4 +83,27 @@ describe Object do
     expect(:symbol.is_one_of? String, Float, Object).to eq true
   end
 
+  it "#true_?" do
+    expect(true.true_?).to eq true
+    expect(false.true_?).to eq false
+    expect{ nil.true_? }.to raise_error(RuntimeError)
+    expect{ 1.true_? }.to raise_error(RuntimeError)
+    expect{ [:ar, :ray].true_? }.to raise_error(RuntimeError)
+    expect{ {ha: :sh}.true_? }.to raise_error(RuntimeError)
+    expect{ 'string'.true_? }.to raise_error(RuntimeError)
+    expect{ :symbol.true_? }.to raise_error(RuntimeError)
+  end
+
+  it "#false_?" do
+    expect(false.false_?).to eq true
+    expect(true.false_?).to eq false
+    expect{ nil.false_? }.to raise_error(RuntimeError)
+    expect{ 0.false_? }.to raise_error(RuntimeError)
+    expect{ [:ar, :ray].false_? }.to raise_error(RuntimeError)
+    expect{ {ha: :sh}.false_? }.to raise_error(RuntimeError)
+    expect{ 'string'.false_? }.to raise_error(RuntimeError)
+    expect{ :symbol.false_? }.to raise_error(RuntimeError)
+  end
+
+
 end
