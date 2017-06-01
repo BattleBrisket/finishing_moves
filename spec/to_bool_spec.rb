@@ -20,7 +20,7 @@ describe "Boolean typecasting" do
     expect{ "000".to_bool }.to raise_error(ArgumentError)
   end
 
-  it "Fixnum#to_bool" do
+  it "Integer#to_bool" do
     expect(1.to_bool).to eq true
     expect(0.to_bool).to eq false
     expect{ 2.to_bool }.to raise_error(ArgumentError)

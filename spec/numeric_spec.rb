@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Numeric methods" do
 
-  it "Fixnum#length" do
+  it "Integer#length" do
     expect(1.length).to eq 1
     expect(5.length).to eq 1
     expect(9.length).to eq 1
@@ -12,9 +12,6 @@ describe "Numeric methods" do
     expect(-9000.length).to eq 4
     # alias
     expect(-9000.digits).to eq 4
-  end
-
-  it "Bignum#length" do
     expect(12356469787881584554556.length).to eq 23
     expect(-12356469787881584554556.length).to eq 23
     # alias
@@ -40,7 +37,7 @@ describe "Numeric methods" do
     expect{ -0.9999999999999062.digits }.to raise_error(ArgumentError)
   end
 
-  it "Fixnum#subtract_percent" do
+  it "Integer#subtract_percent" do
     expect(1.subtract_percent(10)).to eq 0.9
     expect(10.subtract_percent(10)).to eq 9.0
     expect(25.subtract_percent(5)).to eq 23.75
@@ -70,16 +67,13 @@ describe "Numeric methods" do
   end
 
 
-  it "Fixnum#add_percent" do
+  it "Integer#add_percent" do
     expect(1.add_percent(10)).to eq 1.1
     expect(10.add_percent(10)).to eq 11.0
     expect(25.add_percent(5)).to eq 26.25
     expect(76.add_percent(40)).to eq 106.4
     expect(76.markup_by_percent(40)).to eq 106.4
     expect(200.markup_by_percent(100)).to eq 400
-  end
-
-  it "Bignum#add_percent" do
     expect(12356469787881584554556.add_percent(10)).to eq 1.3592116766669745e+22
     expect(12356469787881584554556.markup_by_percent(10)).to eq 1.3592116766669745e+22
   end

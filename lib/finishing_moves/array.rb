@@ -14,7 +14,7 @@ class Array
 
   def to_indexed_hash(starting_key = 0)
     raise ArgumentError, "#{starting_key.inspect} is not an integer" unless starting_key.is_a? Integer
-    to_hash_values(starting_key) { |i| i + 1 }
+    to_hash_values(starting_key)
   end
 
   def to_hash_keys(starting_value = 0, &block)
