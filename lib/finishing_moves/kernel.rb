@@ -5,8 +5,7 @@ module Kernel
       result = yield
       return ret_val if result.nil?
       result
-    rescue NoMethodError
-    rescue NameError
+    rescue NoMethodError, NameError
       return ret_val
     end
   end
