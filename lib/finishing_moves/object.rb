@@ -26,8 +26,16 @@ class Object
     name.keyify
   end
 
+  def self.keyify!
+    name.keyify!
+  end
+
   def self.slugify
     name.slugify
+  end
+
+  def self.slugify!
+    name.slugify!
   end
 
   def false?
