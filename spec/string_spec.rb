@@ -154,6 +154,12 @@ describe String do
     expect("\n\n".newline_to(0)).to eq '00'
     expect("\n\n".newline_to(true)).to eq 'truetrue'
 
+    # should return a modified object, leaving original intact
+    newline = "\n"
+    bar = newline.newline_to(:bar)
+    expect(newline).to eq "\n"
+    expect(bar).to eq 'bar'
+
     expect("Let's play Global Thermonuclear War.\n\r".newline_to).to eq "Let's play Global Thermonuclear War. "
     expect("A strange game.\n\nThe only winning move is not to play.\r\nHow about a nice game of chess?\r".newline_to).
       to eq "A strange game.  The only winning move is not to play. How about a nice game of chess? "
@@ -161,7 +167,7 @@ describe String do
 
   it "#newline_to!" do
     var = "\n"
-    var.newline_to! 'foo'
+    var.newline_to! :foo
     expect(var).to eq 'foo'
   end
 

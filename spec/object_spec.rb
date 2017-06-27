@@ -105,5 +105,9 @@ describe Object do
     expect{ :symbol.false_? }.to raise_error(RuntimeError)
   end
 
+end
 
+#############################
+
+class NoStringObject
 end
