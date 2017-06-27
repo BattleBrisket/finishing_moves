@@ -159,31 +159,46 @@ describe String do
       to eq "A strange game.  The only winning move is not to play. How about a nice game of chess? "
   end
 
+  it "#newline_to!" do
+    var = "\n"
+    var.newline_to! 'foo'
+    expect(var).to eq 'foo'
+  end
+
+  keyify_sets = [
+    [Integer, :integer],
+    [Math::DomainError, :math_domain_error],
+    ['FooBarBaz', :foo_bar_baz],
+    [:FooBarBaz, :foo_bar_baz],
+    ["Foo-Bar'Baz", :foo_bar_baz],
+    ['(Foo*&Bar!Baz?', :foo_bar_baz],
+    ['1234FooBAR', :foo_bar],
+    ['!@#$Foo0987', :foo0987],
+    ["Bill O'Shea", :bill_o_shea],
+    ["Bill O Shea", :bill_o_shea],
+    ["Bill O   Shea", :bill_o_shea],
+  ]
+
   it '#keyify' do
-    expect(Integer.keyify).to eq :integer
-    expect(Math::DomainError.keyify).to eq :math_domain_error
-    expect('FooBarBaz'.keyify).to eq :foo_bar_baz
-    expect(:FooBarBaz.keyify).to eq :foo_bar_baz
-    expect("Foo-Bar'Baz".keyify).to eq :foo_bar_baz
-    expect('(Foo*&Bar!Baz?'.keyify).to eq :foo_bar_baz
-    expect('1234FooBAR'.keyify).to eq :foo_bar
-    expect('!@#$Foo0987'.keyify).to eq :foo0987
+    keyify_sets.each do |set|
+      inc, out = set
+      expect(inc.keyify).to eq out
+    end
     expect('!@#$%^'.keyify).to eq nil
     expect('12345678'.keyify).to eq nil
-    expect("Bill O'Shea".keyify).to eq :bill_o_shea
-    expect("Bill O Shea".keyify).to eq :bill_o_shea
-    expect("Bill O   Shea".keyify).to eq :bill_o_shea
-
     # make sure we're not performing in place
     str = 'FooBarBaz'
     expect(str.keyify).to eq :foo_bar_baz
     expect(str).to eq 'FooBarBaz'
-
     # should work on frozen values
     expect('FooBarBaz'.freeze.keyify).to eq :foo_bar_baz
   end
 
   it '#keyify!' do
+    keyify_sets.each do |set|
+      inc, out = set
+      expect(inc.keyify!).to eq out
+    end
     expect{ '!@#$%^'.keyify! }.to raise_error(ArgumentError)
     expect{ '12345678'.keyify! }.to raise_error(ArgumentError)
   end
@@ -193,19 +208,25 @@ describe String do
     expect('1   2 3 4  5'.dedupe(' ').replace_whitespace('+')).to eq '1+2+3+4+5'
   end
 
+  slugify_sets = [
+    [Integer, 'integer'],
+    [Math::DomainError, 'math-domain-error'],
+    ['FooBarBaz', 'foo-bar-baz'],
+    [:FooBarBaz, 'foo-bar-baz'],
+    ["Foo-Bar'Baz", 'foo-bar-baz'],
+    ['(Foo*&Bar!Baz?', 'foo-bar-baz'],
+    ["Bill O'Shea", 'bill-o-shea'],
+    ["Bill O Shea", 'bill-o-shea'],
+    ["Bill O   Shea", 'bill-o-shea'],
+  ]
+
   it '#slugify' do
-    expect(Integer.slugify).to eq 'integer'
-    expect(Math::DomainError.slugify).to eq 'math-domain-error'
-    expect('FooBarBaz'.slugify).to eq 'foo-bar-baz'
-    expect(:FooBarBaz.slugify).to eq 'foo-bar-baz'
-    expect("Foo-Bar'Baz".slugify).to eq 'foo-bar-baz'
-    expect('(Foo*&Bar!Baz?'.slugify).to eq 'foo-bar-baz'
+    slugify_sets.each do |set|
+      inc, out = set
+      expect(inc.slugify).to eq out
+    end
     expect('!@#$Foo0987'.slugify).to eq 'foo0987'
     expect('!@#$%^'.slugify).to eq nil
-    expect("Bill O'Shea".slugify).to eq 'bill-o-shea'
-    expect("Bill O Shea".slugify).to eq 'bill-o-shea'
-    expect("Bill O   Shea".slugify).to eq 'bill-o-shea'
-
     # make sure we're not performing in place
     str = 'FooBarBaz'
     expect(str.slugify).to eq 'foo-bar-baz'
@@ -221,6 +242,10 @@ describe String do
   end
 
   it '#slugify!' do
+    slugify_sets.each do |set|
+      inc, out = set
+      expect(inc.slugify!).to eq out
+    end
     expect{ '!@#$%^'.slugify! }.to raise_error(ArgumentError)
     expect{ '12345678'.slugify! }.not_to raise_error
   end

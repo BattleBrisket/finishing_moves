@@ -3,7 +3,7 @@
 # Shell user settings.
 USER_NAME=vagrant
 USER_HOME=/home/$USER_NAME
-DEFAULT_RUBY='2.2.2'
+DEFAULT_RUBY='2.4.1'
 
 ###############################################################################
 # Functions
