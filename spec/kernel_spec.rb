@@ -24,6 +24,7 @@ describe Kernel do
     expect( nil_chain(false) { bogus_variable } ).to equal false
     expect( nil_chain('gotcha!') { bogus_variable } ).to eq 'gotcha!'
     expect( nil_chain('gotcha!') { params[:bogus_key] } ).to eq 'gotcha!'
+    expect( nil_chain('gotcha!') { raise NoMethodError } ).to eq 'gotcha!'
     expect( nil_chain('gotcha!') { params[:foo] } ).to eq 'bar'
 
     # alias
