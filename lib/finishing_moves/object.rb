@@ -12,11 +12,7 @@ class Object
   alias_method :is_not_an?, :is_not_a?
 
   def same_as(compare)
-    if compare.respond_to? :to_s
-      self.to_s == compare.to_s
-    else
-      raise ArgumentError.new("Cannot compare \"#{self.class.name}\" to \"#{compare.class.name}\", no string conversion")
-    end
+    self.to_s == compare.to_s
   end
   alias_method :same_as?, :same_as
 
