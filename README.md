@@ -59,7 +59,7 @@ gem install 'finishing_moves'
 
 *Multi-class logic enhancements*
 
-  - [Fiscal Calendar Calculations](https://github.com/forgecrafted/finishing_moves/wiki/Fiscal-Calendar-Calculations) :boom:
+  - ~Fiscal Calendar Calculations~ Moved to its own gem! [Check out Fiscally.](https://github.com/forgecrafted/fiscally)
   - [Boolean Typecasting](https://github.com/forgecrafted/finishing_moves/wiki/Boolean-Typecasting)
 
 ### Ruby Version
