@@ -6,8 +6,7 @@ FQDN = "#{NAME}.example.com"
 
 Vagrant.configure("2") do |config|
   # "trusty" is 14.04
-  config.vm.box       = "trusty64"
-  config.vm.box_url   = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+  config.vm.box = "ubuntu/trusty64"
 
   # Use the normal insecure key
   # https://github.com/mitchellh/vagrant/issues/2608

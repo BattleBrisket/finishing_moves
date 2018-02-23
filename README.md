@@ -39,8 +39,10 @@ gem install 'finishing_moves'
   - [`Numeric#subtract_percent`](https://github.com/forgecrafted/finishing_moves/wiki/Numeric#numericsubtract_percent)
   - [`Object#same_as`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objectsame_as)
   - [`Object#not_nil?`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objectnot_nil)
+  - [`Object#numeric?`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objectnumeric) :boom:
   - [`Object#is_an?`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objectis_an)
   - [`Object#is_not_a?`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objectis_not_a)
+  - [`Object#is_one_of?`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objectis_one_of) :boom:
   - [`Object#true?`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objecttruefalsebool)
   - [`Object#false?`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objecttruefalsebool)
   - [`Object#bool?`](https://github.com/forgecrafted/finishing_moves/wiki/Object#objecttruefalsebool)
@@ -52,7 +54,6 @@ gem install 'finishing_moves'
   - [`String#match?`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringmatch)
   - [`String#nl2br`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringnl2br)
   - [`String#newline_to`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringnewline_to)
-  - [`String#numeric?`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringnumeric) :boom:
   - [`String#remove_whitespace`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringremove_whitespace)
   - [`String#replace_whitespace`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringreplace_whitespace)
   - [`String#strip_all`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringstrip_all) :boom:

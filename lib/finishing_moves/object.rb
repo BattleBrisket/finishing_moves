@@ -66,4 +66,12 @@ class Object
     return false
   end
 
+  # Sources:
+  #   http://mentalized.net/journal/2011/04/14/ruby-how-to-check-if-a-string-is-numeric/
+  #   http://rosettacode.org/wiki/Determine_if_a_string_is_numeric#Ruby
+  #   http://stackoverflow.com/questions/5661466/test-if-string-is-a-number-in-ruby-on-rails/5661695
+  def numeric?
+    Float(self) != nil rescue false
+  end
+
 end
