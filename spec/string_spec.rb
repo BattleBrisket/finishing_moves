@@ -256,20 +256,4 @@ describe String do
     expect{ '12345678'.slugify! }.not_to raise_error
   end
 
-  it '#numeric?' do
-    expect("42".numeric?).to be true
-    expect("-42".numeric?).to be true
-    expect("1.2".numeric?).to be true
-    expect("0".numeric?).to be true
-    expect("1.2e34".numeric?).to be true
-    expect("1_000".numeric?).to be true
-    expect("".numeric?).to be false
-    expect(" ".numeric?).to be false
-    expect("a".numeric?).to be false
-    expect("-".numeric?).to be false
-    expect(".".numeric?).to be false
-    expect("_".numeric?).to be false
-    expect("1.2.3".numeric?).to be false
-  end
-
 end

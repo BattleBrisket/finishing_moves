@@ -105,6 +105,41 @@ describe Object do
     expect{ :symbol.false_? }.to raise_error(RuntimeError)
   end
 
+  it '#numeric?' do
+    expect("42".numeric?).to be true
+    expect("-42".numeric?).to be true
+    expect("1.2".numeric?).to be true
+    expect("0".numeric?).to be true
+    expect("1.2e34".numeric?).to be true
+    expect("1_000".numeric?).to be true
+    expect("".numeric?).to be false
+    expect(" ".numeric?).to be false
+    expect("a".numeric?).to be false
+    expect(:a.numeric?).to be false
+    expect("-".numeric?).to be false
+    expect(".".numeric?).to be false
+    expect("_".numeric?).to be false
+    expect("1.2.3".numeric?).to be false
+
+    expect(123.numeric?).to be true
+    expect(42.numeric?).to be true
+    expect(-42.numeric?).to be true
+    expect(1.2.numeric?).to be true
+    expect(0.numeric?).to be true
+    expect(-0.0.numeric?).to be true
+    expect(1.2e34.numeric?).to be true
+    expect(1_000.numeric?).to be true
+
+    expect([:foo, :bar].numeric?).to be false
+    hash = {:foo => :bar}
+    expect(hash.numeric?).to be false
+    expect(hash.each.numeric?).to be false
+    expect(ArgumentError.new.numeric?).to be false
+    expect(GC.numeric?).to be false
+    expect(NoStringObject.numeric?).to be false
+    expect(NoStringObject.new.numeric?).to be false
+  end
+
 end
 
 #############################
