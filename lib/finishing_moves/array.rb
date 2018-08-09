@@ -27,29 +27,25 @@ class Array
   end
   alias_method :to_hash_as_keys, :to_hash_keys
 
-  def to_sym
+  def to_sym_strict
     map { |x| x.to_sym }
   end
-  alias_method :to_sym_hard, :to_sym
 
-  def to_sym!
+  def to_sym_strict!
     map! { |x| x.to_sym }
   end
-  alias_method :to_sym_hard!, :to_sym!
 
-  def to_sym_soft
+  def to_sym_loose
     map do |x|
-      begin
+      if x.respond_to?(:to_sym)
         x.to_sym
-      rescue NoMethodError => e
+      else
         x
-      rescue Exception
-        raise
       end
     end
   end
 
-  def to_sym_soft!
+  def to_sym_loose!
     map! do |x|
       begin
         x.to_sym

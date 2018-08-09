@@ -99,45 +99,29 @@ describe Array do
     end
   end
 
-  it '#to_sym' do
+  it '#to_sym_strict' do
     test = ['FOO', 'bar', :baz]
-    expect(test.to_sym).to eq [:FOO, :bar, :baz]
+    expect(test.to_sym_strict).to eq [:FOO, :bar, :baz]
     expect(test).to eq ['FOO', 'bar', :baz]
-    expect{ [1].to_sym }.to raise_error NoMethodError
-    # FinishingMoves::FalseClass#to_sym
-    expect([false].to_sym).to eq [:false]
+    expect{ [1].to_sym_strict }.to raise_error NoMethodError
   end
 
-  it '#to_sym!' do
+  it '#to_sym_strict!' do
     test = ['FOO', 'bar', :baz]
-    expect(test.to_sym!).to eq [:FOO, :bar, :baz]
+    expect(test.to_sym_strict!).to eq [:FOO, :bar, :baz]
     expect(test).to eq [:FOO, :bar, :baz]
-    expect{ [1].to_sym! }.to raise_error NoMethodError
+    expect{ [1].to_sym_strict! }.to raise_error NoMethodError
   end
 
-  it '#to_sym_hard' do
-    test = ['FOO', 'bar', :baz]
-    expect(test.to_sym_hard).to eq [:FOO, :bar, :baz]
-    expect(test).to eq ['FOO', 'bar', :baz]
-    expect{ [1].to_sym_hard }.to raise_error NoMethodError
-  end
-
-  it '#to_sym_hard!' do
-    test = ['FOO', 'bar', :baz]
-    expect(test.to_sym_hard!).to eq [:FOO, :bar, :baz]
-    expect(test).to eq [:FOO, :bar, :baz]
-    expect{ [1].to_sym_hard! }.to raise_error NoMethodError
-  end
-
-  it '#to_sym_soft' do
+  it '#to_sym_loose' do
     test = ['FOO', 'bar', :baz, 1, {bat: 'bat'}, /hay/]
-    expect(test.to_sym_soft).to eq [:FOO, :bar, :baz, 1, {bat: 'bat'}, /hay/]
+    expect(test.to_sym_loose).to eq [:FOO, :bar, :baz, 1, {bat: 'bat'}, /hay/]
     expect(test).to eq ['FOO', 'bar', :baz, 1, {bat: 'bat'}, /hay/]
   end
 
-  it '#to_sym_soft!' do
+  it '#to_sym_loose!' do
     test = ['FOO', 'bar', :baz, 1, {bat: 'bat'}, /hay/]
-    expect(test.to_sym_soft!).to eq [:FOO, :bar, :baz, 1, {bat: 'bat'}, /hay/]
+    expect(test.to_sym_loose!).to eq [:FOO, :bar, :baz, 1, {bat: 'bat'}, /hay/]
     expect(test).to eq [:FOO, :bar, :baz, 1, {bat: 'bat'}, /hay/]
   end
 

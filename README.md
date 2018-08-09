@@ -25,8 +25,8 @@ gem install 'finishing_moves'
   - [`Array#to_hash_values`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_hash_values) :boom:
   - [`Array#to_indexed_hash`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_indexed_hash)
   - [`Array#to_hash_keys`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_hash_keys)
-  - [`Array#to_sym`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_sym) :new:
-  - [`Array#to_sym_soft`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_sym_soft) :new:
+  - [`Array#to_sym_strict`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_sym_strict) :new:
+  - [`Array#to_sym_loose`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_sym_loose) :new:
   - [`Enumerable#key_map`](https://github.com/forgecrafted/finishing_moves/wiki/Enumerable#enumerablekey_map) :boom:
   - [`Enumerable#key_map_reduce`](https://github.com/forgecrafted/finishing_moves/wiki/Enumerable#enumerablekey_map_reduce)
   - [`Hash#delete!`](https://github.com/forgecrafted/finishing_moves/wiki/Hash#hashdelete)
