@@ -1,7 +1,6 @@
 # Finishing Moves
 [![Gem Version](https://badge.fury.io/rb/finishing_moves.svg)](https://rubygems.org/gems/finishing_moves)
-[![Build Status](https://travis-ci.org/forgecrafted/finishing_moves.svg?branch=master)](https://travis-ci.org/forgecrafted/finishing_moves)
-[![Coverage Status](https://coveralls.io/repos/forgecrafted/finishing_moves/badge.svg?branch=master)](https://coveralls.io/r/forgecrafted/finishing_moves?branch=master)
+[![Build Status](https://travis-ci.org/BattleBrisket/rails-force-reload.svg?branch=master)](https://travis-ci.org/BattleBrisket/rails-force-reload)
 
 Ruby includes a huge amount of default awesomeness that tackles most common development challenges. But every now and then, you find yourself performing contortions to achieve results that, honestly, **should feel more natural** given the language's design elegance. Finishing Moves is a collection of methods designed to assist in those "why is this awkward?" scenarios.
 
@@ -26,6 +25,8 @@ gem install 'finishing_moves'
   - [`Array#to_hash_values`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_hash_values) :boom:
   - [`Array#to_indexed_hash`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_indexed_hash)
   - [`Array#to_hash_keys`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_hash_keys)
+  - [`Array#to_sym`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_sym)
+  - [`Array#to_sym_soft`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_sym_soft)
   - [`Enumerable#key_map`](https://github.com/forgecrafted/finishing_moves/wiki/Enumerable#enumerablekey_map) :boom:
   - [`Enumerable#key_map_reduce`](https://github.com/forgecrafted/finishing_moves/wiki/Enumerable#enumerablekey_map_reduce)
   - [`Hash#delete!`](https://github.com/forgecrafted/finishing_moves/wiki/Hash#hashdelete)
@@ -58,10 +59,10 @@ gem install 'finishing_moves'
   - [`String#replace_whitespace`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringreplace_whitespace)
   - [`String#strip_all`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringstrip_all) :boom:
 
-*Multi-class logic enhancements*
+*Multi-class enhancement*
 
-  - ~Fiscal Calendar Calculations~ Moved to its own gem! [Check out Fiscally.](https://github.com/forgecrafted/fiscally)
   - [Boolean Typecasting](https://github.com/forgecrafted/finishing_moves/wiki/Boolean-Typecasting)
+  - ~Fiscal Calendar Calculations~ Moved to its own gem! [Check out Fiscally.](https://github.com/forgecrafted/fiscally)
 
 ### Ruby Version
 
@@ -73,7 +74,6 @@ Tested against **`2.0.0` and above**. Probably works in `1.9.3`.
 - Follow the Unix philosophy of *"Do one job really well."*
 - Minimize assumptions, e.g. avoid formatting output, mutating values, and conditional logic flows.
 - Play nice with major Ruby players like Rake, Rails, and Sinatra.
-- Never duplicate existing methods from Rails and the like.
 - Test all the things.
 
 ## Bug Reports

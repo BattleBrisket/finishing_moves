@@ -99,6 +99,48 @@ describe Array do
     end
   end
 
+  it '#to_sym' do
+    test = ['FOO', 'bar', :baz]
+    expect(test.to_sym).to eq [:FOO, :bar, :baz]
+    expect(test).to eq ['FOO', 'bar', :baz]
+    expect{ [1].to_sym }.to raise_error NoMethodError
+    # FinishingMoves::FalseClass#to_sym
+    expect([false].to_sym).to eq [:false]
+  end
+
+  it '#to_sym!' do
+    test = ['FOO', 'bar', :baz]
+    expect(test.to_sym!).to eq [:FOO, :bar, :baz]
+    expect(test).to eq [:FOO, :bar, :baz]
+    expect{ [1].to_sym! }.to raise_error NoMethodError
+  end
+
+  it '#to_sym_hard' do
+    test = ['FOO', 'bar', :baz]
+    expect(test.to_sym_hard).to eq [:FOO, :bar, :baz]
+    expect(test).to eq ['FOO', 'bar', :baz]
+    expect{ [1].to_sym_hard }.to raise_error NoMethodError
+  end
+
+  it '#to_sym_hard!' do
+    test = ['FOO', 'bar', :baz]
+    expect(test.to_sym_hard!).to eq [:FOO, :bar, :baz]
+    expect(test).to eq [:FOO, :bar, :baz]
+    expect{ [1].to_sym_hard! }.to raise_error NoMethodError
+  end
+
+  it '#to_sym_soft' do
+    test = ['FOO', 'bar', :baz, 1, {bat: 'bat'}, /hay/]
+    expect(test.to_sym_soft).to eq [:FOO, :bar, :baz, 1, {bat: 'bat'}, /hay/]
+    expect(test).to eq ['FOO', 'bar', :baz, 1, {bat: 'bat'}, /hay/]
+  end
+
+  it '#to_sym_soft!' do
+    test = ['FOO', 'bar', :baz, 1, {bat: 'bat'}, /hay/]
+    expect(test.to_sym_soft!).to eq [:FOO, :bar, :baz, 1, {bat: 'bat'}, /hay/]
+    expect(test).to eq [:FOO, :bar, :baz, 1, {bat: 'bat'}, /hay/]
+  end
+
 end
 
 class SageElements

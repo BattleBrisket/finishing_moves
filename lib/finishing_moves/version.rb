@@ -1,3 +1,3 @@
 module FinishingMoves
-  VERSION = "0.20"
+  VERSION = "1.0"
 end
