@@ -59,15 +59,11 @@ gem install 'finishing_moves'
   - [`String#remove_whitespace`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringremove_whitespace)
   - [`String#replace_whitespace`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringreplace_whitespace)
   - [`String#strip_all`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringstrip_all) :boom:
-
-*Multi-class enhancement*
-
-  - [Boolean Typecasting](https://github.com/forgecrafted/finishing_moves/wiki/Boolean-Typecasting)
-  - ~Fiscal Calendar Calculations~ Moved to its own gem! [Check out Fiscally.](https://github.com/forgecrafted/fiscally)
+  - [Boolean Typecasting](https://github.com/forgecrafted/finishing_moves/wiki/Boolean-Typecasting) (*multi-class enhancement*)
 
 ### Ruby Version
 
-Tested against **`2.0.0` and above**.
+Tested against all supported versions of official RVM, currently **`2.5.0` and above**.
 
 ## Development approach
 
