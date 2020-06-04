@@ -1,6 +1,7 @@
 # Finishing Moves
 [![Gem Version](https://badge.fury.io/rb/finishing_moves.svg)](https://rubygems.org/gems/finishing_moves)
 [![Build Status](https://travis-ci.org/forgecrafted/finishing_moves.svg?branch=master)](https://travis-ci.org/forgecrafted/finishing_moves)
+[![Mentioned in Awesome Ruby](https://awesome.re/mentioned-badge.svg)](https://github.com/markets/awesome-ruby)
 
 Ruby includes a huge amount of default awesomeness that tackles most common development challenges. But every now and then, you find yourself performing contortions to achieve results that, honestly, **should feel more natural** given the language's design elegance. Finishing Moves is a collection of methods designed to assist in those "why is this awkward?" scenarios.
 
@@ -25,8 +26,8 @@ gem install 'finishing_moves'
   - [`Array#to_hash_values`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_hash_values) :boom:
   - [`Array#to_indexed_hash`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_indexed_hash)
   - [`Array#to_hash_keys`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_hash_keys)
-  - [`Array#to_sym_strict`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_sym_strict) :new:
-  - [`Array#to_sym_loose`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_sym_loose) :new:
+  - [`Array#to_sym_strict`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_sym_strict)
+  - [`Array#to_sym_loose`](https://github.com/forgecrafted/finishing_moves/wiki/Array#arrayto_sym_loose)
   - [`Enumerable#key_map`](https://github.com/forgecrafted/finishing_moves/wiki/Enumerable#enumerablekey_map) :boom:
   - [`Enumerable#key_map_reduce`](https://github.com/forgecrafted/finishing_moves/wiki/Enumerable#enumerablekey_map_reduce)
   - [`Hash#delete!`](https://github.com/forgecrafted/finishing_moves/wiki/Hash#hashdelete)
