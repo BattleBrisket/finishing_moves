@@ -35,6 +35,8 @@ gem install 'finishing_moves'
   - [`Hash#delete_each!`](https://github.com/forgecrafted/finishing_moves/wiki/Hash#hashdelete_each-1)
   - [`Integer#length`](https://github.com/forgecrafted/finishing_moves/wiki/Numeric#integerlength)
   - [`Kernel#nil_chain`](https://github.com/forgecrafted/finishing_moves/wiki/Kernel#kernelnil_chain) :boom::boom:
+  - [`Kernel#bool_chain`](https://github.com/forgecrafted/finishing_moves/wiki/Kernel#kernelbool_chain)
+  - [`Kernel#silently`](https://github.com/forgecrafted/finishing_moves/wiki/Kernel#kernelsilently)
   - [`Kernel#cascade`](https://github.com/forgecrafted/finishing_moves/wiki/Kernel#kernelcascade)
   - [`Kernel#class_exists?`](https://github.com/forgecrafted/finishing_moves/wiki/Kernel#kernelclass_exists)
   - [`Numeric#add_percent`](https://github.com/forgecrafted/finishing_moves/wiki/Numeric#numericadd_percent)
@@ -59,6 +61,7 @@ gem install 'finishing_moves'
   - [`String#remove_whitespace`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringremove_whitespace)
   - [`String#replace_whitespace`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringreplace_whitespace)
   - [`String#strip_all`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringstrip_all) :boom:
+  - [`String#to_uuid`](https://github.com/forgecrafted/finishing_moves/wiki/String#stringto_uuid)
   - [Boolean Typecasting](https://github.com/forgecrafted/finishing_moves/wiki/Boolean-Typecasting) (*multi-class enhancement*)
 
 ### Ruby Version

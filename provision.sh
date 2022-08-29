@@ -3,7 +3,7 @@
 # Shell user settings.
 USER_NAME=vagrant
 USER_HOME=/home/$USER_NAME
-DEFAULT_RUBY='2.4.1'
+DEFAULT_RUBY='3.1.2'
 
 ###############################################################################
 # Functions
@@ -27,7 +27,7 @@ apt-get -yfV dist-upgrade
 ###############################################################################
 
 # Install dependencies.
-apt-get install -yfV         \
+sudo apt-get install -yfV         \
   build-essential            \
   curl                       \
   git-core                   \
@@ -38,9 +38,18 @@ apt-get install -yfV         \
   libxml2-dev                \
   libxslt1-dev               \
   libyaml-dev                \
-  python-software-properties \
+  software-properties-common \
   sqlite3                    \
   zlib1g-dev                 \
+  autoconf                   \
+  bison                      \
+  libreadline6-dev           \
+  libncurses5-dev            \
+  libffi-dev                 \
+  libgdbm6                   \
+  libgdbm-dev                \
+  libdb-dev                  \
+  uuid-dev
 
 # Install rbenv and ruby-build.
 as_user "git clone https://github.com/sstephenson/rbenv.git $USER_HOME/.rbenv"

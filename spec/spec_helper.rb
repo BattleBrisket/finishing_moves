@@ -3,10 +3,6 @@ require 'rubygems'
 require 'bundler/setup'
 Bundler.setup
 
-require 'priscilla'
-require 'pry'
-require 'byebug'
-
 require 'coveralls'
 Coveralls.wear!
 

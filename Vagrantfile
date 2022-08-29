@@ -6,7 +6,7 @@ FQDN = "#{NAME}.example.com"
 
 Vagrant.configure("2") do |config|
   # "trusty" is 14.04
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "ubuntu/focal64"
 
   # Use the normal insecure key
   # https://github.com/mitchellh/vagrant/issues/2608
@@ -18,7 +18,7 @@ Vagrant.configure("2") do |config|
       "--name",       NAME,
       "--memory",     4096,
       # I/O APIC must be enabled to support a multi-core guest.
-      "--cpus",       4,
+      "--cpus",       2,
       "--ioapic",     "on",
       # Enable native host virtualization features (yields better performance).
       "--pae",        "on",

@@ -259,18 +259,22 @@ describe String do
   it '#to_uuid' do
     str = "5062754996b140c8b5dde7ffc23376a1"
     expect(str.to_uuid).to eq "50627549-96b1-40c8-b5dd-e7ffc23376a1"
-    expect()to
     # too long
     expect{ (str + '1').to_uuid }.to raise_error(ArgumentError)
     # not hex
     expect{ (str[0,31] + 'k').to_uuid }.to raise_error(ArgumentError)
     # just bad
     expect{ ("just some writing 123!").to_uuid }.to raise_error(ArgumentError)
+
+    formatted_uuid = "5a658838-7aa4-488c-98f1-21805a5d2021"
+    expect(formatted_uuid.to_uuid).to eq formatted_uuid
+    # Only dashes are accepted as separators
+    expect{ formatted_uuid.gsub('-', ' ').to_uuid }.to raise_error(ArgumentError)
+    expect{ formatted_uuid.gsub('-', '.').to_uuid }.to raise_error(ArgumentError)
+
     random_uuid = SecureRandom.uuid
     no_dashes = random_uuid.delete('-')
-    expect(no_dashes.to_uuid!).to eq random_uuid
-    # value should have been changed by bang variant
-    expect(no_dashes).to eq random_uuid
+    expect(no_dashes.to_uuid).to eq random_uuid
   end
 
 end

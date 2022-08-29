@@ -19,13 +19,10 @@ Gem::Specification.new do |s|
   s.files       = `git ls-files -z`.split("\x0")
   s.test_files  = Dir["spec/**/*"]
 
-  s.add_development_dependency 'rb-readline', '>= 0'
   s.add_development_dependency 'rspec', '~> 3.1.0'
-  s.add_development_dependency 'priscilla', '>= 0'
-  s.add_development_dependency 'pry-byebug', '>= 0'
   s.add_development_dependency 'fuubar', '>= 0'
-  s.add_development_dependency 'coveralls', '>= 0.8.0'
+  s.add_development_dependency 'coveralls', '>= 0'
 
-  s.required_ruby_version = '>= 2.0.0'
+  s.required_ruby_version = '>= 2.7.0'
 
 end
