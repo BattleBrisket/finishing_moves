@@ -94,6 +94,20 @@ class String
     match(pattern, pos).not_nil?
   end
 
+  def to_uuid
+    if length == 32 && self =~ /^[0-9A-F]+$/i
+       str = self.dup
+       return str[0,8] + '-' +str[8,4] + '-' +str[12,4] + '-' +str[16,4] + '-' +str[20,12]
+    else
+      raise ArgumentError, "#{str} is not a valid UUID"
+    end
+  end
+
+  def to_uuid!
+    self = to_uuid
+    return self
+  end
+
   # TODO
   # def each_char_index(&block)
     # how to return enumerator if no block given?
