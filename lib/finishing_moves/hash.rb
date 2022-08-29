@@ -24,4 +24,11 @@ class Hash
     return self
   end
 
+  # TODO
+  # Replicate `sample` method functionality from Array
+  def sample
+    key = self.keys.sample
+    return {:"#{key}" => self[key]}
+  end
+
 end
