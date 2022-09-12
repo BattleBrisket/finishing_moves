@@ -8,7 +8,7 @@ task :c => :console
 namespace :gem do
   desc "Connect to RubyGems.org account"
   task :auth do
-    sh "curl -u forgecrafted https://rubygems.org/api/v1/api_key.yaml > ~/.gem/credentials; chmod 0600 ~/.gem/credentials"
+    sh "curl -u battlebrisket https://rubygems.org/api/v1/api_key.yaml > ~/.gem/credentials; chmod 0600 ~/.gem/credentials"
   end
 
   desc "Build the gem according to gemspec"

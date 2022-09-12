@@ -5,7 +5,6 @@ NAME = "finishing-moves"
 FQDN = "#{NAME}.example.com"
 
 Vagrant.configure("2") do |config|
-  # "trusty" is 14.04
   config.vm.box = "ubuntu/focal64"
 
   # Use the normal insecure key
