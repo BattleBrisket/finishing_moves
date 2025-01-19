@@ -55,7 +55,6 @@ gem install 'finishing_moves'
   - [`String#dedupe`](https://github.com/BattleBrisket/finishing_moves/wiki/String#stringdedupe)
   - [`String#keyify`](https://github.com/BattleBrisket/finishing_moves/wiki/String#stringkeyify)
   - [`String#slugify`](https://github.com/BattleBrisket/finishing_moves/wiki/String#stringslugify)
-  - [`String#match?`](https://github.com/BattleBrisket/finishing_moves/wiki/String#stringmatch)
   - [`String#nl2br`](https://github.com/BattleBrisket/finishing_moves/wiki/String#stringnl2br)
   - [`String#newline_to`](https://github.com/BattleBrisket/finishing_moves/wiki/String#stringnewline_to)
   - [`String#remove_whitespace`](https://github.com/BattleBrisket/finishing_moves/wiki/String#stringremove_whitespace)
@@ -66,7 +65,7 @@ gem install 'finishing_moves'
 
 ### Ruby Version
 
-Tested against all supported versions of official RVM, currently **`2.7.6` and above**.
+Tested against all supported versions of official RVM, currently **`3.1` and above**.
 
 ## Development approach
 

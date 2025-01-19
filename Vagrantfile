@@ -5,7 +5,7 @@ NAME = "finishing-moves"
 FQDN = "#{NAME}.example.com"
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/focal64"
+  config.vm.box = "ubuntu/jammy64"
 
   # Use the normal insecure key
   # https://github.com/mitchellh/vagrant/issues/2608

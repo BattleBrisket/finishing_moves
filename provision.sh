@@ -3,7 +3,7 @@
 # Shell user settings.
 USER_NAME=vagrant
 USER_HOME=/home/$USER_NAME
-DEFAULT_RUBY='3.1.2'
+DEFAULT_RUBY='3.4.1'
 
 ###############################################################################
 # Functions
@@ -27,7 +27,7 @@ apt-get -yfV dist-upgrade
 ###############################################################################
 
 # Install dependencies.
-sudo apt-get install -yfV         \
+apt-get install -yfV         \
   build-essential            \
   curl                       \
   git-core                   \

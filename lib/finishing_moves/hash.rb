@@ -26,9 +26,16 @@ class Hash
 
   # TODO
   # Replicate `sample` method functionality from Array
-  def sample
-    key = self.keys.sample
-    return {:"#{key}" => self[key]}
-  end
+  # def sample(count)
+  #   key = self.keys.sample
+  #   return {:"#{key}" => self[key]}
+  # end
+
+  # TODO
+  # sort in place using default `hash.sort` logic
+  # def sort!
+  #   self = self.sort
+  #   return self
+  # end
 
 end

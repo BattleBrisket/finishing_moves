@@ -89,11 +89,6 @@ class String
     gsub! /[ ]/, replace
   end
 
-  # return true/false on regex match
-  def match?(pattern, pos = 0)
-    match(pattern, pos).not_nil?
-  end
-
   def to_uuid
     if length == 36 && self.match?(/^[0-9A-F-]+$/i)
       return self

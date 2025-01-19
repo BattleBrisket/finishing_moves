@@ -84,16 +84,6 @@ describe String do
     expect(str).to eq '___foo'
   end
 
-  it '#match?' do
-    expect('hello'.match?('he')).to be true
-    expect('hello'.match?('he', 1)).to be false
-    expect('hello'.match?('o')).to be true
-    expect('hello'.match?('ol')).to be false
-    expect('hello'.match?('(.)')).to be true
-    expect('hello'.match?(/(.)/)).to be true
-    expect('hello'.match?('xx')).to be false
-  end
-
   it '#remove_whitespace' do
     expect('   a b c d     e'.remove_whitespace).to eq 'abcde'
     expect(' [  foo ]   '.remove_whitespace).to eq '[foo]'

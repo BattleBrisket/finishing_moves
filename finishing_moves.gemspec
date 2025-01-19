@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.version     = FinishingMoves::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Frank Koehl"]
-  s.email       = ["frank@forgecrafted.com"]
-  s.summary     = %q{Small, focused, incredibly useful methods added to core Ruby classes.}
+  s.email       = ["battlebrisket@outlook.com"]
+  s.summary     = %q{Incredibly useful methods added to core Ruby classes. Includes the endlessly useful nil_chain.}
   s.description = <<-EOF
     Ruby includes a huge amount of default awesomeness that tackles most common development challenges. But every now and then, you find yourself performing contortions to achieve results that, honestly, should feel more natural given the language's design elegance. Finishing Moves is a collection of methods designed to assist in those "why is this awkward?" scenarios.
   EOF
@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rspec', '~> 3.1.0'
   s.add_development_dependency 'fuubar', '>= 0'
-  s.add_development_dependency 'coveralls', '>= 0'
+  s.add_development_dependency 'coveralls_reborn', '>= 0'
 
   s.required_ruby_version = '>= 2.7.0'
 
