@@ -1,0 +1,34 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+NAME = "finishing-moves"
+FQDN = "#{NAME}.example.com"
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "gusztavvargadr/ubuntu-server"
+
+  # Use the normal insecure key
+  # https://github.com/mitchellh/vagrant/issues/2608
+  config.ssh.insert_key = false
+
+  config.vm.synced_folder ".", "/vagrant"
+
+  config.vm.provider :vmware_desktop do |vmw|
+    vmw.gui = false
+    vmw.memory = 4096
+    vmw.cpus = 2
+  end
+
+  config.vm.hostname = FQDN
+  config.vm.provision :shell, path: "provision.sh"
+end
+
+#
+# DONT FORGET!
+#
+# Force update VirtualBox Guest Additions
+# Run the following command inside same directory as Vagrantfile
+# Must be done once on your dev system
+#
+#   vagrant plugin install vagrant-vbguest
+#

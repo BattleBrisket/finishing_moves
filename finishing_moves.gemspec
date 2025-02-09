@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.files       = `git ls-files -z`.split("\x0")
   s.test_files  = Dir["spec/**/*"]
 
-  s.add_development_dependency 'rspec', '~> 3.1.0'
+  s.add_development_dependency 'rspec', '~> 3.13.0'
   s.add_development_dependency 'fuubar', '>= 0'
   s.add_development_dependency 'coveralls_reborn', '>= 0'
 
