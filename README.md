@@ -1,6 +1,6 @@
 # Finishing Moves
 [![Gem Version](https://badge.fury.io/rb/finishing_moves.svg)](https://rubygems.org/gems/finishing_moves)
-[![Build Status](https://travis-ci.org/forgecrafted/finishing_moves.svg?branch=master)](https://travis-ci.org/forgecrafted/finishing_moves)
+[![Build Status](https://app.travis-ci.com/BattleBrisket/finishing_moves.svg?token=2RuAfh1uyxzwYggbsGpy&branch=master)](https://app.travis-ci.com/BattleBrisket/finishing_moves)
 [![Mentioned in Awesome Ruby](https://awesome.re/mentioned-badge.svg)](https://github.com/markets/awesome-ruby)
 
 Ruby includes a huge amount of default awesomeness that tackles most common development challenges. But every now and then, you find yourself performing contortions to achieve results that, honestly, **should feel more natural** given the language's design elegance. Finishing Moves is a collection of methods designed to assist in those "why is this awkward?" scenarios.
